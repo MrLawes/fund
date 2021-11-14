@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.contrib import admin
 
@@ -33,7 +35,7 @@ class FundExpenseForm(forms.ModelForm):
 
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'fund_value', 'hold', 'expense', 'hold_value')
+    list_display = ('id', 'fund_value', 'hold', 'expense', 'hold_value', 'hope_value')
     form = FundExpenseForm
 
     def hold_value(self, obj):
@@ -41,6 +43,19 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return round(obj.hold * last_fundvalue.value, 2)
 
     hold_value.short_description = '持有市值'
+
+    def hope_value(self, obj):
+        # 天化
+        day_change = obj.fund_value.fund.day_change
+        # 持有时间
+        days = datetime.datetime.now().date() - obj.fund_value.deal_at
+        days = days.days
+        # 通过天化得期望市值，再加上手续费
+        value = ((1 + day_change) ** days) * obj.expense
+        value *= 1.0065
+        return round(value, 2)
+
+    hope_value.short_description = '期望市值'
 
 
 """:arg

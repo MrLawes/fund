@@ -15,6 +15,10 @@ class Fund(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def day_change(self):
+        """ 天化 """
+        return (1 + (self.three_yearly_change / 100.0)) ** (1.0 / (3 * 12 * 30)) - 1
 
 class FundValue(models.Model):
     fund = models.ForeignKey(Fund, on_delete=models.CASCADE, verbose_name='基金名称')
