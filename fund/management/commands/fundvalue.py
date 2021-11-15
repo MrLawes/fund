@@ -13,7 +13,7 @@ class Command(BaseCommand):
         }
         # todo 刷近5年的记录
         end_date = datetime.datetime.now()
-        start_date = (end_date - datetime.timedelta(days=14)).strftime('%Y-%m-%d')
+        start_date = (end_date - datetime.timedelta(days=30 * 5)).strftime('%Y-%m-%d')
         end_date = end_date.strftime('%Y-%m-%d')
         for fund in Fund.objects.all():
             url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
