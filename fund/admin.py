@@ -45,6 +45,7 @@ class FundExpenseForm(forms.ModelForm):
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = ('id', 'fund_value', 'hold', 'expense', 'hold_value', 'hope_value')
     form = FundExpenseForm
+    exclude = ('fund_value',)
 
     def hold_value(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
