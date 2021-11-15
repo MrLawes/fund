@@ -8,7 +8,7 @@ class Fund(models.Model):
     space_expense = models.IntegerField(verbose_name='单份投入金额', default=0)
     from_value = models.FloatField(verbose_name='从该市值开始', default=0)
     to_value = models.FloatField(verbose_name='到该市值结束', default=0)
-    fee = models.FloatField(verbose_name='买入费率', default=0)
+    fee = models.FloatField(verbose_name='买入费率 %', default=0)
 
     class Meta:
         verbose_name_plural = '基金'
@@ -59,12 +59,12 @@ class FundExpense(models.Model):
         verbose_name_plural = '基金购买记录'
 
     @classmethod
-    def get_hold(self, fund_value, expense):
+    def get_hold(self, fund_value, expense, fee):
         """ 计算持有份数
         :param: expense:        确认金额
         :param: fund_value:     单位净值
         """
-
+        expense -= expense * fee / 100
         # 持有份数 = 确认金额 / 单位净值
         return round(expense / fund_value, 2)
 

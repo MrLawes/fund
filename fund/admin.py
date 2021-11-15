@@ -60,8 +60,8 @@ class FundExpenseForm(forms.ModelForm):
 
     def clean(self):
         fund_value = FundValue.objects.get(fund=self.cleaned_data['fund'], deal_at=self.cleaned_data['deal_at'])
-        # self.cleaned_data['fund_value'] = fund_value
-        hold = FundExpense.get_hold(fund_value=fund_value.value, expense=self.cleaned_data['expense'])
+        fee = self.cleaned_data['fund'].fee
+        hold = FundExpense.get_hold(fund_value=fund_value.value, expense=self.cleaned_data['expense'], fee=fee)
         self.cleaned_data['hold'] = hold
         return self.cleaned_data
 
