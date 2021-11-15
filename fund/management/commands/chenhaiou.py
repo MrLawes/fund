@@ -280,22 +280,13 @@ headers_strip = [h.strip() for h in headers]
 for 基金名称 in data:
     result = income(基金名称, data[基金名称]['N年年化'], data[基金名称]['交易流水'], )
 
-    # todo delete
-    if '诺安成长混合' in 基金名称:
-        funds_info = {}
-    else:
-        funds_info = get_funds_info(data[基金名称]['代码'])
+    funds_info = get_funds_info(data[基金名称]['代码'])
 
     if funds_info:
         value = float(funds_info[max(funds_info.keys())]['value'])
         持有市值 = float(f"{value * result['持有份额']:0.02f}")
     else:
         持有市值 = value = 0
-
-    # todo delete
-    if '诺安成长混合' in 基金名称:
-        value = 2.226
-        持有市值 = float(f"{value * result['持有份额']:0.02f}")
 
     持有收益 = value * result['持有份额'] - result['总投入']
     持有收益率 = f"{result['持有收益率'] * 100:0.2f}%"
