@@ -9,7 +9,7 @@ from fund.models import Fund, FundValue, FundExpense
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'code', 'space_expense', 'expense', 'hope_expense', 'hold_space',)
+    list_display = ('id', 'name', 'code', 'space_expense', 'expense', 'hope_expense', 'hold_space', 'pyramid',)
 
     def hold_space(self, obj):
         expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)
@@ -22,7 +22,7 @@ class FundAdmin(admin.ModelAdmin):
         expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)
         return round(sum(expense), 2)
 
-    expense.short_description = '投入资金'
+    expense.short_description = '已投入资金'
 
     def hope_expense(self, obj):
         """ 期望投入资金 """
@@ -48,6 +48,49 @@ class FundAdmin(admin.ModelAdmin):
         return expense
 
     hope_expense.short_description = '本阶段/下阶段投入/下个阶段净值涨跌/下个阶段净值'
+
+    def pyramid(self, obj):
+
+        #         < !DOCTYPE
+        #         html >
+        #         < html
+        #         lang = "en" >
+        #         < head >
+        #         < meta
+        #         charset = "UTF-8" >
+        #         < title > Document < / title >
+        #         < style >
+        #         h1
+        #         {
+        #             text - align: center;
+        #         }
+        #         < / style >
+        #
+        #     < / head >
+        #     < body >
+        #     < h1 > 倒正金字塔 < h1 / >
+        #     < script >
+        #     for (var i=10;i > -11;i--)
+        #         {
+        #             document.write("<hr width=" + 10 * Math.abs(i) + "%/>")
+        #         }
+        #
+        # < / script >
+        # < / body >
+        # < / html >
+        # ————————————————
+        # 版权声明：本文为CSDN博主「斯
+        # 钦」的原创文章，遵循CC
+        # 4.0
+        # BY - SA版权协议，转载请附上原文出处链接及本声明。
+        # 原文链接：https: // blog.csdn.net / weixin_44884379 / article / details / 112156801
+        #
+        # return format_html(f'<a href="/v4/fund/{obj.id}/" target="_blank">x</a>')
+        return format_html(
+            """<hr width="10%" /><hr width="20%"/><hr width="30%"/><hr width="40%"/><hr width="50%"/><hr width="60%"/><hr width="70%"/><hr width="80%"/><hr width="90%"/><hr width="100%"/>""")
+
+    pyramid.short_description = '金字塔'
+
 
 @admin.register(FundValue)
 class FundValueAdmin(admin.ModelAdmin):

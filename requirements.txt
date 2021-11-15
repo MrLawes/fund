@@ -1,2 +1,5 @@
 Django==3.2.9
 httpx==0.20.0
+ipython==7.29.0
+djangorestframework==3.8.2
+six==1.16.0
