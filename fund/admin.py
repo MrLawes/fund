@@ -25,13 +25,17 @@ class FundAdmin(admin.ModelAdmin):
         for index, stage in enumerate(obj.pyramid_stage):
             if obj.from_value > obj.to_value:
                 if fund_value.value > stage and not '当前市值' in html:
-                    rate = (fund_value.value - stage) * 100 / fund_value.value
-                    html += f"当前市值: {fund_value.value:.4f}；下阶段 ⬇️ 涨幅:-{rate:.2f}%　　　　　</br>"
+                    rate = (stage - fund_value.value) * 100 / fund_value.value
+                    html += f"当前市值: {fund_value.value:.4f}；下阶段 ⬇️ 涨幅:{rate:.2f}%　　　　　</br>"
             elif obj.from_value < obj.to_value:
-                if (fund_value.value > stage or index == 10) and not '当前市值' in html:
+                if fund_value.value > stage and not '当前市值' in html:
                     rate = (fund_value.value - stage) * 100 / fund_value.value
-                    html += f" xxxxx 当前市值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　</br>"
+                    html += f"当前市值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　</br>"
             html += f"{index:02} 仓位: 市值: {stage:.4f}；总投入: {(1 + index) * index / 2 * obj.space_expense}　　　　　　</br>"
+
+        if obj.from_value < obj.to_value and not '当前市值' in html:
+            rate = (stage - fund_value.value) * 100 / fund_value.value
+            html += f"当前市值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　</br>"
 
         html += f"净值走势：{obj.from_value} --> {fund_value.value} --> {obj.to_value}　　　　　　　　　　</br>"
         return format_html(html)
