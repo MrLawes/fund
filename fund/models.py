@@ -21,9 +21,14 @@ class Fund(models.Model):
         return (1 + (self.three_yearly_change / 100.0)) ** (1.0 / (3 * 12 * 30)) - 1
 
     @property
-    def total_space_expense(self):
-        """ 总仓位金额 """
-        return self.space_expense * 55
+    def pyramid_stage(self):
+        """ 金字塔阶段 """
+        max_value = max(self.from_value, self.to_value)
+        min_value = min(self.from_value, self.to_value)
+        half = min_value + (max_value - min_value) / 2
+        stage_value = (self.to_value - half) / 10
+        stage = [half + stage_value * i for i in range(0, 11)]
+        return stage
 
 
 class FundValue(models.Model):
