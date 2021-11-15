@@ -9,7 +9,7 @@ from fund.models import Fund, FundValue, FundExpense
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'code', 'three_yearly_change', 'hold_space',)
+    list_display = ('id', 'name', 'code', 'space_expense', 'three_yearly_change', 'hold_space',)
 
     def hold_space(self, obj):
         expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)
