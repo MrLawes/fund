@@ -12,7 +12,7 @@ class FundAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'code', 'three_yearly_change', 'hold_space',)
 
     def hold_space(self, obj):
-        expense = FundExpense.objects.filter(fund_value__fund=obj).values_list('expense', flat=True)
+        expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)
         expense = sum(expense)
         return round(expense * 10.0 / obj.total_space_expense, 2)
 
@@ -22,6 +22,7 @@ class FundAdmin(admin.ModelAdmin):
 @admin.register(FundValue)
 class FundValueAdmin(admin.ModelAdmin):
     list_display = ('id', 'fund', 'deal_at', 'value', 'rate',)
+    search_fields = ['fund__name', 'deal_at', ]
 
     def get_queryset(self, request):
         result = super().get_queryset(request=request).order_by('-deal_at', )
