@@ -2,13 +2,21 @@ import datetime
 
 from django import forms
 from django.contrib import admin
+from django.utils.html import format_html
 
 from fund.models import Fund, FundValue, FundExpense
 
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'code', 'three_yearly_change',)
+    list_display = ('id', 'name', 'code', 'three_yearly_change', 'hold_space',)
+
+    def hold_space(self, obj):
+        expense = FundExpense.objects.filter(fund_value__fund=obj).values_list('expense', flat=True)
+        expense = sum(expense)
+        return round(expense * 10.0 / obj.total_space_expense, 2)
+
+    hold_space.short_description = '持有仓位'
 
 
 @admin.register(FundValue)
@@ -40,8 +48,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     def hold_value(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
-        return round(obj.hold * last_fundvalue.value, 2)
+        value = round(obj.hold * last_fundvalue.value, 2)
+        hope_value = self.hope_value(obj=obj)
 
+        if hope_value > value:
+            color = 'red'
+        else:
+            color = 'green'
+
+        return format_html(f'<span style="color: {color};">{value}</span>')
     hold_value.short_description = '持有市值'
 
     def hope_value(self, obj):
@@ -57,16 +72,3 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     hope_value.short_description = '期望市值'
 
-
-""":arg
-
-/Users/chenhaiou/Desktop/D/git/api/venv/bin/python /Users/chenhaiou/Desktop/D/git/cdl_api/api/settings/chenhaiou.py
-时间         投入金额/持有市值/恒定市值/期望市值           持有收益/期望收益              期望收益率                持有仓位                 基金名称
-----------  --------------------------------------  --------------------------  ----------------------  ----------------------  -----------------------------------------
-2021-11-15  500.41/0/0.00/529.49                    -500.41/29.08               5.81%                   0.715                   工银瑞信文体产业股票A[打算出售 146.76 份]
-2021-11-15  1000.23/959.63/0.00/1120.43             -40.60/120.20               12.02%                  1.429                   诺安成长混合[打算出售 1 份]
-2021-11-15  1139.32/1100.84/0.00/1273.17            -38.48/133.85               11.75%                  1.628                   诺安成长混合[打算出售 2 份]
-2021-11-15  1619.00/1629.46/0.00/1788.99            10.46/169.99                10.50%                  2.313                   诺安成长混合[打算出售 3 份]
-2021-11-15  2101.49/2155.29/0.00/2300.44            53.80/198.95                9.47%                   3.002                   诺安成长混合[打算出售 4 份]
-2021-11-15  2621.98/2732.29/0.00/2844.93            110.31/222.95               8.50%                   3.746                   诺安成长混合[打算出售 5 份]
-"""

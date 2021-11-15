@@ -8,6 +8,7 @@ class Fund(models.Model):
     name = models.CharField(max_length=64, verbose_name='基金名称', db_index=True, )
     code = models.CharField(max_length=64, verbose_name='代码', db_index=True, )
     three_yearly_change = models.IntegerField(verbose_name='三年年化', default=0)
+    space_expense = models.IntegerField(verbose_name='总仓位的55份投入金额', default=0)
 
     class Meta:
         verbose_name_plural = '基金'
@@ -19,6 +20,11 @@ class Fund(models.Model):
     def day_change(self):
         """ 天化 """
         return (1 + (self.three_yearly_change / 100.0)) ** (1.0 / (3 * 12 * 30)) - 1
+
+    @property
+    def total_space_expense(self):
+        """ 总仓位金额 """
+        return self.space_expense * 55
 
 class FundValue(models.Model):
     fund = models.ForeignKey(Fund, on_delete=models.CASCADE, verbose_name='基金名称')
