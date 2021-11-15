@@ -1,8 +1,6 @@
 from django.db import models
 
 
-
-
 class Fund(models.Model):
     name = models.CharField(max_length=64, verbose_name='基金名称', db_index=True, )
     code = models.CharField(max_length=64, verbose_name='代码', db_index=True, )
@@ -26,6 +24,7 @@ class Fund(models.Model):
     def total_space_expense(self):
         """ 总仓位金额 """
         return self.space_expense * 55
+
 
 class FundValue(models.Model):
     fund = models.ForeignKey(Fund, on_delete=models.CASCADE, verbose_name='基金名称')
