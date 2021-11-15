@@ -50,7 +50,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = round(obj.hold * last_fundvalue.value, 2)
         hope_value = self.hope_value(obj=obj)
-
+        # todo 写入数据库
         if hope_value > value:
             color = 'red'
         else:
