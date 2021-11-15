@@ -11,6 +11,7 @@ from fund.models import Fund, FundValue, FundExpense
 class FundAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'code', 'space_expense', 'expense', 'pyramid',)
     search_fields = ['name', ]
+    list_filter = ('name',)
 
     def expense(self, obj):
         expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)
@@ -47,6 +48,7 @@ class FundAdmin(admin.ModelAdmin):
 class FundValueAdmin(admin.ModelAdmin):
     list_display = ('id', 'fund', 'deal_at', 'value', 'rate',)
     search_fields = ['fund__name', 'deal_at', ]
+    list_filter = ('fund__name',)
 
     def get_queryset(self, request):
         result = super().get_queryset(request=request).order_by('-deal_at', )
@@ -68,9 +70,10 @@ class FundExpenseForm(forms.ModelForm):
 
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'fund_value', 'hold', 'expense', 'hold_value', 'hope_value')
-    form = FundExpenseForm
+    list_display = ('id', 'deal_at', 'fund', 'hold', 'expense', 'hold_value', 'hope_value')
     search_fields = ['fund__name', ]
+    list_filter = ('fund__name',)
+    form = FundExpenseForm
 
     def hold_value(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
