@@ -8,6 +8,7 @@ class Fund(models.Model):
     space_expense = models.IntegerField(verbose_name='单份投入金额', default=0)
     from_value = models.FloatField(verbose_name='从该市值开始', default=0)
     to_value = models.FloatField(verbose_name='到该市值结束', default=0)
+    fee = models.FloatField(verbose_name='买入费率', default=0)
 
     class Meta:
         verbose_name_plural = '基金'
@@ -50,10 +51,9 @@ class FundValue(models.Model):
 class FundExpense(models.Model):
     fund = models.ForeignKey(Fund, on_delete=models.CASCADE, verbose_name='基金名称', )
     deal_at = models.DateField(verbose_name='发布日期', db_index=True, )
-    # fund_value = models.OneToOneField(FundValue, on_delete=models.CASCADE, verbose_name='基金市值', unique=True)
     # todo 刷数据
     expense = models.FloatField(verbose_name='确认金额', default=0)
-    hold = models.FloatField(verbose_name='持有份数', default=0)
+    hold = models.FloatField(verbose_name='确认份额', default=0)
 
     class Meta:
         verbose_name_plural = '基金购买记录'
