@@ -28,6 +28,8 @@ class Fund(models.Model):
         half = min_value + (max_value - min_value) / 2
         stage_value = (self.to_value - half) / 10
         stage = [half + stage_value * i for i in range(0, 11)]
+        if self.from_value < self.to_value:
+            stage = stage[::-1]
         return stage
 
 
