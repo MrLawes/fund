@@ -34,9 +34,9 @@ class FundExpenseForm(forms.ModelForm):
         fields = "__all__"
 
     def clean(self):
-        hold = FundExpense.get_hold(
-            fund_value=self.cleaned_data['fund_value'].value, expense=self.cleaned_data['expense']
-        )
+        fund_value = FundValue.objects.get(fund=self.cleaned_data['fund'], deal_at=self.cleaned_data['deal_at'])
+        # self.cleaned_data['fund_value'] = fund_value
+        hold = FundExpense.get_hold(fund_value=fund_value.value, expense=self.cleaned_data['expense'])
         self.cleaned_data['hold'] = hold
         return self.cleaned_data
 
@@ -45,7 +45,8 @@ class FundExpenseForm(forms.ModelForm):
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = ('id', 'fund_value', 'hold', 'expense', 'hold_value', 'hope_value')
     form = FundExpenseForm
-    exclude = ('fund_value',)
+
+    # exclude = ('fund_value',)
 
     def hold_value(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
@@ -58,6 +59,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             color = 'green'
 
         return format_html(f'<span style="color: {color};">{value}</span>')
+
     hold_value.short_description = '持有市值'
 
     def hope_value(self, obj):
@@ -72,4 +74,3 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return round(value, 2)
 
     hope_value.short_description = '期望市值'
-

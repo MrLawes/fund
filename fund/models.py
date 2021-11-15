@@ -43,7 +43,7 @@ class FundValue(models.Model):
 class FundExpense(models.Model):
     fund = models.ForeignKey(Fund, on_delete=models.CASCADE, verbose_name='基金名称', )
     deal_at = models.DateField(verbose_name='发布日期', db_index=True, )
-    fund_value = models.OneToOneField(FundValue, on_delete=models.CASCADE, verbose_name='基金市值', unique=True)
+    # fund_value = models.OneToOneField(FundValue, on_delete=models.CASCADE, verbose_name='基金市值', unique=True)
     # todo 刷数据
     expense = models.FloatField(verbose_name='确认金额', default=0)
     hold = models.FloatField(verbose_name='持有份数', default=0)
@@ -60,3 +60,7 @@ class FundExpense(models.Model):
 
         # 持有份数 = 确认金额 / 单位净值
         return round(expense / fund_value, 2)
+
+    @property
+    def fund_value(self):
+        return FundValue.objects.get(fund=self.fund, deal_at=self.deal_at)
