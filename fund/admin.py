@@ -80,7 +80,14 @@ class FundExpenseAdmin(admin.ModelAdmin):
     list_display = ('id', 'deal_at', 'fund', 'hold', 'expense', 'hold_value', 'hope_value')
     search_fields = ['fund__name', ]
     list_filter = ('fund__name',)
+    actions = ['sum_hold', ]
     form = FundExpenseForm
+
+    def sum_hold(self, request, queryset):
+        hold = sum(queryset.values_list('hold', flat=True))
+        self.message_user(request, f"共计 {hold:0.02f} 份")
+
+    sum_hold.short_description = "计算份数"
 
     def hold_value(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
