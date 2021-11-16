@@ -21,8 +21,6 @@ class Command(BaseCommand):
             content_split_list = content.split('<tr>')
 
             for content_split in content_split_list:
-                # if '2019-' not in content_split or '2020-' not in content_split or '2021-' not in content_split or '2022-' not in content_split:
-                #     content
                 if not ('class="f_green"' in content_split or 'class="f_red"' in content_split):
                     continue
                 td_split = content_split.split('</td>')

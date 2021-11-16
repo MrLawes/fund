@@ -9,7 +9,7 @@ from fund.models import Fund, FundValue, FundExpense
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'code', 'space_expense', 'expense', 'pyramid',)
+    list_display = ('id', 'name', 'code', 'space_expense', 'expense', 'value', 'pyramid',)
     search_fields = ['name', ]
     list_filter = ('name',)
 
@@ -18,6 +18,13 @@ class FundAdmin(admin.ModelAdmin):
         return round(sum(expense), 2)
 
     expense.short_description = '已投入资金'
+
+    def value(self, obj):
+        hold = sum(FundExpense.objects.filter(fund=obj).values_list('hold', flat=True))
+        fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
+        return f"{(hold * fund_value.value):0.02f} ({fund_value.deal_at})"
+
+    value.short_description = '市值'
 
     def pyramid(self, obj):
 
