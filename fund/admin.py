@@ -78,7 +78,7 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = ('id', 'deal_at', 'fund', 'hold', 'expense', 'hold_value', 'hope_value')
-    search_fields = ['fund__name', ]
+    search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name',)
     actions = ['sum_hold', ]
     form = FundExpenseForm
