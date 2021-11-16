@@ -27,7 +27,7 @@ class FundAdmin(admin.ModelAdmin):
             hope_value += fund_expense.hope_value
         return f"({str(fund_value.deal_at)[5:]}) {(hold * fund_value.value):0.02f}/{hope_value:0.02f}　　　　　　"
 
-    value.short_description = '市值/期望市值'
+    value.short_description = '金额/止赢金额✌️'
 
     def pyramid(self, obj):
 
