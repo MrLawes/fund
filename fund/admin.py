@@ -47,7 +47,8 @@ class FundAdmin(admin.ModelAdmin):
             rate = (stage - fund_value.value) * 100 / fund_value.value
             html += f"当前市值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　</br>"
 
-        html += f"净值走势：{obj.from_value} --> {fund_value.value} --> {obj.to_value}　　　　　　　　　　</br>"
+        if fund_value:
+            html += f"净值走势：{obj.from_value} --> {fund_value.value} --> {obj.to_value}　　　　　　　　　　</br>"
         return format_html(html)
 
     pyramid.short_description = '金字塔'
