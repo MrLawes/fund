@@ -31,25 +31,45 @@ class FundAdmin(admin.ModelAdmin):
     def pyramid(self, obj):
 
         fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
+        当前市值_index = None
+        html_list = []
         html = ''
         for index, stage in enumerate(obj.pyramid_stage):
+
             if obj.from_value > obj.to_value:
-                if fund_value.value > stage and not '当前市值' in html:
+                if fund_value.value > stage and 当前市值_index is None:
                     rate = (stage - fund_value.value) * 100 / fund_value.value
                     html += f"当前市值: {fund_value.value:.4f}；下阶段 ⬇️ 涨幅:{rate:.2f}%　　　　　</br>"
+                    html_list.append(f"当前市值: {fund_value.value:.4f}；下阶段 ⬇️ 涨幅:{rate:.2f}%　　　　　</br>")
+                    当前市值_index = len(html_list)
+
             elif obj.from_value < obj.to_value:
-                if fund_value.value > stage and not '当前市值' in html:
+                if fund_value.value > stage and 当前市值_index is None:
                     rate = (fund_value.value - stage) * 100 / fund_value.value
                     html += f"当前市值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　</br>"
-            html += f"{index:02} 仓位: 市值: {stage:.4f}；总投入: {(1 + index) * index / 2 * obj.space_expense}　　　　　　</br>"
+                    html_list.append(f"当前市值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　</br>")
+                    当前市值_index = len(html_list)
 
-        if obj.from_value < obj.to_value and not '当前市值' in html:
+            html += f"{index:02} 仓位: 市值: {stage:.4f}；总投入: {(1 + index) * index / 2 * obj.space_expense}　　　　　　</br>"
+            html_list.append(
+                f"{index:02} 仓位: 市值: {stage:.4f}；总投入: {(1 + index) * index / 2 * obj.space_expense}　　　　　　</br>")
+
+        if obj.from_value < obj.to_value and 当前市值_index is None:
             rate = (stage - fund_value.value) * 100 / fund_value.value
             html += f"当前市值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　</br>"
+            html_list.append(f"当前市值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　</br>")
+            当前市值_index = len(html_list)
+
+        html_slice_start = 当前市值_index - 3
+        html_slice_start = 0 if html_slice_start < 0 else html_slice_start
+        html_slice_end = 当前市值_index + 2
+        html_list = html_list[html_slice_start:html_slice_end]
 
         if fund_value:
             html += f"净值走势：{obj.from_value} --> {fund_value.value} --> {obj.to_value}　　　　　　　　　　</br>"
-        return format_html(html)
+            html_list.append(f"净值走势：{obj.from_value} --> {fund_value.value} --> {obj.to_value}　　　　　　　　　　</br>")
+
+        return format_html(''.join(html_list))
 
     pyramid.short_description = '金字塔'
 
