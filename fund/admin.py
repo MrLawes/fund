@@ -24,7 +24,7 @@ class FundAdmin(admin.ModelAdmin):
         fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
         if not fund_value:
             return '0'
-        return f"{(hold * fund_value.value):0.02f} ({fund_value.deal_at})"
+        return f"{(hold * fund_value.value):0.02f} ({fund_value.deal_at})　　　　　　"
 
     value.short_description = '市值'
 
