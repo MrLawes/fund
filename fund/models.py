@@ -4,7 +4,7 @@ from django.db import models
 class Fund(models.Model):
     name = models.CharField(max_length=64, verbose_name='基金名称', db_index=True, )
     code = models.CharField(max_length=64, verbose_name='代码', db_index=True, )
-    three_yearly_change = models.IntegerField(verbose_name='三年年化', default=0)
+    three_yearly_change = models.FloatField(verbose_name='三年年化', default=0)
     space_expense = models.IntegerField(verbose_name='单份投入金额', default=0)
     from_value = models.FloatField(verbose_name='从该单位净值开始', default=0)
     to_value = models.FloatField(verbose_name='到该单位净值结束', default=0)
