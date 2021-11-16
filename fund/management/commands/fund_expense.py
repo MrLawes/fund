@@ -11,6 +11,11 @@ class Command(BaseCommand):
                     '2021-10-23': 10,
                 }
             },
+            "农银汇理": {
+                '交易流水': {
+                    '2021-11-05': 10,
+                }
+            },
         }
         for fund_name in data:
             fund = Fund.objects.get(name=fund_name)

@@ -1,5 +1,3 @@
-import datetime
-
 from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
@@ -9,7 +7,7 @@ from fund.models import Fund, FundValue, FundExpense
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'code', 'space_expense', 'expense', 'value', 'pyramid',)
+    list_display = ('id', 'name', 'expense', 'value', 'pyramid',)
     search_fields = ['name', ]
     list_filter = ('name',)
 
@@ -24,9 +22,12 @@ class FundAdmin(admin.ModelAdmin):
         fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
         if not fund_value:
             return '0'
-        return f"{(hold * fund_value.value):0.02f} ({fund_value.deal_at})　　　　　　"
+        hope_value = 0
+        for fund_expense in FundExpense.objects.filter(fund=obj):
+            hope_value += fund_expense.hope_value
+        return f"({str(fund_value.deal_at)[5:]}) {(hold * fund_value.value):0.02f}/{hope_value:0.02f}　　　　　　"
 
-    value.short_description = '市值'
+    value.short_description = '市值/期望市值'
 
     def pyramid(self, obj):
 
@@ -111,7 +112,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
     def hold_value(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = round(obj.hold * last_fundvalue.value, 2)
-        hope_value = self.hope_value(obj=obj)
+        hope_value = obj.hope_value
         if hope_value > value:
             color = 'green'
         else:
@@ -122,14 +123,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
     hold_value.short_description = '持有市值'
 
     def hope_value(self, obj):
-        # 天化
-        day_change = obj.fund_value.fund.day_change
-        # 持有时间
-        days = datetime.datetime.now().date() - obj.fund_value.deal_at
-        days = days.days
-        # 通过天化得期望市值，再加上手续费
-        value = ((1 + day_change) ** days) * obj.expense
-        value *= 1.0065
-        return round(value, 2)
+        return obj.hope_value
 
     hope_value.short_description = '期望市值'
