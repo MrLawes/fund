@@ -1,0 +1,19 @@
+{
+  "name": "douyin",
+  "manifest_version": 2,
+  "version": "1.0",
+  "description": "douyin",
+  "browser_action": {
+    "default_icon": "douyin.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.douyin.com/*"
+      ],
+      "js": [
+        "douyin.js"
+      ]
+    }
+  ]
+}
