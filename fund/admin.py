@@ -7,7 +7,7 @@ from fund.models import Fund, FundValue, FundExpense
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'expense', 'value', 'pyramid',)
+    list_display = ('id', 'name', 'rate', 'expense', 'value', 'pyramid',)
     search_fields = ['name', ]
     list_filter = ('name',)
 
@@ -17,6 +17,13 @@ class FundAdmin(admin.ModelAdmin):
 
     expense.short_description = '已投入资金'
 
+    def rate(self, obj):
+        fund_value = FundValue.objects.filter(fund=obj).last()
+        rate = fund_value.rate
+        return f"({str(fund_value.deal_at)[5:]}) {rate}　　　"
+
+    rate.short_description = '估算涨幅'
+
     def value(self, obj):
         hold = sum(FundExpense.objects.filter(fund=obj).values_list('hold', flat=True))
         fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
@@ -25,7 +32,7 @@ class FundAdmin(admin.ModelAdmin):
         hope_value = 0
         for fund_expense in FundExpense.objects.filter(fund=obj):
             hope_value += fund_expense.hope_value
-        return f"({str(fund_value.deal_at)[5:]}) {(hold * fund_value.value):0.02f}/{hope_value:0.02f}　　　　　　"
+        return f"{(hold * fund_value.value):0.02f}/{hope_value:0.02f}　　　　　　"
 
     value.short_description = '金额/止赢金额✌️'
 
