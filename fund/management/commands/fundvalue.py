@@ -28,7 +28,7 @@ class Command(BaseCommand):
                     defaults = {'value': newest_value, 'rate': 0}
                     FundValue.objects.update_or_create(fund=fund, deal_at=datetime.datetime.now().date(),
                                                        defaults=defaults)
-                    continue
+                    break
 
             url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
             r = httpx.get(url=url, headers=headers, timeout=40)
