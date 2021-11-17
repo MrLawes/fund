@@ -18,7 +18,7 @@ class FundAdmin(admin.ModelAdmin):
     expense.short_description = '已投入资金'
 
     def rate(self, obj):
-        fund_value = FundValue.objects.filter(fund=obj).last()
+        fund_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
         rate = fund_value.rate
         return f"({str(fund_value.deal_at)[5:]}) {rate}　　　"
 
