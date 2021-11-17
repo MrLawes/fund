@@ -17,11 +17,16 @@ class Command(BaseCommand):
         for fund in Fund.objects.all():
 
             newest_url = f'https://hq.sinajs.cn/etag.php?_=1637125090638&list=fu_{fund.code}'
+            print('newest_url:', newest_url)
             r = httpx.get(url=newest_url, headers=headers, timeout=40)
             content = str(r.content).split(',')
             date = content[-1].split('"')[0]
             value = float(content[2])
-            last_fund_value = FundValue.objects.filter(fund=fund).exclude(deal_at=date).last().value
+            fund_value = FundValue.objects.filter(fund=fund).exclude(deal_at=date).order_by('deal_at').last()
+            if fund_value:
+                last_fund_value = fund_value.value
+            else:
+                last_fund_value = 0
             if value > last_fund_value:
                 rate = 1 - last_fund_value / value
             else:
@@ -45,6 +50,7 @@ class Command(BaseCommand):
             #         break
 
             url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
+            print('url:', url)
             r = httpx.get(url=url, headers=headers, timeout=40)
             content = str(r.content)
             content_split_list = content.split('<tr>')

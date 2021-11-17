@@ -19,8 +19,14 @@ class FundAdmin(admin.ModelAdmin):
 
     def rate(self, obj):
         fund_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
+        if not fund_value:
+            return 0
         rate = fund_value.rate
-        return f"({str(fund_value.deal_at)[5:]}) {rate}　　　"
+        if rate > 0:
+            rate = f"""<span style="color: red;">{rate}</span>"""
+        else:
+            rate = f"""<span style="color: green;">{rate}</span>"""
+        return format_html(f"({str(fund_value.deal_at)[5:]}) {rate}　　　")
 
     rate.short_description = '估算涨幅'
 
@@ -32,7 +38,11 @@ class FundAdmin(admin.ModelAdmin):
         hope_value = 0
         for fund_expense in FundExpense.objects.filter(fund=obj):
             hope_value += fund_expense.hope_value
-        return f"{(hold * fund_value.value):0.02f}/{hope_value:0.02f}　　　　　　"
+        if hold * fund_value.value > hope_value:
+            result = f"""<span style="color: red;">{(hold * fund_value.value):0.02f}</span>"""
+        else:
+            result = f"""<span style="color: green;">{(hold * fund_value.value):0.02f}</span>"""
+        return format_html(f"""{result}/{hope_value:0.02f}　　　　　""")
 
     value.short_description = '金额/止赢金额✌️'
 
