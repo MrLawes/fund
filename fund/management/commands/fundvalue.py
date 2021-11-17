@@ -15,6 +15,21 @@ class Command(BaseCommand):
         start_date = (end_date - datetime.timedelta(days=30 * 5)).strftime('%Y-%m-%d')
         end_date = end_date.strftime('%Y-%m-%d')
         for fund in Fund.objects.all():
+
+            newest_url = f"http://so.hexun.com/default.do?type=fund&key={fund.code}"
+            r = httpx.get(url=newest_url, headers=headers, timeout=40)
+            content = str(r.content)
+            content_split_list = content.split('<td>')
+            for content_split in content_split_list:
+                if not ('class="green"' in content_split or 'class="red"' in content_split):
+                    continue
+                else:
+                    newest_value = float(content_split.split('</span>')[0].split('>')[-1].replace('%', ''))
+                    defaults = {'value': newest_value, 'rate': 0}
+                    FundValue.objects.update_or_create(fund=fund, deal_at=datetime.datetime.now().date(),
+                                                       defaults=defaults)
+                    continue
+
             url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
             r = httpx.get(url=url, headers=headers, timeout=40)
             content = str(r.content)
