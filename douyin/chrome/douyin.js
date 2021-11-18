@@ -11,6 +11,8 @@ function douyin() {
     if (location.pathname.startsWith("/user/")) {
         if (location.search == '?enter_from=recommend&enter_method=top_bar') {
             douyin_my_user()
+        } else {
+            douyin_friend_user()
         }
     }
 
@@ -45,21 +47,6 @@ function douyin_my_user() {
         }
     })
 
-    // window.timeout += 1
-    // sleep(window.timeout).then(() => {
-    //     console.log(new Date() + ' 更新粉丝数据到数据库')
-    //     const http = new easyHTTP;
-    //     const data = {
-    //         fens_count: window.fens_count,
-    //     };
-    //     http.put(
-    //         'http://127.0.0.1:8000/v4/douyin/users/3/',
-    //         data, function (status, responseText) {
-    //             console.log(new Date() + ' 请求返回: ' + responseText)
-    //             window.test = responseText;
-    //         }
-    //     );
-    // })
 
     window.timeout += 1
     sleep(window.timeout).then(() => {
@@ -86,7 +73,7 @@ function douyin_my_user() {
                     earliest = document.getElementById('earliest')
                     let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
                     fens.scrollTo(0, window.scrollto * 100)
-                    let fen = fens.children[0].children[window.scrollto * 3]
+                    let fen = fens.children[0].children[(window.scrollto - 1) * 3]
                     let fen_info = fen.children[1].children[0].children[0].children[0]
                     let relationship = fen.children[2].innerText
                     let first_name = fen_info.innerText
@@ -103,6 +90,8 @@ function douyin_my_user() {
                             window.test = responseText;
                         }
                     );
+                    fen_info.click()
+
                 })
             }
         }
@@ -111,5 +100,28 @@ function douyin_my_user() {
 
 }
 
+function douyin_friend_user() {
+    const http = new easyHTTP;
+    const data = {
+        href: location.pathname,
+    };
+    http.get(
+        'http://127.0.0.1:8000/v4/douyin/users/get_user_by_href/?href=' + location.pathname,
+        data, function (status, responseText) {
+            console.log(new Date() + ' 请求返回: ' + responseText)
+            let user_id = JSON.parse(responseText)['id']
+            if (user_id) {
+                // todo
+                put_data = {'fens_count': 1}
+                http.put(
+                    'http://127.0.0.1:8000/v4/douyin/users/' + user_id + '/',
+                    put_data, function (status, responseText) {
+                        console.log(new Date() + ' 请求返回: ' + responseText)
+                    }
+                );
+            }
+        }
+    );
+}
 
 douyin();

@@ -12,6 +12,13 @@ class DouYinUserViewSet(ModelViewSet):
     queryset = DouYinUser.objects.all()
     serializer_class = DouYinUserSerializer
 
-    @action(methods=['get'], detail=False, )  # todo 暂时用不到
-    def user_id_by_douyin_no(self, request, pk, version):
-        return Response({'id': 3})
+    @action(methods=['get'], detail=False, )
+    def get_user_by_href(self, request, version):
+        print(request.query_params)
+        href = request.query_params.get('href')
+        if href:
+            douyinuser = DouYinUser.objects.filter(href__contains=href).last()
+            if douyinuser:
+                return Response({'id': douyinuser.id})
+
+        return Response({})
