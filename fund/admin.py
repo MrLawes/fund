@@ -11,6 +11,9 @@ class FundAdmin(admin.ModelAdmin):
     search_fields = ['name', ]
     list_filter = ('name',)
 
+    def get_queryset(self, request):
+        return super().get_queryset(request=request).order_by('-order')
+
     def expense(self, obj):
         expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)
         return round(sum(expense), 2)
