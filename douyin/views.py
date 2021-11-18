@@ -1,5 +1,3 @@
-import time
-
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -14,11 +12,8 @@ class DouYinUserViewSet(ModelViewSet):
     queryset = DouYinUser.objects.all()
     serializer_class = DouYinUserSerializer
 
-    @action(methods=['get'], detail=False, )
-    def sleep(self, request, version):
-        timeout = int(request.query_params.get('timeout', 1))
-        time.sleep(timeout)
-        return Response({})
+    def update(self, request, *args, **kwargs):
+        return super(DouYinUserViewSet, self).update(request=request, *args, **kwargs)
 
     @action(methods=['get'], detail=False, )  # todo 暂时用不到
     def user_id_by_douyin_no(self, request, pk, version):

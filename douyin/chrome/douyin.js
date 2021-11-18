@@ -1,17 +1,5 @@
-function sleep(timeout) {
-    const http = new easyHTTP;
-    const data = {};
-    http.get(
-        'http://127.0.0.1:8000/v4/douyin/users/sleep/?timeout=' + timeout,
-        data, function (err, post) {
-            if (err) {
-                alert(1)
-                alert(err)
-            } else {
-                alert(2)
-                alert(err)
-            }
-        });
+function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time * 1000));
 }
 
 
@@ -29,22 +17,8 @@ function douyin() {
 }
 
 function douyin_index() {
-
-    console.log('准备点击我的头像')
-    sleep(1)
-    console.log('准备点击我的头像')
-    console.log('准备点击我的头像')
-    sleep(1)
-    console.log('准备点击我的头像')
-    console.log('准备点击我的头像')
-    sleep(1)
-    console.log('准备点击我的头像')
-    console.log('准备点击我的头像')
-    sleep(1)
-    console.log('准备点击我的头像')
-
-    // 抖音首页，找到个人中心，并点击
-    sleep(1000).then(() => {
+    console.log(new Date() + ' 点击我的头像')
+    sleep(1).then(() => {
         var touxiang = document.getElementsByTagName('img')[0]
         touxiang.click();
     })
@@ -52,70 +26,131 @@ function douyin_index() {
 
 function douyin_my_user() {
 
-    // 抖音个人中心，找到关注并点击
-    console.log('准备点击关注')
-    sleep(1000).then(() => {
+    window.fens_count;
+    window.timeout;
+    window.timeout = 1;
+
+
+    sleep(window.timeout).then(() => {
+        console.log(new Date() + ' 点击关注')
         var divs = document.getElementsByTagName('div')
         for (i = 0; i < divs.length; i++) {
             if (divs[i].innerHTML == '关注') {
-
                 // 更新粉丝数量
-                var fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
-                const http = new easyHTTP;
-                const data = {
-                    fens_count: fens_count,
-                };
-                http.put(
-                    'http://127.0.0.1:8000/v4/douyin/users/3/',
-                    data, function (err, post) {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            console.log(post);
-                        }
-                    });
+                window.fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
                 divs[i].click()
             }
         }
     })
 
-    console.log('准备点击最早关注')
-    // 点击最早关注
-    sleep(1000).then(() => {
+    window.timeout += 1
+    sleep(window.timeout).then(() => {
+        console.log(new Date() + ' 更新粉丝数据到数据库')
+        const http = new easyHTTP;
+        const data = {
+            fens_count: window.fens_count,
+        };
+        http.put(
+            'http://127.0.0.1:8000/v4/douyin/users/3/',
+            data, function (status, responseText) {
+                console.log(new Date() + ' 请求返回: ' + responseText)
+                window.test = responseText;
+            }
+        );
+    })
+
+    window.timeout += 1
+    sleep(window.timeout).then(() => {
+        console.log(new Date() + ' 点击综合排序 -> 最早关注')
         earliest = document.getElementById('earliest')
         earliest.click()
     })
 
-    sleep(1000).then(() => {
-        console.log('准备下滑')
-    })
+
+    // window.timeout += 1;
+    // setTimeout(function () {
+    //     console.log(new Date() + ' 点击 关注 -> 最早关注')
+    //     earliest = document.getElementById('earliest')
+    //     earliest.click()
+    // }, 1000 * window.timeout);
+
+    //
+    // // 抖音个人中心，找到关注并点击
+    // setTimeout(function () {
+    //     var divs = document.getElementsByTagName('div')
+    //     for (i = 0; i < divs.length; i++) {
+    //         if (divs[i].innerHTML == '关注') {
+    //
+    //             // 更新粉丝数量
+    //             window.fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
+    //             divs[i].click()
+    //             console.log(new Date() + ' 点击关注：')
+    //         }
+    //     }
+    // }, 1000 * window.timeout);
+    //
+    // const http = new easyHTTP;
+    // const data = {
+    //     fens_count: window.fens_count,
+    // };
+    // http.put(
+    //     'http://127.0.0.1:8000/v4/douyin/users/3/',
+    //     data, function (status, responseText) {
+    //         console.log(new Date() + ' 请求参数: ' + data.toString)
+    //         console.log(new Date() + ' 请求返回: ' + responseText)
+    //         window.test = responseText;
+    //     });
+    //
+    // window.timeout += 1;
+    // setTimeout(function () {
+    //     console.log(new Date() + ' 点击 关注 -> 最早关注')
+    //     earliest = document.getElementById('earliest')
+    //     earliest.click()
+    // }, 1000 * window.timeout);
 
 
-    sleep_new(1)
-    console.log('sleep 1')
-    sleep_new(2)
-    console.log('sleep 2')
-    sleep_new(3)
-    console.log('sleep 3')
-    sleep_new(4)
-    console.log('sleep 4')
-    // while (i < 10) {
-    //     sleep(1000).then(() => {
-    //         console.log(i)
-    //         // fens.scrollTo(0, 100)
-    //         i++;
-    //     })
+    //
+    //
+    // for (i = 0; i = window.fens_count; i++) {
+    //
+    //     setTimeout(function () {
+    //         var touxiang = document.getElementsByTagName('img')[0]
+    //         touxiang.click();
+    //     }, 1000 * i);
+    //
     //
     // }
+    //
+    // if (window.fens_count) {
+    //
+    //
+    //     console.log(2222222)
+    // }
 
-    // while (1) {
-    //     // 滚动粉丝列
-    earliest = document.getElementById('earliest')
-    let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
-    fens.scrollTo(0, 200)
+    // sleep(1)
+    // earliest = document.getElementById('earliest')
+    // earliest.click()
+    // console.log(new Date() + ' 点击 关注 -> 最早关注')
+    //
+    // console.log(new Date() + ' 准备下滑')
+    // sleep(1)
+
+    // const http = new easyHTTP;
+    // http.get(
+    //     'http://127.0.0.1:8000/v4/douyin/users/3/',
+    //     {}, function (status, responseText) {
+    //         // let fens_count = JSON.parse(responseText)['fens_count']
+    //         let fens_count = 30
+    //         for (i = 0; i < fens_count; i++) {
+    //             sleep(1)
+    //             console.log(new Date() + ' scrollTo:'+i)
+    //             earliest = document.getElementById('earliest')
+    //             let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
+    //             fens.scrollTo(0, i * 100)
+    //         }
+    //     });
 
 }
 
-// document.getElementsByTagName('span')
 
 douyin();

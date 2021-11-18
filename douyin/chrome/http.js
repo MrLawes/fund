@@ -4,6 +4,7 @@ function easyHTTP() {
     this.http = new XMLHttpRequest();
 }
 
+
 // Make an HTTP PUT Request
 easyHTTP.prototype.put = function (url, data, callback) {
 
@@ -20,8 +21,13 @@ easyHTTP.prototype.put = function (url, data, callback) {
 
     // When response is ready
     this.http.onload = function () {
-
-        // Callback function (Error, response text)
+        if ([200, 201].includes(self.http.status)) {
+            callback(self.http.status, self.http.responseText);
+        } else {
+            console.log('网络异常')
+            alert('网络异常: ' + self.http.status + ':' + self.http.responseText)
+            callback(self.http.status, self.http.responseText);
+        }
         callback(self.http.status, self.http.responseText);
     }
 
@@ -47,9 +53,14 @@ easyHTTP.prototype.get = function (url, data, callback) {
 
     // When response is ready
     this.http.onload = function () {
-
-        // Callback function (Error, response text)
-        callback(null, self.http.responseText);
+        if ([200, 201].includes(self.http.status)) {
+            callback(self.http.status, self.http.responseText);
+        } else {
+            console.log('网络异常')
+            alert('网络异常: ' + self.http.status + ':' + self.http.responseText)
+            callback(self.http.status, self.http.responseText);
+        }
+        callback(self.http.status, self.http.responseText);
     }
 
     // Since the data is an object so
