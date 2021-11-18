@@ -31,7 +31,7 @@ function douyin_my_user() {
     window.timeout = 1;
     window.scrollto;
     window.scrollto = 1;
-
+    const http = new easyHTTP;
 
     sleep(window.timeout).then(() => {
         console.log(new Date() + ' 点击关注')
@@ -45,21 +45,21 @@ function douyin_my_user() {
         }
     })
 
-    window.timeout += 1
-    sleep(window.timeout).then(() => {
-        console.log(new Date() + ' 更新粉丝数据到数据库')
-        const http = new easyHTTP;
-        const data = {
-            fens_count: window.fens_count,
-        };
-        http.put(
-            'http://127.0.0.1:8000/v4/douyin/users/3/',
-            data, function (status, responseText) {
-                console.log(new Date() + ' 请求返回: ' + responseText)
-                window.test = responseText;
-            }
-        );
-    })
+    // window.timeout += 1
+    // sleep(window.timeout).then(() => {
+    //     console.log(new Date() + ' 更新粉丝数据到数据库')
+    //     const http = new easyHTTP;
+    //     const data = {
+    //         fens_count: window.fens_count,
+    //     };
+    //     http.put(
+    //         'http://127.0.0.1:8000/v4/douyin/users/3/',
+    //         data, function (status, responseText) {
+    //             console.log(new Date() + ' 请求返回: ' + responseText)
+    //             window.test = responseText;
+    //         }
+    //     );
+    // })
 
     window.timeout += 1
     sleep(window.timeout).then(() => {
@@ -72,18 +72,37 @@ function douyin_my_user() {
     var divs = document.getElementsByTagName('div')
     for (i = 0; i < divs.length; i++) {
         if (divs[i].innerHTML == '关注') {
+
+            // todo
+            let fens_count = 30
             // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
             i = divs.length
-            let fens_count = 30
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
             for (j = 0; j < fens_count; j++) {
-                window.timeout += 1
+                window.timeout += 5
                 sleep(window.timeout).then(() => {
                     console.log(new Date() + ' 滚动 ' + window.scrollto)
                     window.scrollto += 1
                     earliest = document.getElementById('earliest')
                     let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
                     fens.scrollTo(0, window.scrollto * 100)
+                    let fen = fens.children[0].children[window.scrollto * 3]
+                    let fen_info = fen.children[1].children[0].children[0].children[0]
+                    let relationship = fen.children[2].innerText
+                    let first_name = fen_info.innerText
+                    let fen_href = fen_info.href
+                    console.log(new Date() + ' relationship: ' + relationship)
+                    console.log(new Date() + ' fen_name: ' + first_name)
+                    console.log(new Date() + ' fen_href: ' + fen_href)
+
+                    var data = {'relationship': relationship, 'first_name': first_name, 'href': fen_href}
+                    http.post(
+                        'http://127.0.0.1:8000/v4/douyin/users/',
+                        data, function (status, responseText) {
+                            console.log(new Date() + ' 请求返回: ' + responseText)
+                            window.test = responseText;
+                        }
+                    );
                 })
             }
         }

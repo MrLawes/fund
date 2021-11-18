@@ -12,9 +12,6 @@ class DouYinUserViewSet(ModelViewSet):
     queryset = DouYinUser.objects.all()
     serializer_class = DouYinUserSerializer
 
-    def update(self, request, *args, **kwargs):
-        return super(DouYinUserViewSet, self).update(request=request, *args, **kwargs)
-
     @action(methods=['get'], detail=False, )  # todo 暂时用不到
     def user_id_by_douyin_no(self, request, pk, version):
         return Response({'id': 3})
