@@ -68,17 +68,24 @@ function douyin_my_user() {
         earliest.click()
     })
 
-    console.log('window.fens_count: ' + window.fens_count)
-    for (i = 0; i < window.fens_count; i++) {
-        window.timeout += 1
-        sleep(window.timeout).then(() => {
-            console.log(new Date() + ' 滚动 ' + window.scrollto * 100)
-            window.scrollto += 1
-            earliest = document.getElementById('earliest')
-            let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
-            fens.scrollTo(0, window.scrollto * 100)
-        })
 
+    var divs = document.getElementsByTagName('div')
+    for (i = 0; i < divs.length; i++) {
+        if (divs[i].innerHTML == '关注') {
+
+            let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
+            console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
+            for (i = 0; i < fens_count; i++) {
+                window.timeout += 1
+                sleep(window.timeout).then(() => {
+                    console.log(new Date() + ' 滚动 ' + window.scrollto * 100)
+                    window.scrollto += 1
+                    earliest = document.getElementById('earliest')
+                    let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
+                    fens.scrollTo(0, window.scrollto * 100)
+                })
+            }
+        }
     }
 
 
