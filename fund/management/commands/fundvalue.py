@@ -1,4 +1,5 @@
 import datetime
+import json
 
 import httpx
 from django.core.management.base import BaseCommand
@@ -16,24 +17,39 @@ class Command(BaseCommand):
         end_date = end_date.strftime('%Y-%m-%d')
         for fund in Fund.objects.all():
 
-            newest_url = f'https://hq.sinajs.cn/etag.php?_=1637125090638&list=fu_{fund.code}'
+            newest_url = f'http://fundgz.1234567.com.cn/js/{fund.code}.js?rt=1637210892780'
             print('newest_url:', newest_url)
             r = httpx.get(url=newest_url, headers=headers, timeout=40)
-            content = str(r.content).split(',')
-            date = content[-1].split('"')[0]
-            value = float(content[2])
-            fund_value = FundValue.objects.filter(fund=fund).exclude(deal_at=date).order_by('deal_at').last()
-            if fund_value:
-                last_fund_value = fund_value.value
-            else:
-                last_fund_value = 0
-            if value > last_fund_value:
-                rate = 1 - last_fund_value / value
-            else:
-                rate = value / last_fund_value - 1
-            defaults = {'value': content[2], 'rate': round(rate * 100, 2)}
+            content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
+            # 更新昨天的数据
+            defaults = {'value': content['dwjz'], 'rate': 0}
+            FundValue.objects.update_or_create(fund=fund, deal_at=content['jzrq'], defaults=defaults)
+            # 更新今天的数据
+            defaults = {'value': content['gsz'], 'rate': content['gszzl']}
+            FundValue.objects.update_or_create(fund=fund, deal_at=content['gztime'][:10], defaults=defaults)
 
-            FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
+            # http://fund.eastmoney.com/320007.html?spm=search
+            # http://fundgz.1234567.com.cn/js/320007.js?rt=1637210892783
+            # http://fundgz.1234567.com.cn/js/320007.js?rt=1637210892780
+
+            # newest_url = f'https://hq.sinajs.cn/etag.php?_=1637125090638&list=fu_{fund.code}'
+            # print('newest_url:', newest_url)
+            # r = httpx.get(url=newest_url, headers=headers, timeout=40)
+            # content = str(r.content).split(',')
+            # date = content[-1].split('"')[0]
+            # value = float(content[2])
+            # fund_value = FundValue.objects.filter(fund=fund).exclude(deal_at=date).order_by('deal_at').last()
+            # if fund_value:
+            #     last_fund_value = fund_value.value
+            # else:
+            #     last_fund_value = 0
+            # if value > last_fund_value:
+            #     rate = 1 - last_fund_value / value
+            # else:
+            #     rate = value / last_fund_value - 1
+            # defaults = {'value': content[2], 'rate': round(rate * 100, 2)}
+            #
+            # FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
 
             # newest_url = f"http://so.hexun.com/default.do?type=fund&key={fund.code}"
             # r = httpx.get(url=newest_url, headers=headers, timeout=40)

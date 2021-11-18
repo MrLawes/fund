@@ -11,6 +11,7 @@ class Fund(models.Model):
     from_value = models.FloatField(verbose_name='从该单位净值开始', default=0)
     to_value = models.FloatField(verbose_name='到该单位净值结束', default=0)
     fee = models.FloatField(verbose_name='买入费率 %', default=0)
+    order = models.IntegerField(verbose_name='排序', default=0)
 
     class Meta:
         verbose_name_plural = '基金'
