@@ -12,7 +12,7 @@ class Command(BaseCommand):
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
         }
         end_date = datetime.datetime.now()
-        start_date = (end_date - datetime.timedelta(days=30 * 5)).strftime('%Y-%m-%d')
+        start_date = (end_date - datetime.timedelta(days=15)).strftime('%Y-%m-%d')
         end_date = end_date.strftime('%Y-%m-%d')
         for fund in Fund.objects.all():
 
@@ -67,3 +67,4 @@ class Command(BaseCommand):
 
                 defaults = {'value': value, 'rate': rate}
                 FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
+
