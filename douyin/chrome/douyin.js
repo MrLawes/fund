@@ -29,6 +29,8 @@ function douyin_my_user() {
     window.fens_count;
     window.timeout;
     window.timeout = 1;
+    window.scrollto;
+    window.scrollto = 1;
 
 
     sleep(window.timeout).then(() => {
@@ -65,6 +67,19 @@ function douyin_my_user() {
         earliest = document.getElementById('earliest')
         earliest.click()
     })
+
+    console.log('window.fens_count: ' + window.fens_count)
+    for (i = 0; i < window.fens_count; i++) {
+        window.timeout += 1
+        sleep(window.timeout).then(() => {
+            console.log(new Date() + ' 滚动 ' + window.scrollto * 100)
+            window.scrollto += 1
+            earliest = document.getElementById('earliest')
+            let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
+            fens.scrollTo(0, window.scrollto * 100)
+        })
+
+    }
 
 
     // window.timeout += 1;
