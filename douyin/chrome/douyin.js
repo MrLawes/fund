@@ -72,13 +72,14 @@ function douyin_my_user() {
     var divs = document.getElementsByTagName('div')
     for (i = 0; i < divs.length; i++) {
         if (divs[i].innerHTML == '关注') {
-
-            let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
+            // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
+            i = divs.length
+            let fens_count = 30
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
-            for (i = 0; i < fens_count; i++) {
+            for (j = 0; j < fens_count; j++) {
                 window.timeout += 1
                 sleep(window.timeout).then(() => {
-                    console.log(new Date() + ' 滚动 ' + window.scrollto * 100)
+                    console.log(new Date() + ' 滚动 ' + window.scrollto)
                     window.scrollto += 1
                     earliest = document.getElementById('earliest')
                     let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
@@ -88,89 +89,6 @@ function douyin_my_user() {
         }
     }
 
-
-    // window.timeout += 1;
-    // setTimeout(function () {
-    //     console.log(new Date() + ' 点击 关注 -> 最早关注')
-    //     earliest = document.getElementById('earliest')
-    //     earliest.click()
-    // }, 1000 * window.timeout);
-
-    //
-    // // 抖音个人中心，找到关注并点击
-    // setTimeout(function () {
-    //     var divs = document.getElementsByTagName('div')
-    //     for (i = 0; i < divs.length; i++) {
-    //         if (divs[i].innerHTML == '关注') {
-    //
-    //             // 更新粉丝数量
-    //             window.fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
-    //             divs[i].click()
-    //             console.log(new Date() + ' 点击关注：')
-    //         }
-    //     }
-    // }, 1000 * window.timeout);
-    //
-    // const http = new easyHTTP;
-    // const data = {
-    //     fens_count: window.fens_count,
-    // };
-    // http.put(
-    //     'http://127.0.0.1:8000/v4/douyin/users/3/',
-    //     data, function (status, responseText) {
-    //         console.log(new Date() + ' 请求参数: ' + data.toString)
-    //         console.log(new Date() + ' 请求返回: ' + responseText)
-    //         window.test = responseText;
-    //     });
-    //
-    // window.timeout += 1;
-    // setTimeout(function () {
-    //     console.log(new Date() + ' 点击 关注 -> 最早关注')
-    //     earliest = document.getElementById('earliest')
-    //     earliest.click()
-    // }, 1000 * window.timeout);
-
-
-    //
-    //
-    // for (i = 0; i = window.fens_count; i++) {
-    //
-    //     setTimeout(function () {
-    //         var touxiang = document.getElementsByTagName('img')[0]
-    //         touxiang.click();
-    //     }, 1000 * i);
-    //
-    //
-    // }
-    //
-    // if (window.fens_count) {
-    //
-    //
-    //     console.log(2222222)
-    // }
-
-    // sleep(1)
-    // earliest = document.getElementById('earliest')
-    // earliest.click()
-    // console.log(new Date() + ' 点击 关注 -> 最早关注')
-    //
-    // console.log(new Date() + ' 准备下滑')
-    // sleep(1)
-
-    // const http = new easyHTTP;
-    // http.get(
-    //     'http://127.0.0.1:8000/v4/douyin/users/3/',
-    //     {}, function (status, responseText) {
-    //         // let fens_count = JSON.parse(responseText)['fens_count']
-    //         let fens_count = 30
-    //         for (i = 0; i < fens_count; i++) {
-    //             sleep(1)
-    //             console.log(new Date() + ' scrollTo:'+i)
-    //             earliest = document.getElementById('earliest')
-    //             let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
-    //             fens.scrollTo(0, i * 100)
-    //         }
-    //     });
 
 }
 
