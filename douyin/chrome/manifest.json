@@ -12,6 +12,7 @@
         "https://www.douyin.com/*"
       ],
       "js": [
+        "http.js",
         "douyin.js"
       ]
     }

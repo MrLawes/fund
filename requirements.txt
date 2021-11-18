@@ -4,3 +4,4 @@ ipython==7.29.0
 djangorestframework==3.12.4
 six==1.16.0
 markdown==3.3.4
+django-cors-headers==3.10.0
