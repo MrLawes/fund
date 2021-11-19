@@ -12,7 +12,7 @@ class DouYinUserSerializer(ModelSerializer):
 
     class Meta:
         model = DouYinUser
-        fields = ('id', 'username', 'first_name', 'href', 'fens_count', 'relationship',)
+        fields = ('id', 'username', 'first_name', 'href', 'fens_count', 'relationship', 'follow_count',)
 
     def create(self, validated_data):
         if DouYinUser.objects.filter(href=validated_data['href']).exists():

@@ -111,8 +111,12 @@ function douyin_friend_user() {
             console.log(new Date() + ' 请求返回: ' + responseText)
             let user_id = JSON.parse(responseText)['id']
             if (user_id) {
-                // todo
-                put_data = {'fens_count': 1}
+                let header = document.getElementsByTagName('header')[0]
+                let username = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[2].innerText
+                let user_info = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[0].children
+                let follow_count = user_info[1].children[0].children[1].innerText
+                let fens_count = user_info[1].children[1].children[1].innerText
+                put_data = {'username': username, 'follow_count': follow_count, 'fens_count': fens_count}
                 http.put(
                     'http://127.0.0.1:8000/v4/douyin/users/' + user_id + '/',
                     put_data, function (status, responseText) {
