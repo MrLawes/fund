@@ -66,8 +66,11 @@ class Command(BaseCommand):
             #         break
 
             url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
-            print(f'{fund.name}; {url=}')
-            r = httpx.get(url=url, headers=headers, timeout=40)
+            print(f'{fund.name}: {url=}')
+            try:
+                r = httpx.get(url=url, headers=headers, timeout=40)
+            except:
+                continue
             content = str(r.content)
             content_split_list = content.split('<tr>')
 
