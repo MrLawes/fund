@@ -18,7 +18,7 @@ class Command(BaseCommand):
         for fund in Fund.objects.all():
 
             newest_url = f'http://fundgz.1234567.com.cn/js/{fund.code}.js?rt=1637210892780'
-            print('newest_url:', newest_url)
+            print(f'{fund}: {newest_url=}')
             r = httpx.get(url=newest_url, headers=headers, timeout=40)
             content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
             # 更新昨天的数据
@@ -66,7 +66,7 @@ class Command(BaseCommand):
             #         break
 
             url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
-            print('url:', url)
+            print(f'{fund.name}; {url=}')
             r = httpx.get(url=url, headers=headers, timeout=40)
             content = str(r.content)
             content_split_list = content.split('<tr>')
