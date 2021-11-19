@@ -90,6 +90,7 @@ function douyin_my_user() {
                             window.test = responseText;
                         }
                     );
+                    fen_info.href = fen_info.href + "&close=true"
                     fen_info.click()
 
                 })
@@ -139,7 +140,7 @@ function douyin_friend_user() {
         }
     );
 
-    if (!location.search.includes('close=false')) {
+    if (!location.search.includes('close=true')) {
         sleep(5).then(() => {
             window.close()
         })
