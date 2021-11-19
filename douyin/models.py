@@ -9,6 +9,7 @@ class DouYinUser(User):
     relationship = models.CharField(max_length=32, verbose_name='关系', default='')
     href = models.URLField(max_length=200, verbose_name='链接', default='')
     create_at = models.DateTimeField(verbose_name="关注时间", auto_now_add=True)
+    head_url = models.CharField(verbose_name='头像地址', default='', null=True, max_length=200)
 
     class Meta:
         verbose_name_plural = '抖音用户'
