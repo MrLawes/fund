@@ -12,12 +12,18 @@ class DouYinUserSerializer(ModelSerializer):
 
     class Meta:
         model = DouYinUser
-        fields = ('id', 'username', 'first_name', 'href', 'fens_count', 'relationship', 'follow_count',)
+        fields = ('id', 'username', 'first_name', 'href', 'fens_count', 'relationship', 'follow_count', 'head_url',)
 
     def create(self, validated_data):
+        print(f'{validated_data=}')
         if DouYinUser.objects.filter(href=validated_data['href']).exists():
             return Response()
-        print(f'{validated_data=}')
         if not 'username' in validated_data:
             validated_data['username'] = uuid.uuid4()
         return super().create(validated_data=validated_data)
+
+    def update(self, instance, validated_data):
+        print(f"{validated_data=}")
+        validated_data['username'] = validated_data.get('username', instance.username)
+        validated_data['username'] = validated_data['username'].replace('抖音号： ', '')
+        return super().update(instance=instance, validated_data=validated_data)

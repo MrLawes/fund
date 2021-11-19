@@ -122,7 +122,13 @@ function douyin_friend_user() {
                 if (fens_count.includes('w') || fens_count.includes('W')) {
                     fens_count = fens_count.replace(/W/i, "") * 10000
                 }
-                put_data = {'username': username, 'follow_count': follow_count, 'fens_count': fens_count}
+                let head_url = user_info[0].children[0].children[0].src
+                put_data = {
+                    'username': username,
+                    'follow_count': follow_count,
+                    'fens_count': fens_count,
+                    "head_url": head_url,
+                }
                 http.put(
                     'http://127.0.0.1:8000/v4/douyin/users/' + user_id + '/',
                     put_data, function (status, responseText) {
@@ -133,11 +139,11 @@ function douyin_friend_user() {
         }
     );
 
-
-    sleep(5).then(() => {
-        window.close()
-    })
-
+    if (!location.search.includes('close=false')) {
+        sleep(5).then(() => {
+            window.close()
+        })
+    }
 }
 
 douyin();
