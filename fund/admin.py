@@ -12,7 +12,7 @@ class FundAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
     def get_queryset(self, request):
-        return super().get_queryset(request=request).order_by('-order')
+        return super().get_queryset(request=request).order_by('-newest_rate')
 
     def expense(self, obj):
         expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)

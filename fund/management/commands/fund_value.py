@@ -84,3 +84,7 @@ class Command(BaseCommand):
                 defaults = {'value': value, 'rate': rate}
                 FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
 
+            newest_fund_value = FundValue.objects.filter(fund=fund).order_by('deal_at').last()
+            if newest_fund_value:
+                fund.newest_rate = newest_fund_value.rate
+                fund.save()
