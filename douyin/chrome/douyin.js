@@ -115,9 +115,13 @@ function douyin_friend_user() {
                 let username = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[2].innerText
                 let user_info = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[0].children
                 let follow_count = user_info[1].children[0].children[1].innerText
+                if (follow_count.includes('w') || follow_count.includes('W')) {
+                    follow_count = follow_count.replace(/W/i, "") * 10000
+                }
                 let fens_count = user_info[1].children[1].children[1].innerText
-                follow_count = follow_count.replace(/W/i, "") * 10000
-                fens_count = fens_count.replace(/W/i, "") * 10000
+                if (fens_count.includes('w') || fens_count.includes('W')) {
+                    fens_count = fens_count.replace(/W/i, "") * 10000
+                }
                 put_data = {'username': username, 'follow_count': follow_count, 'fens_count': fens_count}
                 http.put(
                     'http://127.0.0.1:8000/v4/douyin/users/' + user_id + '/',
