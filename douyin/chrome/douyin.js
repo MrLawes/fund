@@ -61,7 +61,7 @@ function douyin_my_user() {
         if (divs[i].innerHTML == '关注') {
 
             // todo
-            let fens_count = 30
+            let fens_count = 1000
             // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
             i = divs.length
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
@@ -116,6 +116,8 @@ function douyin_friend_user() {
                 let user_info = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[0].children
                 let follow_count = user_info[1].children[0].children[1].innerText
                 let fens_count = user_info[1].children[1].children[1].innerText
+                follow_count = follow_count.replace(/W/i, "") * 10000
+                fens_count = fens_count.replace(/W/i, "") * 10000
                 put_data = {'username': username, 'follow_count': follow_count, 'fens_count': fens_count}
                 http.put(
                     'http://127.0.0.1:8000/v4/douyin/users/' + user_id + '/',
@@ -126,6 +128,12 @@ function douyin_friend_user() {
             }
         }
     );
+
+
+    sleep(5).then(() => {
+        window.close()
+    })
+
 }
 
 douyin();
