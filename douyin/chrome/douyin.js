@@ -27,7 +27,6 @@ function douyin_index() {
 }
 
 function douyin_my_user() {
-
     window.fens_count;
     window.timeout;
     window.timeout = 1;
@@ -81,16 +80,13 @@ function douyin_my_user() {
                     console.log(new Date() + ' relationship: ' + relationship)
                     console.log(new Date() + ' fen_name: ' + first_name)
                     console.log(new Date() + ' fen_href: ' + fen_href)
-
                     var data = {'relationship': relationship, 'first_name': first_name, 'href': fen_href}
                     http.post(
                         'http://127.0.0.1:8000/v4/douyin/users/',
                         data, function (status, responseText) {
                             console.log(new Date() + ' 请求返回: ' + responseText)
-                            window.test = responseText;
                         }
                     );
-                    fen_info.href = fen_info.href + "&close=true"
                     fen_info.click()
 
                 })
@@ -139,8 +135,7 @@ function douyin_friend_user() {
             }
         }
     );
-
-    if (!location.search.includes('close=true')) {
+    if (!location.search.includes('close=false')) {
         sleep(5).then(() => {
             window.close()
         })

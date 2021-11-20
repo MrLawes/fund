@@ -13,7 +13,7 @@ class DouYinUserAdmin(admin.ModelAdmin):
                'date_joined', 'user_ptr_id', ]
 
     def douyin_username(self, obj):
-        return format_html(f'<a href="{obj.href}" target="_blank">{obj.username}</a>')
+        return format_html(f'<a href="{obj.href}&close=false" target="_blank">{obj.username}</a>')
 
     douyin_username.short_description = '抖音号'
 
