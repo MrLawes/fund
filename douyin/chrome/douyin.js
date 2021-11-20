@@ -130,6 +130,10 @@ function douyin_friend_user() {
                     'http://127.0.0.1:8000/v4/douyin/users/' + user_id + '/',
                     put_data, function (status, responseText) {
                         console.log(new Date() + ' 请求返回: ' + responseText)
+                        need_delete = JSON.parse(responseText)['need_delete']
+                        if (need_delete) {
+                            document.getElementsByTagName('button')[1].click()
+                        }
                     }
                 );
             }
