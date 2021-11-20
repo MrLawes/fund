@@ -9,6 +9,7 @@ from douyin.models import DouYinUser
 
 class DouYinUserSerializer(ModelSerializer):
     username = serializers.CharField(help_text='抖音号', default=uuid.uuid4)
+    create_at = serializers.DateTimeField(help_text='创建时间', read_only=True)
 
     class Meta:
         model = DouYinUser
