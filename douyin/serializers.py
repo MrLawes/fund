@@ -13,7 +13,9 @@ class DouYinUserSerializer(ModelSerializer):
 
     class Meta:
         model = DouYinUser
-        fields = ('id', 'username', 'first_name', 'href', 'fens_count', 'relationship', 'follow_count', 'head_url',)
+        fields = (
+            'id', 'username', 'first_name', 'href', 'fens_count', 'relationship', 'follow_count', 'head_url',
+            'create_at',)
 
     def create(self, validated_data):
         print(f'{validated_data=}')
