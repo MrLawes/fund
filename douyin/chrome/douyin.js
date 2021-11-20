@@ -49,8 +49,8 @@ function douyin_my_user() {
 
     window.timeout += 1
     sleep(window.timeout).then(() => {
-        console.log(new Date() + ' 点击综合排序 -> 最早关注')
-        earliest = document.getElementById('earliest')
+        console.log(new Date() + ' 点击综合排序 -> 最近关注')
+        earliest = document.getElementById('latest')
         earliest.click()
     })
 
@@ -65,7 +65,7 @@ function douyin_my_user() {
             i = divs.length
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
             for (j = 0; j < fens_count; j++) {
-                window.timeout += 5
+                window.timeout += 3
                 sleep(window.timeout).then(() => {
                     console.log(new Date() + ' 滚动 ' + window.scrollto)
                     window.scrollto += 1
@@ -140,7 +140,7 @@ function douyin_friend_user() {
         }
     );
     if (!location.search.includes('close=false')) {
-        sleep(5).then(() => {
+        sleep(3).then(() => {
             window.close()
         })
     }

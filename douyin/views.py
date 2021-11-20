@@ -1,3 +1,4 @@
+import datetime
 import uuid
 
 from rest_framework.decorators import action
@@ -35,7 +36,11 @@ class DouYinUserViewSet(ModelViewSet):
         fens_count = result.data['fens_count']
 
         if result.data['username'] in (
-        'Jiawen222', 'dyop93f17ipm', 'dy28o1b1jy3w', 'Angela141620', 'dy6kdl4mo0vl', 'lianhua17920',):
+                'Jiawen222', 'dyop93f17ipm', 'dy28o1b1jy3w', 'Angela141620', 'dy6kdl4mo0vl', 'lianhua17920',):
+            return result
+
+        # 10 天内新增加的，不删除
+        if datetime.datetime.now() - result.data.create_at > datetime.timedelta(days=10):
             return result
 
         # 粉丝数量超过 1000 的删除
