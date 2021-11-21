@@ -65,7 +65,7 @@ function douyin_my_user() {
             i = divs.length
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
             for (j = 0; j < fens_count; j++) {
-                window.timeout += 3
+                window.timeout += 5
                 sleep(window.timeout).then(() => {
                     console.log(new Date() + ' 滚动 ' + window.scrollto)
                     window.scrollto += 1
@@ -140,7 +140,7 @@ function douyin_friend_user() {
         }
     );
     if (!location.search.includes('close=false')) {
-        sleep(3).then(() => {
+        sleep(5).then(() => {
             window.close()
         })
     }
