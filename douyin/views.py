@@ -40,7 +40,7 @@ class DouYinUserViewSet(ModelViewSet):
             return result
 
         # 10 天内新增加的，不删除
-        if datetime.datetime.now() - result.data['create_at'] > datetime.timedelta(days=10):
+        if str(datetime.datetime.now() - datetime.timedelta(days=10))[:10] > result.data['create_at'][:10]:
             return result
 
         # 粉丝数量超过 1000 的删除
