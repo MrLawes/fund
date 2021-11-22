@@ -19,14 +19,13 @@ class DouYinUserViewSet(ModelViewSet):
     def get_user_by_href(self, request, version):
         print(request.query_params)
         href = request.query_params.get('href')
-        if href:
-            douyinuser = DouYinUser.objects.filter(href__contains=href.split('?')[0]).last()
-            if not douyinuser:
-                douyinuser = DouYinUser.objects.create(username=uuid.uuid4(), href=href)
+        created = False
+        douyinuser = DouYinUser.objects.filter(href__contains=href.split('?')[0]).last()
+        if not douyinuser:
+            douyinuser = DouYinUser.objects.create(username=uuid.uuid4(), href=href)
+            created = True
 
-            return Response({'id': douyinuser.id})
-
-        return Response({})
+        return Response({'id': douyinuser.id, 'created': created})
 
     def update(self, request, *args, **kwargs):
 
@@ -40,7 +39,7 @@ class DouYinUserViewSet(ModelViewSet):
             return result
 
         # 10 天内新增加的，不删除
-        if str(datetime.datetime.now() - datetime.timedelta(days=10))[:10] < result.data['create_at'][:10]:
+        if str(datetime.datetime.now() - datetime.timedelta(days=7))[:10] < result.data['create_at'][:10]:
             return result
 
         # 粉丝数量超过 1000 的删除
