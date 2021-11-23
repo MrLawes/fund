@@ -68,7 +68,7 @@ class Command(BaseCommand):
             url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
             print(f'{fund.name}: {url=}')
             try:
-                r = httpx.get(url=url, headers=headers, timeout=40)
+                r = httpx.get(url=url, headers=headers, timeout=10)
             except:
                 continue
             content = str(r.content)
