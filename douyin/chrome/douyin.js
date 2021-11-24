@@ -111,6 +111,7 @@ function douyin_friend_user() {
                 let header = document.getElementsByTagName('header')[0]
                 let username = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[2].innerText
                 let user_info = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[0].children
+                let relationship = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[4].children[0].innerText
                 let follow_count = user_info[1].children[0].children[1].innerText
                 if (follow_count.includes('w') || follow_count.includes('W')) {
                     follow_count = follow_count.replace(/W/i, "") * 10000
@@ -125,6 +126,7 @@ function douyin_friend_user() {
                     'follow_count': follow_count,
                     'fens_count': fens_count,
                     "head_url": head_url,
+                    "relationship": relationship,
                 }
                 http.put(
                     'http://127.0.0.1:8000/v4/douyin/users/' + user_id + '/',
