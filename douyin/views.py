@@ -1,4 +1,4 @@
-import datetime
+import datetime  # noqa
 import uuid
 
 from rest_framework.decorators import action
@@ -34,16 +34,24 @@ class DouYinUserViewSet(ModelViewSet):
         print(f"results{result=}")
         fens_count = result.data['fens_count']
 
+        # if result.data['relationship'] == '关注':
+        #     return result
+
         if result.data['username'] in (
                 'Jiawen222', 'dyop93f17ipm', 'dy28o1b1jy3w', 'Angela141620', 'dy6kdl4mo0vl', 'lianhua17920',):
             return result
 
         # 10 天内新增加的，不删除
-        if str(datetime.datetime.now() - datetime.timedelta(days=7))[:10] < result.data['create_at'][:10]:
-            return result
+        # result.data['relationship']
+        # if str(datetime.datetime.now() - datetime.timedelta(days=7))[:10] < result.data['create_at'][:10]:
+        #     return result
 
         # 粉丝数量超过 1000 的删除
-        if not (10 < fens_count < 1000):
-            result.data['need_delete'] = True
+        # if not (10 < fens_count < 500):
+        #     result.data['need_delete'] = True
+        #
+        # if result.data['relationship'] == '已关注':
+        #     result.data['need_delete'] = True
+
         # todo 超过两个星期还没有回关我的删除
         return result

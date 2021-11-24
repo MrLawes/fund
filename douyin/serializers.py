@@ -20,6 +20,7 @@ class DouYinUserSerializer(ModelSerializer):
     def create(self, validated_data):
         print(f'{validated_data=}')
         if DouYinUser.objects.filter(href=validated_data['href']).exists():
+            DouYinUser.objects.filter(href=validated_data['href']).update(relationship=validated_data['relationship'])
             return Response()
         if not 'username' in validated_data:
             validated_data['username'] = uuid.uuid4()
