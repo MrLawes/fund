@@ -7,7 +7,7 @@ from fund.models import Fund, FundValue, FundExpense
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'rate', 'expense', 'value', 'pyramid',)
+    list_display = ('id', 'name_html', 'rate', 'expense', 'value', 'pyramid',)
     search_fields = ['name', ]
     list_filter = ('name',)
 
@@ -19,6 +19,11 @@ class FundAdmin(admin.ModelAdmin):
         return round(sum(expense), 2)
 
     expense.short_description = '已投入资金'
+
+    def name_html(self, obj):
+        return format_html(f'<a href="/admin/fund/fundexpense/?fund__name={obj.name}" target="_blank">{obj.name}</a>')
+
+    name_html.short_description = '基金名称'
 
     def rate(self, obj):
         fund_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
