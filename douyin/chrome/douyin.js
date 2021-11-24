@@ -64,14 +64,14 @@ function douyin_my_user() {
             // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
             i = divs.length
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
-            for (j = 0; j < fens_count; j++) {
+            for (j = -1; j < fens_count; j++) {
                 window.timeout += 5
                 sleep(window.timeout).then(() => {
                     console.log(new Date() + ' 滚动 ' + window.scrollto)
                     window.scrollto += 1
                     earliest = document.getElementById('earliest')
                     let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
-                    fens.scrollTo(0, window.scrollto * 100)
+                    fens.scrollTo(0, window.scrollto * 98)
                     let fen = fens.children[0].children[(window.scrollto - 1) * 3]
                     let fen_info = fen.children[1].children[0].children[0].children[0]
                     let relationship = fen.children[2].innerText
