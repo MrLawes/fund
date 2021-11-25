@@ -122,7 +122,7 @@ class FundExpenseForm(forms.ModelForm):
 
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'deal_at', 'fund', 'hold', 'expense', 'hold_value', 'hope_value')
+    list_display = ('id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hope_value')
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name',)
     actions = ['sum_hold', ]
@@ -151,3 +151,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return obj.hope_value
 
     hope_value.short_description = '期望市值'
+
+    def transaction_rule(self, obj):
+        return obj.fund.transaction_rule
+
+    transaction_rule.short_description = '交易规则'

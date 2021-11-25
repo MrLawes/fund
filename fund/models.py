@@ -12,6 +12,7 @@ class Fund(models.Model):
     to_value = models.FloatField(verbose_name='到该单位净值结束', default=0)
     fee = models.FloatField(verbose_name='买入费率 %', default=0)
     newest_rate = models.FloatField(verbose_name='最新估算涨幅', default=0, null=True)
+    transaction_rule = models.CharField(max_length=64, verbose_name='交易规则', default='', )
 
     class Meta:
         verbose_name_plural = '基金'
