@@ -13,6 +13,7 @@ class Fund(models.Model):
     fee = models.FloatField(verbose_name='买入费率 %', default=0)
     newest_rate = models.FloatField(verbose_name='最新估算涨幅', default=0, null=True)
     transaction_rule = models.CharField(max_length=64, verbose_name='交易规则', default='', )
+    high_sale_low_buy = models.BooleanField(verbose_name='高抛低吸', default=False, )
 
     class Meta:
         verbose_name_plural = '基金'

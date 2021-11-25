@@ -71,7 +71,7 @@ function douyin_my_user() {
                     window.scrollto += 1
                     earliest = document.getElementById('earliest')
                     let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
-                    fens.scrollTo(0, window.scrollto * 98)
+                    fens.scrollTo(0, window.scrollto * 96)
                     let fen = fens.children[0].children[(window.scrollto - 1) * 3]
                     let fen_info = fen.children[1].children[0].children[0].children[0]
                     let relationship = fen.children[2].innerText
