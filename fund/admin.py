@@ -150,8 +150,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     def hold_rate(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
-        value = round(obj.hold * last_fundvalue.value, 2)
-        return f"{((value - obj.expense / obj.expense) * 100):0.02f}"
+        value = obj.hold * last_fundvalue.value
+        return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate.short_description = '持有收益率'
 
