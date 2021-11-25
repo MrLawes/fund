@@ -130,6 +130,8 @@ class Command(BaseCommand):
         tabular_data, headers = [], ['持有份数', '  投入金额/持有市值/期望市值', '      持有收益/期望收益', '         持有收益率/期望收益率',
                                      '             基金名称', ]
         for 基金名称 in data:
+            if not data[基金名称].get('高抛低吸', False):
+                continue
             fund = Fund.objects.get(name=基金名称)
             持有市值 = 投入金额 = 期望市值 = 持有份数 = 0
             last_fundvalue = FundValue.objects.filter(fund=fund).exclude(
