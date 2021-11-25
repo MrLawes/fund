@@ -8,6 +8,7 @@ from fund.models import Fund, FundValue, FundExpense
 
 class Command(BaseCommand):
     def handle(self, *_, **options):
+        # todo 整理所有的交易
         data = {
             "[军工]鹏华空天军工指数(LOF)C": {
                 '交易流水': [
@@ -32,9 +33,6 @@ class Command(BaseCommand):
                 "交易规则": '大于30天: 0.5%',
             },
             "[医疗]中欧医疗C": {
-                '交易流水': [
-                    ('2021-11-18', 260),
-                ],
                 'N年年化': [209, 3 * 12 * 30],
                 "交易规则": '大于30天: 0.5%',
                 '交易流水': [
