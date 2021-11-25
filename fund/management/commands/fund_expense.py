@@ -107,14 +107,14 @@ class Command(BaseCommand):
             fund.save()
             交易流水 = data[fund_name]['交易流水']
             for detail in 交易流水:
-                print(fund_name, detail)
                 fund_value = FundValue.objects.get(fund=fund, deal_at=detail[0])
                 hold = FundExpense.get_hold(fund_value=fund_value.value, expense=detail[1], fee=fund.fee)
                 defaults = {'expense': detail[1], 'hold': hold}
                 FundExpense.objects.update_or_create(fund=fund, deal_at=detail[0], defaults=defaults)
 
+        # 输出结果
         tabular_data, headers = [], ['投入金额/持有市值/期望市值', '     持有收益/期望收益', '        持有收益率/期望收益率',
-                                     '             基金名称', ]
+                                     '            基金名称', ]
         for 基金名称 in data:
             fund = Fund.objects.get(name=fund_name)
             持有市值 = 投入金额 = 期望市值 = 0
