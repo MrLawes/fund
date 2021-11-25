@@ -10,6 +10,7 @@ class Command(BaseCommand):
     def handle(self, *_, **options):
         # todo 整理所有的交易
         data = {
+
             "[军工]鹏华空天军工指数(LOF)C": {
                 '交易流水': [
                     ('2021-11-24', 10),
@@ -153,7 +154,7 @@ class Command(BaseCommand):
                 '持有份额': 持有份额,
             }
 
-        tabular_data, headers = [], ['时间', ' 投入金额/持有市值/恒定市值/期望市值', '       持有收益/期望收益', '          期望收益率',
+        tabular_data, headers = [], ['投入金额/持有市值/期望市值', '       持有收益/期望收益', '          期望收益率',
                                      '            持有仓位',
                                      '             基金名称', ]
         headers_strip = [h.strip() for h in headers]
@@ -163,10 +164,13 @@ class Command(BaseCommand):
 
             fund = Fund.objects.get(name=fund_name)
             print(f"{result=}")
-            持有市值 = 0
+            持有市值 = 投入金额 = 期望市值 = 0
+
             last_fundvalue = FundValue.objects.filter(fund=fund).order_by('deal_at').last()
             for fund_expense in FundExpense.objects.filter(fund=fund):
                 持有市值 += fund_expense.hold * last_fundvalue.value
+                投入金额 += fund_expense.expense
+                期望市值 += fund_expense.hope_value
             持有市值 = round(持有市值, 2)
             value = 持有市值
 
@@ -178,20 +182,20 @@ class Command(BaseCommand):
             持有收益 = value * result['持有份额'] - result['总投入']
             持有收益率 = f"{result['持有收益率'] * 100:0.2f}%"
 
-            恒定市值区间 = data[基金名称].get('恒定市值区间')
-            if 恒定市值区间 and value:
-                if 恒定市值区间[0] <= value <= 恒定市值区间[1]:
-                    恒定市值区间差 = (恒定市值区间[1] - 恒定市值区间[0]) / 10.0
-                    恒定市值 = (10 - (value - 恒定市值区间[0]) / 恒定市值区间差) * 7000 / 10
-            else:
-                恒定市值 = 0
+            # 恒定市值区间 = data[基金名称].get('恒定市值区间')
+            # if 恒定市值区间 and value:
+            #     if 恒定市值区间[0] <= value <= 恒定市值区间[1]:
+            #         恒定市值区间差 = (恒定市值区间[1] - 恒定市值区间[0]) / 10.0
+            # 恒定市值 = (10 - (value - 恒定市值区间[0]) / 恒定市值区间差) * 7000 / 10
+            # else:
+            #     恒定市值 = 0
 
             if 持有市值 > result['可售']:
                 持有市值 = f'\033[0;30;41m{持有市值}\033[0m'
             else:
                 持有市值 = f'\033[0;30;42m{持有市值}\033[0m'
 
-            t_data = [result['时间'], f"{result['总投入']:0.02f}/{持有市值}/{恒定市值:0.02f}/{result['可售']:0.2f}",
+            t_data = [f"{投入金额}/{持有市值}/{期望市值}",
                       f"{持有收益:0.2f}/{result['期望收益']:0.2f}",
                       持有收益率, result['仓位'],
                       result['基金名称'], ]
