@@ -122,7 +122,8 @@ class FundExpenseForm(forms.ModelForm):
 
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
-    list_display = ('id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hope_value')
+    list_display = (
+        'id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hold_rate', 'hope_value')
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name',)
     actions = ['sum_hold', ]
@@ -146,6 +147,13 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
+
+    def hold_rate(self, obj):
+        last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
+        value = round(obj.hold * last_fundvalue.value, 2)
+        return f"{((value - obj.expense / obj.expense) * 100):0.02f}"
+
+    hold_rate.short_description = '持有收益率'
 
     def hope_value(self, obj):
         return obj.hope_value

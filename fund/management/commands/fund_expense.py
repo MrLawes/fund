@@ -8,13 +8,13 @@ class Command(BaseCommand):
     def handle(self, *_, **options):
         # todo 整理所有的交易，三年年化
         data = {
-            '[白酒]招商中证白酒指数(LOF)A': {
+            '[白酒]招商中证白酒指数(LOF)A': {  # todo chenhaiou 缺差 7.03 份
                 '三年年化': 294,
                 '交易流水': [
                     ('2021-10-18', 812.8,),
                     ('2021-10-27', 665.01,),
                     ('2021-11-09', 118.06,),
-                    ('2021-11-11', 1420.29,),
+                    ('2021-11-11', 1420.29 + 9.051125,),
                 ],
                 "交易规则": '大于7天：0.5%',
             },
@@ -116,14 +116,15 @@ class Command(BaseCommand):
                 FundExpense.objects.update_or_create(fund=fund, deal_at=detail[0], defaults=defaults)
 
         # 输出结果
-        tabular_data, headers = [], ['投入金额/持有市值/期望市值', '     持有收益/期望收益', '        持有收益率/期望收益率',
-                                     '            基金名称', ]
+        tabular_data, headers = [], ['持有份数', '  投入金额/持有市值/期望市值', '      持有收益/期望收益', '         持有收益率/期望收益率',
+                                     '             基金名称', ]
         for 基金名称 in data:
             fund = Fund.objects.get(name=fund_name)
-            持有市值 = 投入金额 = 期望市值 = 0
+            持有市值 = 投入金额 = 期望市值 = 持有份数 = 0
             last_fundvalue = FundValue.objects.filter(fund=fund).order_by('deal_at').last()
             for fund_expense in FundExpense.objects.filter(fund=fund):
                 持有市值 += fund_expense.hold * last_fundvalue.value
+                持有份数 += fund_expense.hold
                 投入金额 += fund_expense.expense
                 期望市值 += fund_expense.hope_value
             持有市值 = round(持有市值, 2)
@@ -138,7 +139,8 @@ class Command(BaseCommand):
                 持有市值 = f'\033[0;30;42m{持有市值}\033[0m'
 
             t_data = [
-                f"{投入金额}/{持有市值}/{期望市值}",
+                持有份数,
+                f"{投入金额}/{持有市值}/{期望市值:0.02f}",
                 f"{持有收益:0.2f}/{期望收益:0.02f}",
                 f"{(持有收益率 * 100):0.02f}%/{(期望收益率 * 100):0.02f}%",
                 基金名称,
