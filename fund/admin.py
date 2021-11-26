@@ -9,10 +9,10 @@ from fund.models import Fund, FundValue, FundExpense
 class FundAdmin(admin.ModelAdmin):
     list_display = ('id', 'name_html', 'rate', 'expense', 'value', 'pyramid',)
     search_fields = ['name', ]
-    list_filter = ('name',)
+    list_filter = ('name', 'high_sale_low_buy',)
 
     def get_queryset(self, request):
-        return super().get_queryset(request=request).filter(high_sale_low_buy=False).order_by('-newest_rate')
+        return super().get_queryset(request=request).order_by('-newest_rate')
 
     def expense(self, obj):
         expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)
@@ -55,6 +55,8 @@ class FundAdmin(admin.ModelAdmin):
     value.short_description = '金额/止赢金额✌️'
 
     def pyramid(self, obj):
+        if obj.high_sale_low_buy:
+            return ''
 
         fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
         当前净值_index = None
