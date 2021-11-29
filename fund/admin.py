@@ -125,11 +125,21 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hold_rate', 'hope_value')
+        'id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'hope_value')
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name',)
     actions = ['sum_hold', ]
     form = FundExpenseForm
+
+    def get_queryset(self, request):
+        results = super().get_queryset(request=request)
+        for result in results:
+            last_fundvalue = FundValue.objects.filter(fund=result.fund_value.fund).order_by('deal_at').last()
+            value = result.hold * last_fundvalue.value
+            result.hold_rate = (((value - result.expense) / result.expense) * 100)
+            result.save()
+        results = super().get_queryset(request=request).order_by('-hold_rate')
+        return results
 
     def sum_hold(self, request, queryset):
         hold = sum(queryset.values_list('hold', flat=True))
@@ -150,12 +160,12 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     hold_value.short_description = '持有市值'
 
-    def hold_rate(self, obj):
+    def hold_rate_persent(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = obj.hold * last_fundvalue.value
         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
-    hold_rate.short_description = '持有收益率'
+    hold_rate_persent.short_description = '持有收益率'
 
     def hope_value(self, obj):
         return obj.hope_value

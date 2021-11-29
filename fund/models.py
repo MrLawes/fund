@@ -58,6 +58,7 @@ class FundExpense(models.Model):
     deal_at = models.DateField(verbose_name='发布日期', db_index=True, )
     expense = models.FloatField(verbose_name='确认金额', default=0)
     hold = models.FloatField(verbose_name='确认份额', default=0)
+    hold_rate = models.FloatField(verbose_name='持有收益率', default=0)
 
     class Meta:
         verbose_name_plural = '基金购买记录'
