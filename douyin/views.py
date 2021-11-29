@@ -31,7 +31,7 @@ class DouYinUserViewSet(ModelViewSet):
 
         # fens_count
         result = super().update(request, *args, *kwargs)
-        print(f"results{result=}")
+        print(f"当前用户数量：{DouYinUser.objects.count()}")
         fens_count = result.data['fens_count']
 
         # if result.data['relationship'] == '关注':

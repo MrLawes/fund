@@ -60,7 +60,7 @@ function douyin_my_user() {
     for (i = 0; i < divs.length; i++) {
         if (divs[i].innerHTML == '关注') {
             // todo
-            let fens_count = 300
+            let fens_count = 1000
             // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
             i = divs.length
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
@@ -71,7 +71,7 @@ function douyin_my_user() {
                     window.scrollto += 1
                     earliest = document.getElementById('earliest')
                     let fens = earliest.parentElement.parentElement.parentElement.nextElementSibling
-                    fens.scrollTo(0, window.scrollto * 96)
+                    fens.scrollTo(0, window.scrollto * 97)
                     let fen = fens.children[0].children[(window.scrollto - 1) * 3]
                     let fen_info = fen.children[1].children[0].children[0].children[0]
                     let relationship = fen.children[2].innerText

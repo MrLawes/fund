@@ -27,7 +27,7 @@ class DouYinUserSerializer(ModelSerializer):
         return super().create(validated_data=validated_data)
 
     def update(self, instance, validated_data):
-        print(f"{validated_data=}")
+        # print(f"{validated_data=}")
         validated_data['username'] = validated_data.get('username', instance.username)
         validated_data['username'] = validated_data['username'].replace('抖音号： ', '')
         return super().update(instance=instance, validated_data=validated_data)
