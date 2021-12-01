@@ -60,7 +60,7 @@ function douyin_my_user() {
     for (i = 0; i < divs.length; i++) {
         if (divs[i].innerHTML == '关注') {
             // todo
-            let fens_count = 1000
+            let fens_count = 1900
             // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
             i = divs.length
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
