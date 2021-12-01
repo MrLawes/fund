@@ -180,4 +180,10 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
 @admin.register(FundHoldings)
 class FundHoldingsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'catetory_name', 'expense',)
+    list_display = ('id', 'catetory_name', 'expense', 'persent')
+
+    def persent(self, obj):
+        result = obj.expense * 100 / sum(list(FundHoldings.objects.values_list('expense', flat=True)))
+        return f"{result:0.02f}%"
+
+    persent.short_description = '仓位占比'
