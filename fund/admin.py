@@ -90,8 +90,6 @@ class FundAdmin(admin.ModelAdmin):
         html_slice_end = 当前净值_index + 2
         html_list = html_list[html_slice_start:html_slice_end]
 
-        # if fund_value:
-        #     html_list.append(f"净值走势：{obj.from_value} --> {fund_value.value} --> {obj.to_value}　　　　　　　　　　</br>")
 
         return format_html(''.join(html_list))
 
