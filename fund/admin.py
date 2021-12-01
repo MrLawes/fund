@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
 
-from fund.models import Fund, FundValue, FundExpense
+from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
 
 @admin.register(Fund)
@@ -176,3 +176,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return obj.fund.transaction_rule
 
     transaction_rule.short_description = '交易规则'
+
+
+@admin.register(FundHoldings)
+class FundHoldingsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'catetory_name', 'expense',)

@@ -3,7 +3,7 @@ import datetime
 from django.core.management.base import BaseCommand
 from tabulate import tabulate
 
-from fund.models import Fund, FundValue, FundExpense
+from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
 
 class Command(BaseCommand):
@@ -116,6 +116,7 @@ class Command(BaseCommand):
             #     ],
             # },
         }
+        FundHoldings.objects.all().delete()
         for fund_name in data:
             fund = Fund.objects.get(name=fund_name)
             FundExpense.objects.filter(fund=fund).delete()
@@ -129,6 +130,12 @@ class Command(BaseCommand):
                 hold = FundExpense.get_hold(fund_value=fund_value.value, expense=detail[1], fee=fund.fee)
                 defaults = {'expense': detail[1], 'hold': hold}
                 FundExpense.objects.update_or_create(fund=fund, deal_at=detail[0], defaults=defaults)
+
+                # 仓位统计
+                catetory_name = fund_name.split(']')[0].replace('[', '')
+                fundholdings = FundHoldings.objects.get_or_create(catetory_name=catetory_name)[0]
+                fundholdings.expense += detail[1]
+                fundholdings.save()
 
         # 输出结果
         tabular_data, headers = [], ['持有份数', '  投入金额/持有市值/期望市值', '      持有收益/期望收益', '         持有收益率/期望收益率',

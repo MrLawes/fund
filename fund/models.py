@@ -88,3 +88,11 @@ class FundExpense(models.Model):
         value = ((1 + day_change) ** days) * self.expense
         value *= 1.0065
         return round(value, 2)
+
+
+class FundHoldings(models.Model):
+    catetory_name = models.CharField(verbose_name='分类', max_length=64, )
+    expense = models.FloatField(verbose_name='确认金额', default=0)
+
+    class Meta:
+        verbose_name_plural = '基金仓位'
