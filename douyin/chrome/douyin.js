@@ -9,7 +9,7 @@ function douyin() {
         douyin_index()
     }
     if (location.pathname.startsWith("/user/")) {
-        if (location.search == '?enter_from=recommend&enter_method=top_bar') {
+        if (location.pathname == '/user/MS4wLjABAAAA9B2cv7UtaBaj5ZCZaSMew-HMYF-k17nY_VGrZWP7fGK10hLQBbhjWzGdBSCIcZj8') {
             douyin_my_user()
         } else {
             douyin_friend_user()

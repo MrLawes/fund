@@ -23,7 +23,12 @@ class Command(BaseCommand):
             content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
             # 更新昨天的数据
             defaults = {'value': content['dwjz'], 'rate': 0}
-            FundValue.objects.update_or_create(fund=fund, deal_at=content['jzrq'], defaults=defaults)
+
+            # jzrq 有两种格式： 1：2021-12-03；2：21-12-03
+            deal_at = content['jzrq']
+            if len(deal_at.split('-')[0]) == 2:
+                deal_at = '20' + deal_at
+            FundValue.objects.update_or_create(fund=fund, deal_at=deal_at, defaults=defaults)
             # 更新今天的数据
             defaults = {'value': content['gsz'], 'rate': content['gszzl']}
             FundValue.objects.update_or_create(fund=fund, deal_at=content['gztime'][:10], defaults=defaults)
