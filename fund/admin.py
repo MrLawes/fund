@@ -76,7 +76,7 @@ class FundAdmin(admin.ModelAdmin):
                     当前净值_index = len(html_list)
 
             html_list.append(
-                f"{index:02} 仓位: 市值: {stage:.4f}；总投入: {(1 + index) * index / 2 * obj.space_expense}　　　　　　</br>")
+                f"{index:02} 仓位: 市值: {stage:.4f}；总投入: {5000 + ((1 + index) * index / 2 * obj.space_expense)}　　　　　　</br>")
 
         if obj.from_value < obj.to_value and 当前净值_index is None:
             rate = (stage - fund_value.value) * 100 / fund_value.value
@@ -88,7 +88,7 @@ class FundAdmin(admin.ModelAdmin):
         html_slice_start = 当前净值_index - 3
         html_slice_start = 0 if html_slice_start < 0 else html_slice_start
         html_slice_end = 当前净值_index + 2
-        html_list = html_list[html_slice_start:html_slice_end]
+        # html_list = html_list[html_slice_start:html_slice_end]
 
 
         return format_html(''.join(html_list))

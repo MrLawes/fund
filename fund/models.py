@@ -31,9 +31,9 @@ class Fund(models.Model):
         """ 金字塔阶段 """
         max_value = max(self.from_value, self.to_value)
         min_value = min(self.from_value, self.to_value)
-        half = min_value + (max_value - min_value) / 2
-        stage_value = (self.to_value - half) / 10
-        stage = [half + stage_value * i for i in range(0, 11)]
+        # half = min_value + (max_value - min_value) / 2
+        stage_value = (max_value - min_value) / 10
+        stage = [min_value + stage_value * i for i in range(0, 11)]
         if self.from_value < self.to_value:
             stage = stage[::-1]
         return stage
