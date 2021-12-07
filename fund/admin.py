@@ -88,7 +88,7 @@ class FundAdmin(admin.ModelAdmin):
         html_slice_start = 当前净值_index - 3
         html_slice_start = 0 if html_slice_start < 0 else html_slice_start
         html_slice_end = 当前净值_index + 2
-        # html_list = html_list[html_slice_start:html_slice_end]
+        html_list = html_list[html_slice_start:html_slice_end]
 
 
         return format_html(''.join(html_list))
