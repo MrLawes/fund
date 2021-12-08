@@ -35,7 +35,8 @@ class DouYinUserViewSet(ModelViewSet):
         fens_count = result.data['fens_count']
 
         if result.data['username'] in (
-                'Jiawen222', 'dyop93f17ipm', 'dy28o1b1jy3w', 'Angela141620', 'dy6kdl4mo0vl', 'lianhua17920',):
+                'Jiawen222', 'dyop93f17ipm', 'dy28o1b1jy3w', 'Angela141620', 'dy6kdl4mo0vl', 'lianhua17920',
+                '142796955',):
             return result
 
         # 10 天内新增加的，不删除
