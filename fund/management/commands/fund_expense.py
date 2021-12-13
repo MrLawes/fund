@@ -124,12 +124,6 @@ class Command(BaseCommand):
                 '三年年化': 188,
                 "交易规则": '大于30天: 0.5%',
             },
-            # "[混合]易方达蓝筹精选": {
-            #     'N年年化': [159., 3 * 12 * 30],
-            #     "交易规则": '',
-            #     '交易流水': [
-            #     ],
-            # },
         }
         FundHoldings.objects.all().delete()
         for fund_name in data:
