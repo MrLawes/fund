@@ -96,4 +96,3 @@ class Command(BaseCommand):
 
                 defaults = {'value': value, 'rate': rate}
                 FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
-
