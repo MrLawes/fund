@@ -24,7 +24,7 @@ class Command(BaseCommand):
             "[白酒]招商中证白酒指数C": {  # 上涨中
                 '三年年化': 268,
                 '交易流水': [
-                    ('2021-12-10', 500),
+                    ('2021-12-10', 500, '2022-01-01'),
                     ('2021-12-17', 480.8),  # 出售 todo 估计赚 11 块
                     # ('2021-12-17', 19.2), # 剩余 # todo
                 ],
@@ -157,7 +157,9 @@ class Command(BaseCommand):
             for detail in 交易流水:
                 fund_value = FundValue.objects.get(fund=fund, deal_at=detail[0])
                 hold = FundExpense.get_hold(fund_value=fund_value.value, expense=detail[1], fee=fund.fee)
-                defaults = {'expense': detail[1], 'hold': hold}
+                defaults = {'expense': detail[1], 'hold': hold, }
+                if len(detail) > 2:
+                    defaults['sale_using_date'] = detail[2]
                 FundExpense.objects.update_or_create(fund=fund, deal_at=detail[0], defaults=defaults)
 
                 # 仓位统计
