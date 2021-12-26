@@ -123,7 +123,8 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'hope_value')
+        'id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'hope_value',
+        'sale_using_date')
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name',)
     actions = ['sum_hold', ]
