@@ -59,6 +59,7 @@ class FundExpense(models.Model):
     expense = models.FloatField(verbose_name='确认金额', default=0)
     hold = models.FloatField(verbose_name='确认份额', default=0)
     hold_rate = models.FloatField(verbose_name='持有收益率', default=0)
+    sale_using_date = models.DateField(verbose_name='可售恢复时间', default=None, null=True)
 
     class Meta:
         verbose_name_plural = '基金购买记录'
