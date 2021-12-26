@@ -199,9 +199,3 @@ class Command(BaseCommand):
             tabular_data.append(t_data)
 
         print(tabulate(tabular_data=tabular_data, headers=headers, numalign='left'))
-
-        print("市值恒定，白酒：5000")
-        print("市值恒定，医疗：10000")
-        print("市值恒定，半导体：5000")
-        print("市值恒定，新能源汽车：5000")
-        print("市值恒定，军工：5000")
