@@ -1,3 +1,5 @@
+import datetime
+
 from django import forms
 from django.contrib import admin
 from django.utils.html import format_html
@@ -136,6 +138,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
             last_fundvalue = FundValue.objects.filter(fund=result.fund_value.fund).order_by('deal_at').last()
             value = result.hold * last_fundvalue.value
             result.hold_rate = (((value - result.expense) / result.expense) * 100)
+            if result.sale_using_date and datetime.datetime.now().date() > result.sale_using_date:
+                result.sale_using_date = None
             result.save()
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
