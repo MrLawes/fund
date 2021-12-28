@@ -52,5 +52,4 @@ class DouYinUserViewSet(ModelViewSet):
             result.data['need_delete'] = True
 
         result.data['need_delete'] = False
-        # todo 超过两个星期还没有回关我的删除
         return result
