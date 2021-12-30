@@ -41,12 +41,12 @@ class FundAdmin(admin.ModelAdmin):
     rate.short_description = '估算涨幅'
 
     def value(self, obj):
-        hold = sum(FundExpense.objects.filter(fund=obj).values_list('hold', flat=True))
+        hold = sum(FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('hold', flat=True))
         fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
         if not fund_value:
             return '0'
         hope_value = 0
-        for fund_expense in FundExpense.objects.filter(fund=obj):
+        for fund_expense in FundExpense.objects.filter(fund=obj, expense_type='buy'):
             hope_value += fund_expense.hope_value
         if hold * fund_value.value > hope_value:
             result = f"""<span style="color: red;">{(hold * fund_value.value):0.02f}</span>"""

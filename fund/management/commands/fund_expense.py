@@ -200,7 +200,7 @@ class Command(BaseCommand):
             last_fundvalue = FundValue.objects.filter(fund=fund).exclude(
                 deal_at=datetime.datetime.now().date()).order_by(
                 'deal_at').last()
-            for fund_expense in FundExpense.objects.filter(fund=fund):
+            for fund_expense in FundExpense.objects.filter(fund=fund, expense_type='buy'):
                 持有市值 += fund_expense.hold * last_fundvalue.value
                 持有份数 += fund_expense.hold
                 投入金额 += fund_expense.expense
