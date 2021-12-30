@@ -14,6 +14,7 @@ class Fund(models.Model):
     newest_rate = models.FloatField(verbose_name='最新估算涨幅', default=0, null=True)
     transaction_rule = models.CharField(max_length=64, verbose_name='交易规则', default='', )
     high_sale_low_buy = models.BooleanField(verbose_name='高抛低吸', default=False, )
+    best_transaction_rule_days = models.IntegerField(verbose_name='最优出售天数', default=30)
 
     class Meta:
         verbose_name_plural = '基金'
@@ -60,6 +61,7 @@ class FundExpense(models.Model):
     hold = models.FloatField(verbose_name='确认份额', default=0)
     hold_rate = models.FloatField(verbose_name='持有收益率', default=0)
     sale_using_date = models.DateField(verbose_name='可售恢复时间', default=None, null=True)
+    expense_type = models.CharField(verbose_name='基金交易类型: buy: 购买；sale：出售', max_length=8, default='buy')
 
     class Meta:
         verbose_name_plural = '基金购买记录'

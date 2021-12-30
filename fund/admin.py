@@ -17,7 +17,7 @@ class FundAdmin(admin.ModelAdmin):
         return super().get_queryset(request=request).order_by('-newest_rate')
 
     def expense(self, obj):
-        expense = FundExpense.objects.filter(fund=obj).values_list('expense', flat=True)
+        expense = FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('expense', flat=True, )
         return round(sum(expense), 2)
 
     expense.short_description = '已投入资金'
@@ -126,7 +126,7 @@ class FundExpenseForm(forms.ModelForm):
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'hope_value',
-        'sale_using_date')
+        'can_sale_hold', 'sale_using_date')
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name', 'fund__high_sale_low_buy')
     actions = ['sum_hold', ]
@@ -179,6 +179,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return obj.fund.transaction_rule
 
     transaction_rule.short_description = '交易规则'
+
+    def can_sale_hold(self, obj):
+        # todo 天数增加配置
+        print('obj.fund:', obj.fund.name, obj.fund.id)
+
+        hold = sum(list(FundExpense.objects.filter(fund=obj.fund, expense_type='buy', ).values_list('hold', flat=True)))
+        return f"{hold:0.04f}"
+
+    can_sale_hold.short_description = '可售份额'
 
 
 @admin.register(FundHoldings)
