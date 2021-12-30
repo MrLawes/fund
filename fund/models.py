@@ -56,7 +56,7 @@ class FundValue(models.Model):
 
 class FundExpense(models.Model):
     fund = models.ForeignKey(Fund, on_delete=models.CASCADE, verbose_name='基金名称', )
-    deal_at = models.DateField(verbose_name='发布日期', db_index=True, )
+    deal_at = models.DateField(verbose_name='交易日期', db_index=True, )
     expense = models.FloatField(verbose_name='确认金额', default=0)
     hold = models.FloatField(verbose_name='确认份额', default=0)
     hold_rate = models.FloatField(verbose_name='持有收益率', default=0)

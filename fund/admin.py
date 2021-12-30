@@ -181,11 +181,21 @@ class FundExpenseAdmin(admin.ModelAdmin):
     transaction_rule.short_description = '交易规则'
 
     def can_sale_hold(self, obj):
-        # todo 天数增加配置
-        print('obj.fund:', obj.fund.name, obj.fund.id)
+        """ 获得最佳可售份额 """
 
-        hold = sum(list(FundExpense.objects.filter(fund=obj.fund, expense_type='buy', ).values_list('hold', flat=True)))
-        return f"{hold:0.04f}"
+        fund = obj.fund
+        # 最优出售天数, 一般短线 7 天，长线 30 天。
+        best_transaction_rule_days = fund.best_transaction_rule_days
+
+        # 最优出售日期，一般短线为 7 天后免手续费
+        best_rule_date = datetime.datetime.now() - datetime.timedelta(days=best_transaction_rule_days + 1)
+
+        hold = sum(list(
+            FundExpense.objects.filter(fund=obj.fund, expense_type='buy', deal_at__lt=best_rule_date).values_list(
+                'hold', flat=True)))
+
+        # todo hold - 近 天数内出售的部分
+        return f"{hold:0.02f}"
 
     can_sale_hold.short_description = '可售份额'
 
