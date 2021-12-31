@@ -140,7 +140,8 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'hope_value',
+        'id', 'deal_at', 'transaction_rule', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
+        'hope_value',
         'can_sale_hold', 'sale_using_date', 'buttons',)
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name', 'fund__high_sale_low_buy')
@@ -159,19 +160,21 @@ class FundExpenseAdmin(admin.ModelAdmin):
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
 
+    def fund_name(self, obj):
+        if obj.expense_type == 'buy':
+            result = f"""{obj.fund.name}"""
+        elif obj.expense_type == 'sale':
+            result = f"""<span style="text-decoration: line-through">{obj.fund.name}</span>"""
+        return format_html(result)
+
+    fund_name.short_description = "基金名称"
+
     def buttons(self, obj):
-
-        button_html = """
-        <select name="操作">
-        <option value="fuzhou">福州</option>
-        <option value="xiamen">厦门市</option>
-        <option value="quanzhou">泉州</option>
-        <option value="zhangzhou">漳州</option>
-        </select><a class="changelink" href="#">编辑</a>
-        """
-
-        # button_html = """<a class="changelink" href="#">编辑</a>"""
-        return format_html(button_html)
+        if obj.expense_type == 'buy':
+            result = f""" <a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
+        elif obj.expense_type == 'sale':
+            result = f"""已售"""
+        return format_html(result)
 
     buttons.short_description = "操作"
 
@@ -182,6 +185,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
     sum_hold.short_description = "计算份数"
 
     def hold_value(self, obj):
+        if obj.expense_type == 'sale':
+            return ""
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = round(obj.hold * last_fundvalue.value, 2)
         hope_value = obj.hope_value
@@ -202,6 +207,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
     hold_rate_persent.short_description = '持有收益率'
 
     def hope_value(self, obj):
+        if obj.expense_type == 'sale':
+            return ""
         return obj.hope_value
 
     hope_value.short_description = '期望市值'
@@ -213,6 +220,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     def can_sale_hold(self, obj):
         """ 获得最佳可售份额 """
+        if obj.expense_type == 'sale':
+            return ""
 
         fund = obj.fund
         # 最优出售天数, 一般短线 7 天，长线 30 天。
@@ -221,12 +230,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
         # 最优出售日期，一般短线为 7 天后免手续费
         best_rule_date = datetime.datetime.now() - datetime.timedelta(days=best_transaction_rule_days + 1)
 
-        hold = sum(list(
+        buy_hold = sum(list(
             FundExpense.objects.filter(fund=obj.fund, expense_type='buy', deal_at__lt=best_rule_date).values_list(
                 'hold', flat=True)))
 
-        # todo hold - 近 天数内出售的部分
-        return f"{hold:0.02f}"
+        sale_hold = sum(list(
+            FundExpense.objects.filter(fund=obj.fund, expense_type='sale', deal_at__gt=best_rule_date).values_list(
+                'hold', flat=True)))
+
+        return f"{(buy_hold - sale_hold):0.02f}"
 
     can_sale_hold.short_description = '可售份额'
 
