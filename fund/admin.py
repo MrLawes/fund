@@ -116,9 +116,24 @@ class FundExpenseForm(forms.ModelForm):
 
     def clean(self):
         fund_value = FundValue.objects.get(fund=self.cleaned_data['fund'], deal_at=self.cleaned_data['deal_at'])
+        # 买入费率
         fee = self.cleaned_data['fund'].fee
-        hold = FundExpense.get_hold(fund_value=fund_value.value, expense=self.cleaned_data['expense'], fee=fee)
-        self.cleaned_data['hold'] = hold
+        # 扣除买入费率，计算出购买份额
+        total_expense = self.cleaned_data['expense']
+        total_hold = FundExpense.get_hold(fund_value=fund_value.value, expense=total_expense, fee=fee)
+        split_hold = self.cleaned_data.get('split_hold', 0)
+        if split_hold:  # 如果需要拆分
+            # 创建一份拆分后的交易记录
+            split_expense = round(self.cleaned_data['expense'] * split_hold / total_hold, 2)
+            self.cleaned_data['split_hold'] = 0
+            self.cleaned_data['expense'] = split_expense
+            self.cleaned_data['hold'] = split_hold
+            FundExpense.objects.create(**self.cleaned_data)
+            # 修改原交易数据
+            self.cleaned_data['expense'] = round(total_expense - split_expense, 2)
+            self.cleaned_data['hold'] = round(total_hold - split_hold, 2)
+        else:  # 不拆分，记录下总的份额
+            self.cleaned_data['hold'] = total_hold
         return self.cleaned_data
 
 
