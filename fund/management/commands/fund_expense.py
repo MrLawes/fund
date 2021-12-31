@@ -8,6 +8,7 @@ from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
 class Command(BaseCommand):
     def handle(self, *_, **options):
+        return
         data = {
             "[白酒]招商中证白酒指数C": {  # 上涨中
                 '三年年化': 268,
