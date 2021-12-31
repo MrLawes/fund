@@ -156,6 +156,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
             result.hold_rate = (((value - result.expense) / result.expense) * 100)
             if result.sale_using_date and datetime.datetime.now().date() > result.sale_using_date:
                 result.sale_using_date = None
+            if result.id >= 3675:
+                result.sale_using_date = None
             result.save()
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
