@@ -141,7 +141,7 @@ class FundExpenseForm(forms.ModelForm):
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'deal_at', 'transaction_rule', 'fund', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'hope_value',
-        'can_sale_hold', 'sale_using_date',)
+        'can_sale_hold', 'sale_using_date', 'buttons',)
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name', 'fund__high_sale_low_buy')
     actions = ['sum_hold', ]
@@ -158,6 +158,22 @@ class FundExpenseAdmin(admin.ModelAdmin):
             result.save()
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
+
+    def buttons(self, obj):
+
+        button_html = """
+        <select name="操作">
+        <option value="fuzhou">福州</option>
+        <option value="xiamen">厦门市</option>
+        <option value="quanzhou">泉州</option>
+        <option value="zhangzhou">漳州</option>
+        </select><a class="changelink" href="#">编辑</a>
+        """
+
+        # button_html = """<a class="changelink" href="#">编辑</a>"""
+        return format_html(button_html)
+
+    buttons.short_description = "操作"
 
     def sum_hold(self, request, queryset):
         hold = sum(queryset.values_list('hold', flat=True))
