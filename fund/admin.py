@@ -162,7 +162,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     def fund_name(self, obj):
         if obj.expense_type == 'buy':
-            result = f"""{obj.fund.name}"""
+            result = f'<a href="/admin/fund/fundexpense/?fund__name={obj.fund.name}" target="_blank">{obj.fund.name}</a>'
         elif obj.expense_type == 'sale':
             result = f"""<span style="text-decoration: line-through">{obj.fund.name}</span>"""
         return format_html(result)
