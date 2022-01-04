@@ -237,7 +237,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 'hold', flat=True)))
 
         sale_hold = sum(list(
-            FundExpense.objects.filter(fund=obj.fund, expense_type='sale', deal_at__gt=best_rule_date).values_list(
+            FundExpense.objects.filter(fund=obj.fund, expense_type='sale', sale_at__gt=best_rule_date).values_list(
                 'hold', flat=True)))
 
         return f"{(buy_hold - sale_hold):0.02f}"
