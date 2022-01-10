@@ -50,8 +50,8 @@ function douyin_my_user() {
     window.timeout += 1
     sleep(window.timeout).then(() => {
         console.log(new Date() + ' 点击综合排序 -> 最近关注')
-        earliest = document.getElementById('earliest')
-        // earliest = document.getElementById('latest')
+        // earliest = document.getElementById('earliest')
+        earliest = document.getElementById('latest')
         earliest.click()
     })
 
