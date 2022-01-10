@@ -18,6 +18,7 @@ class Command(BaseCommand):
         end_date = end_date.strftime('%Y-%m-%d')
 
         for fund in Fund.objects.all().order_by('name'):
+            continue
             newest_url = f'http://fundgz.1234567.com.cn/js/{fund.code}.js?rt=1637210892780'
             r = httpx.get(url=newest_url, headers=headers, timeout=40)
             content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
@@ -88,6 +89,9 @@ class Command(BaseCommand):
         # 输出结果
         headers = ['持有市值', '  目标市值', '   建议购买（元）', '      基金名称', ]
         print(tabulate(tabular_data=tabular_data, headers=headers, numalign='left'))
+        print('\n')
+        print('#' * 50)
+        print('\n')
 
         希望持有市值配置 = {
             "[军工]鹏华空天军工指数(LOF)C": 1000,
