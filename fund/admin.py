@@ -175,7 +175,21 @@ class FundExpenseAdmin(admin.ModelAdmin):
         if obj.expense_type == 'buy':
             result = f""" <a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
         elif obj.expense_type == 'sale':
-            result = f"""已售"""
+            # 当时出售的净值
+            sale_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.sale_at)
+            result = f"""<a title="{obj.sale_at}|{sale_fund_value.value}">已售</a>"""
+
+            # 如果还没有回购，如果降了 10%（长期） 或者 1%（短期），出现回购按钮，点击回购，并将 is_buy_again 标志为 True。
+            if not obj.is_buy_again:
+                # 最新净值
+                newest_fund_value = FundValue.objects.filter(fund=obj.fund).last()
+                if obj.fund.high_sale_low_buy:  # 短期的
+                    up_to = newest_fund_value.value * 1.01
+                else:  # 长期
+                    up_to = newest_fund_value.value * 1.1
+                if sale_fund_value.value > up_to:
+                    result = f""" <a href="/v4/fund_expense/{obj.id}/xxxxx/">回购</a>"""
+
         return format_html(result)
 
     buttons.short_description = "操作"
@@ -202,6 +216,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
     hold_value.short_description = '持有市值'
 
     def hold_rate_persent(self, obj):
+        if obj.expense_type == 'sale':
+            return ''
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = obj.hold * last_fundvalue.value
         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
