@@ -16,11 +16,10 @@ class Command(BaseCommand):
         start_date = (end_date - datetime.timedelta(days=15)).strftime('%Y-%m-%d')
         end_date = end_date.strftime('%Y-%m-%d')
         for fund in Fund.objects.all():
-
             newest_url = f'http://fundgz.1234567.com.cn/js/{fund.code}.js?rt=1637210892780'
-            print(f'{fund}: {newest_url=}')
             r = httpx.get(url=newest_url, headers=headers, timeout=40)
             content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
+            print(f'{fund}: {newest_url=}; {content=}')
             # 更新昨天的数据
             defaults = {'value': content['dwjz'], 'rate': 0}
 
