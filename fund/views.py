@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import ModelViewSet
 
 from fund.admin import FundExpenseForm
-from fund.models import FundExpense
+from fund.models import FundExpense, FundValue
 from fund.serializers import FundExpenseSerializer
 
 
@@ -32,9 +32,10 @@ class FundExpenseViewSet(ModelViewSet):
             fund_expense.is_buy_again = True
             fund_expense.save()
             fund_expense_form = FundExpenseForm()
+            fund_value = FundValue.objects.filter(fund=fund_expense.fund).last()
             fund_expense_form.cleaned_data = {
                 'fund': fund_expense.fund, 'deal_at': f'{datetime.datetime.now().date()}',
-                'expense': fund_expense.expense
+                'expense': fund_expense.hold * fund_value.value
             }
             cleaned_data = fund_expense_form.clean()
             FundExpense.objects.create(**cleaned_data)
