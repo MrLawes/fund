@@ -172,12 +172,16 @@ class FundExpenseAdmin(admin.ModelAdmin):
     fund_name.short_description = "基金名称"
 
     def buttons(self, obj):
+
+        if obj.is_buy_again:
+            return '已回购'
+
         if obj.expense_type == 'buy':
             result = f""" <a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
         elif obj.expense_type == 'sale':
             # 当时出售的净值
             sale_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.sale_at)
-            result = f"""<a title="{obj.sale_at}|{sale_fund_value.value}">已售</a>"""
+            result = f"""<a title="{obj.sale_at}|{sale_fund_value.value}">已售待回购</a>"""
 
             # 如果还没有回购，如果降了 10%（长期） 或者 1%（短期），出现回购按钮，点击回购，并将 is_buy_again 标志为 True。
             if not obj.is_buy_again:
@@ -188,7 +192,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 else:  # 长期
                     up_to = newest_fund_value.value * 1.1
                 if sale_fund_value.value > up_to:
-                    result = f""" <a href="/v4/fund_expense/{obj.id}/xxxxx/">回购</a>"""
+                    result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/">回购</a>"""
 
         return format_html(result)
 
