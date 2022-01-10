@@ -149,6 +149,9 @@ class FundExpenseAdmin(admin.ModelAdmin):
     form = FundExpenseForm
 
     def get_queryset(self, request):
+
+        # todo 已回购的，超过 sale_using_date ，删除
+
         results = super().get_queryset(request=request)
         for result in results:
             last_fundvalue = FundValue.objects.filter(fund=result.fund_value.fund).order_by('deal_at').last()
