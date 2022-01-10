@@ -50,8 +50,8 @@ function douyin_my_user() {
     window.timeout += 1
     sleep(window.timeout).then(() => {
         console.log(new Date() + ' 点击综合排序 -> 最近关注')
-        // earliest = document.getElementById('earliest')
-        earliest = document.getElementById('latest')
+        earliest = document.getElementById('earliest')
+        // earliest = document.getElementById('latest')
         earliest.click()
     })
 
@@ -59,7 +59,7 @@ function douyin_my_user() {
     var divs = document.getElementsByTagName('div')
     for (i = 0; i < divs.length; i++) {
         if (divs[i].innerHTML == '关注') {
-            let fens_count = 2500
+            let fens_count = 5188 - 2188
             // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
             i = divs.length
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
@@ -107,15 +107,28 @@ function douyin_friend_user() {
             console.log(new Date() + ' 请求返回: ' + responseText)
             let user_id = JSON.parse(responseText)['id']
             if (user_id) {
-                let header = document.getElementsByTagName('header')[0]
-                let username = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[2].innerText
-                let user_info = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[0].children
-                let relationship = header.parentElement.parentElement.parentElement.children[1].children[0].children[1].children[0].children[4].children[0].innerText
-                let follow_count = user_info[1].children[0].children[1].innerText
+                // 获得有的 div
+                let all_div = Array.from(document.querySelectorAll('div'))
+
+                // 关注人数
+                let follow_count = all_div.find(el => el.textContent == '关注')
+                follow_count = follow_count.parentElement.children[1].innerText
+
+                // 粉丝人数
+                let fens_count = all_div.find(el => el.textContent == '粉丝')
+                fens_count = fens_count.parentElement.children[1].innerText
+
+                // 头像下方，用户信息
+                let user_info = all_div.find(el => el.textContent == '关注')
+                user_info = user_info.parentElement.parentElement.parentElement.parentElement.children
+
+                let username = user_info[1].innerText
+                let relationship = user_info[4].innerText
+
                 if (follow_count.includes('w') || follow_count.includes('W')) {
                     follow_count = follow_count.replace(/W/i, "") * 10000
                 }
-                let fens_count = user_info[1].children[1].children[1].innerText
+
                 if (fens_count.includes('w') || fens_count.includes('W')) {
                     fens_count = fens_count.replace(/W/i, "") * 10000
                 }

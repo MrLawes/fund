@@ -51,5 +51,5 @@ class DouYinUserViewSet(ModelViewSet):
         if result.data['relationship'] == '已关注':
             result.data['need_delete'] = True
 
-        result.data['need_delete'] = False
+        # result.data['need_delete'] = False
         return result
