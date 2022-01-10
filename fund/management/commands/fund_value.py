@@ -80,7 +80,7 @@ class Command(BaseCommand):
         }
         tabular_data = []
 
-        for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())).order_by('name'):
+        for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
             待回购市值 = list(
                 FundExpense.objects.filter(
                     fund=fund, expense_type='sale', is_buy_again=False
@@ -88,8 +88,12 @@ class Command(BaseCommand):
             待回购市值 = sum(待回购市值)
             fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
             hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
+            建议购买 = (希望持有市值配置[fund.name] - 待回购市值) - (fund_value.value * hold)
+            if 建议购买 < 0:
+                建议购买 = 0
             tabular_data.append(
-                [1, f"{(fund_value.value * hold):0.02f}/{(希望持有市值配置[fund.name] - 待回购市值):0.02f}", fund.name])
+                [f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
+                 建议购买, fund.name])
         # 输出结果
-        headers = ['持有市值/目标市值', '             基金名称', ]
+        headers = ['持有市值', '  目标市值', '   建议购买（元）', '      基金名称', ]
         print(tabulate(tabular_data=tabular_data, headers=headers, numalign='left'))
