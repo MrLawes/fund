@@ -176,8 +176,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     def buttons(self, obj):
 
-        if obj.is_buy_again:
-            return '已回购'
 
         if obj.expense_type == 'buy':
             result = f""" <a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
@@ -196,6 +194,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
                     up_to = newest_fund_value.value * 1.1
                 if sale_fund_value.value > up_to:
                     result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/">回购</a>"""
+            else:
+                return '已回购'
 
         return format_html(result)
 
