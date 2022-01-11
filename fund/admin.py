@@ -56,48 +56,6 @@ class FundAdmin(admin.ModelAdmin):
 
     value.short_description = '金额/止赢金额✌️'
 
-    # def pyramid(self, obj):
-    #     if obj.high_sale_low_buy:
-    #         return ''
-    #
-    #     fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
-    #     当前净值_index = None
-    #     html_list = []
-    #     for index, stage in enumerate(obj.pyramid_stage):
-    #
-    #         if obj.from_value > obj.to_value:
-    #             if fund_value.value > stage and 当前净值_index is None:
-    #                 rate = (stage - fund_value.value) * 100 / fund_value.value
-    #                 html_list.append(f"当前净值: {fund_value.value:.4f}；下阶段 ⬇️ 涨幅:{rate:.2f}%　　　　　</br>")
-    #                 当前净值_index = len(html_list)
-    #
-    #         elif obj.from_value < obj.to_value:
-    #             if fund_value.value > stage and 当前净值_index is None:
-    #                 rate = (fund_value.value - stage) * 100 / fund_value.value
-    #                 html_list.append(f"当前净值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　　　　　　　</br>")
-    #                 当前净值_index = len(html_list)
-    #
-    #         html_list.append(
-    #             f"{index:02} 仓位: 市值: {stage:.4f}；总投入: {5000 + ((1 + index) * index / 2 * obj.space_expense)}　　　　　　</br>")
-    #
-    #     if obj.from_value < obj.to_value and 当前净值_index is None:
-    #         rate = (stage - fund_value.value) * 100 / fund_value.value
-    #         html_list.append(f"当前净值: {fund_value.value:.4f}；下阶段 ⬆️ 涨幅:{rate:.2f}%　　　　　　　　　　　</br>")
-    #         当前净值_index = len(html_list)
-    #
-    #     if 当前净值_index is None:
-    #         当前净值_index = 0
-    #     html_slice_start = 当前净值_index - 3
-    #     html_slice_start = 0 if html_slice_start < 0 else html_slice_start
-    #     html_slice_end = 当前净值_index + 2
-    #     html_list = html_list[html_slice_start:html_slice_end]
-    #
-    #
-    #     return format_html(''.join(html_list))
-    #
-    # pyramid.short_description = '金字塔'
-
-
 @admin.register(FundValue)
 class FundValueAdmin(admin.ModelAdmin):
     list_display = ('id', 'fund', 'deal_at', 'value', 'rate',)
