@@ -40,16 +40,18 @@ class DouYinUserViewSet(ModelViewSet):
             return result
 
         # 10 天内新增加的，不删除
-        result.data['relationship']
+        # result.data['relationship']
         # if str(datetime.datetime.now() - datetime.timedelta(days=7))[:10] < result.data['create_at'][:10]:
         #     return result
 
         # 粉丝数量超过 1000 的删除
         if not (10 < fens_count < 500):
             result.data['need_delete'] = True
-        #
+            print(f"取消关注：「{result.data['username']}」 粉丝数量不符合要求")
+
         if result.data['relationship'] == '已关注':
             result.data['need_delete'] = True
+            print(f"取消关注：「{result.data['username']}」 没有关注我")
 
         result.data['need_delete'] = False
         return result
