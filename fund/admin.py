@@ -148,7 +148,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 # 最新净值
                 newest_fund_value = FundValue.objects.filter(fund=obj.fund).last()
                 if newest_fund_value.value < buy_fund_value.value:
-                    result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/">回购</a>"""
+                    result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">回购</a>"""
             else:
                 return '已回购'
 
