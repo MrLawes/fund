@@ -56,6 +56,7 @@ class FundAdmin(admin.ModelAdmin):
 
     value.short_description = '金额/止赢金额✌️'
 
+
 @admin.register(FundValue)
 class FundValueAdmin(admin.ModelAdmin):
     list_display = ('id', 'fund', 'deal_at', 'value', 'rate',)
@@ -133,24 +134,20 @@ class FundExpenseAdmin(admin.ModelAdmin):
     fund_name.short_description = "基金名称"
 
     def buttons(self, obj):
-
-
         if obj.expense_type == 'buy':
             result = f""" <a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
         elif obj.expense_type == 'sale':
+            # 当时买进净值
+            buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
             # 当时出售的净值
             sale_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.sale_at)
-            result = f"""<a title="{obj.sale_at}|{sale_fund_value.value}">已售待回购</a>"""
-
-            # 如果还没有回购，如果降了 10%（长期） 或者 1%（短期），出现回购按钮，点击回购，并将 is_buy_again 标志为 True。
+            title = f'交易类型|日期|净值\n购买|{obj.deal_at}|{buy_fund_value.value}\n出售|{obj.sale_at}|{sale_fund_value.value}'
+            result = f"""<a title="{title}">已售待回购</a>"""
+            # 如果还没有回购，降了之前买的价格，出现回购按钮，点击回购，并将 is_buy_again 标志为 True。
             if not obj.is_buy_again:
                 # 最新净值
                 newest_fund_value = FundValue.objects.filter(fund=obj.fund).last()
-                if obj.fund.high_sale_low_buy:  # 短期的
-                    up_to = newest_fund_value.value * 1.01
-                else:  # 长期
-                    up_to = newest_fund_value.value * 1.1
-                if sale_fund_value.value > up_to:
+                if newest_fund_value.value < buy_fund_value.value:
                     result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/">回购</a>"""
             else:
                 return '已回购'
