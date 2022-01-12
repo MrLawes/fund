@@ -18,7 +18,6 @@ class Command(BaseCommand):
         end_date = end_date.strftime('%Y-%m-%d')
 
         for fund in Fund.objects.all().order_by('name'):
-            continue
             newest_url = f'http://fundgz.1234567.com.cn/js/{fund.code}.js?rt=1637210892780'
             r = httpx.get(url=newest_url, headers=headers, timeout=40)
             content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
