@@ -71,6 +71,10 @@ class Command(BaseCommand):
         }
         tabular_data = []
 
+        print('\n')
+        print('#' * 50)
+        print('\n')
+
         for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
             待回购市值 = list(
                 FundExpense.objects.filter(
