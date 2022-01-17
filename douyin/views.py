@@ -53,5 +53,5 @@ class DouYinUserViewSet(ModelViewSet):
             result.data['need_delete'] = True
             print(f"取消关注：「{result.data['username']}」 没有关注我")
 
-        result.data['need_delete'] = False
+        # result.data['need_delete'] = False
         return result

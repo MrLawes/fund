@@ -50,8 +50,8 @@ function douyin_my_user() {
     window.timeout += 1
     sleep(window.timeout).then(() => {
         console.log(new Date() + ' 点击综合排序 -> 最近关注')
-        // earliest = document.getElementById('earliest')
-        earliest = document.getElementById('latest')
+        earliest = document.getElementById('earliest')
+        // earliest = document.getElementById('latest')
         earliest.click()
     })
 
@@ -59,7 +59,7 @@ function douyin_my_user() {
     var divs = document.getElementsByTagName('div')
     for (i = 0; i < divs.length; i++) {
         if (divs[i].innerHTML == '关注') {
-            let fens_count = 5188 - 2188
+            let fens_count = 4735 - 2500
             // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
             i = divs.length
             console.log(new Date() + ' 滚动 ' + fens_count + ' 次')
