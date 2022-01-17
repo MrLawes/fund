@@ -20,6 +20,8 @@ class FundExpenseViewSet(ModelViewSet):
     def sale(self, request, version, pk):  # noqa
         fund_expense = self.get_object()
         fund_expense.expense_type = 'sale'
+        fund_expense.sale_at = datetime.datetime.now().date()
+        fund_expense.is_buy_again = False
         fund_expense.save()
         referer = request.headers['Referer']
         return HttpResponseRedirect(referer)
