@@ -59,6 +59,7 @@ function douyin_my_user() {
     var divs = document.getElementsByTagName('div')
     for (i = 0; i < divs.length; i++) {
         if (divs[i].innerHTML == '关注') {
+            // 1.17: 4224
             let fens_count = 4735 - 2500
             // let fens_count = divs[i].parentElement.nextElementSibling.children[1].innerText
             i = divs.length
