@@ -100,10 +100,10 @@ class Command(BaseCommand):
             "[白酒]招商中证白酒指数C": 500,
             "[半导体]国泰半导体C": 3000,
             "[医疗]工银前沿医疗股票C": 3500,
-            "[新能源]工银瑞信新能源汽车主题混合C": 2500,
             "[半导体]华夏国证半导体芯片ETF联接C": 3000,
             "[半导体]银河创新成长混合C": 1000,
             "[军工]鹏华空天军工指数(LOF)C": 500,
+            "[新能源]工银瑞信新能源汽车主题混合C": 2500,
             "[医疗]中欧医疗C": 500,
         }
         tabular_data = []
@@ -111,11 +111,13 @@ class Command(BaseCommand):
         for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
             待回购市值 = list(
                 FundExpense.objects.filter(
-                    fund=fund, expense_type='sale', is_buy_again=False
+                    fund=fund, expense_type='buy', need_buy_again=True
                 ).values_list('expense', flat=True))
             待回购市值 = sum(待回购市值)
             fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
-            hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
+            buy_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
+            sale_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='sale').values_list('hold', flat=True))
+            hold = buy_hold - sale_hold
             建议购买 = (希望持有市值配置[fund.name] - 待回购市值) - (fund_value.value * hold)
             if 建议购买 < 0:
                 建议购买 = 0
