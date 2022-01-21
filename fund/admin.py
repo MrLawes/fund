@@ -134,23 +134,34 @@ class FundExpenseAdmin(admin.ModelAdmin):
     fund_name.short_description = "基金名称"
 
     def buttons(self, obj):
+
+        result = ''
         if obj.expense_type == 'buy':
-            result = ''
-        elif obj.expense_type == 'sale':
-            # 当时买进净值
-            buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
-            # 当时出售的净值
-            sale_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.sale_at)
-            title = f'交易类型|日期|净值\n购买|{obj.deal_at}|{buy_fund_value.value}\n出售|{obj.sale_at}|{sale_fund_value.value}'
-            result = f"""<a title="{title}">已售待回购</a>"""
-            # 如果还没有回购，降了之前买的价格，出现回购按钮，点击回购，并将 is_buy_again 标志为 True。
-            if not obj.is_buy_again:
-                # 最新净值
-                newest_fund_value = FundValue.objects.filter(fund=obj.fund).last()
-                if newest_fund_value.value < buy_fund_value.value:
-                    result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">回购</a>"""
+            if obj.is_buy_again:
+                result = '已回购'
             else:
-                return '已回购'
+                if obj.need_buy_again:
+                    # 最新净值
+                    newest_fund_value = FundValue.objects.filter(fund=obj.fund).last()
+                    buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
+                    if newest_fund_value.value < buy_fund_value.value:
+                        title = f'最新净值::{newest_fund_value.value}; 购买时净值:{buy_fund_value.value}'
+                        result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">回购</a>"""
+
+            # # 当时买进净值
+            # buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
+            # # 当时出售的净值
+            # sale_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.sale_at)
+            # title = f'交易类型|日期|净值\n购买|{obj.deal_at}|{buy_fund_value.value}\n出售|{obj.sale_at}|{sale_fund_value.value}'
+            # result = f"""<a title="{title}">已售待回购</a>"""
+            # # 如果还没有回购，降了之前买的价格，出现回购按钮，点击回购，并将 is_buy_again 标志为 True。
+            # if not obj.is_buy_again:
+            #     # 最新净值
+            #     newest_fund_value = FundValue.objects.filter(fund=obj.fund).last()
+            #     if newest_fund_value.value < buy_fund_value.value:
+            #         result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">回购</a>"""
+            # else:
+            #     return '已回购'
 
         return format_html(result)
 
@@ -174,7 +185,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             else:
                 fund = queryset.filter(expense_type='buy').first().fund
                 now_date = datetime.datetime.now().date()
-                # now_date = datetime.datetime(2021, 12, 28).date()
+                # now_date = datetime.datetime(2022, 1, 17).date()
                 hold = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
                 expense = hold * FundValue.objects.get(fund=fund, deal_at=now_date).value
                 FundExpense.objects.create(
