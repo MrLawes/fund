@@ -2,6 +2,7 @@ import datetime
 
 from django import forms
 from django.contrib import admin
+from django.db import transaction
 from django.utils.html import format_html
 
 from fund.models import Fund, FundValue, FundExpense, FundHoldings
@@ -100,11 +101,10 @@ class FundExpenseForm(forms.ModelForm):
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'deal_at', 'transaction_rule', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
-        'hope_value',
-        'can_sale_hold', 'sale_using_date', 'buttons',)
+        'hope_value', 'can_sale_hold', 'sale_using_date', 'buttons',)
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name', 'fund__high_sale_low_buy')
-    actions = ['sum_hold', ]
+    actions = ['sum_hold', 'sale', ]
     form = FundExpenseForm
 
     def get_queryset(self, request):
@@ -135,7 +135,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     def buttons(self, obj):
         if obj.expense_type == 'buy':
-            result = f""" <a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
+            result = ''
         elif obj.expense_type == 'sale':
             # 当时买进净值
             buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
@@ -161,6 +161,28 @@ class FundExpenseAdmin(admin.ModelAdmin):
         self.message_user(request, f"共计 {hold:0.02f} 份")
 
     sum_hold.short_description = "计算份数"
+
+    def sale(self, request, queryset):
+
+        with transaction.atomic():
+            if queryset.filter(expense_type='sale').exists():
+                self.message_user(request, "存在已售")
+            elif len(list(queryset.values_list('fund', flat=True))) != 1:
+                self.message_user(request, "只能出售同类基金")
+            elif queryset.filter(need_buy_again='True').exists():
+                self.message_user(request, "存在需要回购的份额，不可以出售")
+            else:
+                fund = queryset.filter(expense_type='buy').first().fund
+                now_date = datetime.datetime.now().date()
+                # now_date = datetime.datetime(2021, 12, 28).date()
+                hold = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
+                expense = hold * FundValue.objects.get(fund=fund, deal_at=now_date).value
+                FundExpense.objects.create(
+                    fund=fund, deal_at=now_date, expense=expense, hold=hold, expense_type='sale', sale_at=now_date,
+                )
+                queryset.update(need_buy_again=True, )
+
+    sale.short_description = "全部出售"
 
     def hold_value(self, obj):
         if obj.expense_type == 'sale':

@@ -16,15 +16,15 @@ class FundExpenseViewSet(ModelViewSet):
     queryset = FundExpense.objects.all()
     serializer_class = FundExpenseSerializer
 
-    @action(methods=['get'], detail=True, )
-    def sale(self, request, version, pk):  # noqa
-        fund_expense = self.get_object()
-        fund_expense.expense_type = 'sale'
-        fund_expense.sale_at = datetime.datetime.now().date()
-        fund_expense.is_buy_again = False
-        fund_expense.save()
-        referer = request.headers['Referer']
-        return HttpResponseRedirect(referer)
+    # @action(methods=['get'], detail=True, )
+    # def sale(self, request, version, pk):  # noqa
+    #     fund_expense = self.get_object()
+    #     fund_expense.expense_type = 'sale'
+    #     fund_expense.sale_at = datetime.datetime.now().date()
+    #     fund_expense.is_buy_again = False
+    #     fund_expense.save()
+    #     referer = request.headers['Referer']
+    #     return HttpResponseRedirect(referer)
 
     @action(methods=['get'], detail=True, )
     def buy_again(self, request, version, pk):  # noqa
