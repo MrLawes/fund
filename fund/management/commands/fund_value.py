@@ -63,15 +63,15 @@ class Command(BaseCommand):
                 FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
 
         # 更新时间：2022-01-25
-        希望持有市值配置 = {
-            "[新能源]农银工业4.0混合": 1000,
-            "[军工]易方达国防军工混合": 1000,
-            "[白酒]招商中证白酒指数(LOF)A": 3500,
-            # "[半导体]诺安成长混合": 4500,
-            "[半导体]银河创新成长混合A": 2000,
-            "[医疗]中欧医疗A": 11000,
-        }
-        tabular_data = []
+        # 希望持有市值配置 = {
+        #     "[新能源]农银工业4.0混合": 1000,
+        #     "[军工]易方达国防军工混合": 1000,
+        #     "[白酒]招商中证白酒指数(LOF)A": 3500,
+        #     # "[半导体]诺安成长混合": 4500,
+        #     "[半导体]银河创新成长混合A": 2000,
+        #     "[医疗]中欧医疗A": 11000,
+        # }
+        # tabular_data = []
 
         table = Table(title="")
         table.add_column("基金名称", justify="left", no_wrap=True, )
@@ -83,25 +83,25 @@ class Command(BaseCommand):
         # print('\n')
         # print('#' * 50)
         # print('\n')
+        #
+        # for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
+        #     待回购市值 = list(
+        #         FundExpense.objects.filter(
+        #             fund=fund, expense_type='sale', is_buy_again=False
+        #         ).values_list('expense', flat=True))
+        #     待回购市值 = sum(待回购市值)
+        #     fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
+        #     hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
+        #     建议购买 = (希望持有市值配置[fund.name] - 待回购市值) - (fund_value.value * hold)
+        #     if 建议购买 < 0:
+        #         建议购买 = 0
+        #
+        #     table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
+        #                   f"{int(建议购买)}", )
 
-        for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
-            待回购市值 = list(
-                FundExpense.objects.filter(
-                    fund=fund, expense_type='sale', is_buy_again=False
-                ).values_list('expense', flat=True))
-            待回购市值 = sum(待回购市值)
-            fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
-            hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
-            建议购买 = (希望持有市值配置[fund.name] - 待回购市值) - (fund_value.value * hold)
-            if 建议购买 < 0:
-                建议购买 = 0
-
-            table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
-                          f"{int(建议购买)}", )
-
-            # tabular_data.append(
-            #     [f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
-            #      建议购买, fund.name])
+        # tabular_data.append(
+        #     [f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
+        #      建议购买, fund.name])
         # 输出结果
         # headers = ['持有市值', '  目标市值', '   建议购买（元）', '      基金名称', ]
         # print(tabulate(tabular_data=tabular_data, headers=headers, numalign='left'))
@@ -111,6 +111,13 @@ class Command(BaseCommand):
 
         # 更新时间：2022-01-25
         希望持有市值配置 = {
+            "[新能源]农银工业4.0混合": 1000,
+            "[军工]易方达国防军工混合": 1000,
+            "[白酒]招商中证白酒指数(LOF)A": 3500,
+            # "[半导体]诺安成长混合": 4500,
+            "[半导体]银河创新成长混合A": 2000,
+            "[医疗]中欧医疗A": 11000,
+
             "[白酒]招商中证白酒指数C": 1000,
             # "[半导体]国泰半导体C": 3500,
             "[医疗]工银前沿医疗股票C": 4000,
