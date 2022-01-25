@@ -3,7 +3,8 @@ import json
 
 import httpx
 from django.core.management.base import BaseCommand
-from tabulate import tabulate
+from rich.console import Console
+from rich.table import Table
 
 from fund.models import Fund, FundValue, FundExpense
 
@@ -72,9 +73,16 @@ class Command(BaseCommand):
         }
         tabular_data = []
 
-        print('\n')
-        print('#' * 50)
-        print('\n')
+        table = Table(title="")
+        table.add_column("基金名称", justify="left", no_wrap=True, )
+        table.add_column("持有市值", justify="right", style="red", no_wrap=True)
+        table.add_column("目标市值", justify="right", style="cyan", no_wrap=True)
+        table.add_column("建议购买（元）", justify="right", style="red", no_wrap=True)
+        #
+        #
+        # print('\n')
+        # print('#' * 50)
+        # print('\n')
 
         for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
             待回购市值 = list(
@@ -87,15 +95,19 @@ class Command(BaseCommand):
             建议购买 = (希望持有市值配置[fund.name] - 待回购市值) - (fund_value.value * hold)
             if 建议购买 < 0:
                 建议购买 = 0
-            tabular_data.append(
-                [f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
-                 建议购买, fund.name])
+
+            table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
+                          f"{int(建议购买)}", )
+
+            # tabular_data.append(
+            #     [f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
+            #      建议购买, fund.name])
         # 输出结果
-        headers = ['持有市值', '  目标市值', '   建议购买（元）', '      基金名称', ]
-        print(tabulate(tabular_data=tabular_data, headers=headers, numalign='left'))
-        print('\n')
-        print('#' * 50)
-        print('\n')
+        # headers = ['持有市值', '  目标市值', '   建议购买（元）', '      基金名称', ]
+        # print(tabulate(tabular_data=tabular_data, headers=headers, numalign='left'))
+        # print('\n')
+        # print('#' * 50)
+        # print('\n')
 
         # 更新时间：2022-01-25
         希望持有市值配置 = {
@@ -108,7 +120,7 @@ class Command(BaseCommand):
             "[新能源]工银瑞信新能源汽车主题混合C": 3000,
             # "[医疗]中欧医疗C": 500,
         }
-        tabular_data = []
+        # tabular_data = []
 
         for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
             待回购市值 = list(
@@ -123,9 +135,15 @@ class Command(BaseCommand):
             建议购买 = (希望持有市值配置[fund.name] - 待回购市值) - (fund_value.value * hold)
             if 建议购买 < 0:
                 建议购买 = 0
-            tabular_data.append(
-                [f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
-                 建议购买, fund.name])
+            # tabular_data.append(
+            #     [f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
+            #      建议购买, fund.name])
+            table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
+                          f"{int(建议购买)}", )
+
         # 输出结果
-        headers = ['持有市值', '  目标市值', '   建议购买（元）', '      基金名称', ]
-        print(tabulate(tabular_data=tabular_data, headers=headers, numalign='left'))
+        # headers = ['持有市值', '  目标市值', '   建议购买（元）', '      基金名称', ]
+        # print(tabulate(tabular_data=tabular_data, headers=headers, numalign='left'))
+
+        console = Console()
+        console.print(table)
