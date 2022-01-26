@@ -153,6 +153,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
                         result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">回购</a>"""
                     else:
                         result = f"""等待回购"""
+                else:
+                    result = f"""<a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
 
             # # 当时买进净值
             # buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
