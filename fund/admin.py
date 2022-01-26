@@ -115,7 +115,11 @@ class FundExpenseAdmin(admin.ModelAdmin):
         for result in results:
             last_fundvalue = FundValue.objects.filter(fund=result.fund_value.fund).order_by('deal_at').last()
             value = result.hold * last_fundvalue.value
-            result.hold_rate = (((value - result.expense) / result.expense) * 100)
+            # 需要回购的，不展示持有收益率
+            if result.need_buy_again:
+                result.hold_rate = 0
+            else:
+                result.hold_rate = (((value - result.expense) / result.expense) * 100)
             if result.sale_using_date and datetime.datetime.now().date() > result.sale_using_date:
                 result.sale_using_date = None
             if result.id >= 3675:
@@ -147,6 +151,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
                     if newest_fund_value.value < buy_fund_value.value:
                         title = f'最新净值::{newest_fund_value.value}; 购买时净值:{buy_fund_value.value}'
                         result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">回购</a>"""
+                    else:
+                        result = f"""等待回购"""
 
             # # 当时买进净值
             # buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
@@ -215,7 +221,11 @@ class FundExpenseAdmin(admin.ModelAdmin):
             return ''
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = obj.hold * last_fundvalue.value
-        return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
+        # 需要回购的，不展示收益率
+        if obj.need_buy_again:
+            return ''
+        else:
+            return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate_persent.short_description = '持有收益率'
 
