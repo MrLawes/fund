@@ -150,7 +150,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
                     buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
                     if newest_fund_value.value < buy_fund_value.value:
                         title = f'最新净值::{newest_fund_value.value}; 购买时净值:{buy_fund_value.value}'
-                        result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">回购</a>"""
+                        result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">可回购</a>"""
                     else:
                         result = f"""等待回购"""
                 else:
