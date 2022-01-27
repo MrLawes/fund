@@ -262,10 +262,11 @@ class FundExpenseAdmin(admin.ModelAdmin):
         sale_hold = sum(list(
             FundExpense.objects.filter(fund=obj.fund, expense_type='sale', sale_at__gt=best_rule_date).values_list(
                 'hold', flat=True)))
+        can_sale_hold = buy_hold - sale_hold
+        fund_value = FundValue.objects.filter(fund=obj.fund, ).order_by('deal_at').last()
+        return f"{can_sale_hold:0.02f}/{(fund_value.value * can_sale_hold):0.02f}"
 
-        return f"{(buy_hold - sale_hold):0.02f}"
-
-    can_sale_hold.short_description = '可售份额'
+    can_sale_hold.short_description = '可售份额/等价金额'
 
 
 @admin.register(FundHoldings)
