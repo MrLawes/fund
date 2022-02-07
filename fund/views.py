@@ -1,8 +1,10 @@
 import datetime  # noqa
+import time
 
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from fund.admin import FundExpenseForm
@@ -50,3 +52,10 @@ class FundExpenseViewSet(ModelViewSet):
             FundExpense.objects.create(**cleaned_data)
             referer = request.headers['Referer']
             return HttpResponseRedirect(referer)
+
+    @action(methods=['get'], detail=False, )
+    def docker_test(self, request, version, ):  # noqa
+        print('11111111')
+        for i in range(1, 6):
+            time.sleep(1)
+        return Response(f"v3:{str(datetime.datetime.now())[:19]}")
