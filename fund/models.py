@@ -60,13 +60,11 @@ class FundExpense(models.Model):
     expense = models.FloatField(verbose_name='确认金额', default=0)
     hold = models.FloatField(verbose_name='确认份额', default=0)
     hold_rate = models.FloatField(verbose_name='持有收益率', default=0)
-    sale_using_date = models.DateField(verbose_name='可售恢复时间', default=None, null=True, blank=True, )  # todo delete
     expense_type = models.CharField(verbose_name='基金交易类型: buy: 购买；sale：出售', max_length=8, default='buy')
     split_hold = models.FloatField(verbose_name='拆分份额', default=0)
     sale_at = models.DateField(verbose_name='出售日期', default=None, null=True, blank=True, )
     is_buy_again = models.BooleanField(verbose_name='是否已经回购', default=False)
     need_buy_again = models.BooleanField(verbose_name='是否需要回购', default=False)
-    # headimg = models.FileField(upload_to="img/", default='')
 
     class Meta:
         verbose_name_plural = '基金购买记录'

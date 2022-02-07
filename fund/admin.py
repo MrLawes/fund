@@ -101,16 +101,13 @@ class FundExpenseForm(forms.ModelForm):
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'deal_at', 'transaction_rule', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
-        'hope_value', 'can_sale_hold', 'sale_using_date', 'buttons',)
+        'hope_value', 'can_sale_hold', 'buttons',)
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__name', 'fund__high_sale_low_buy')
     actions = ['sum_hold', 'sale', ]
     form = FundExpenseForm
 
     def get_queryset(self, request):
-
-        # todo 已回购的，超过 sale_using_date ，删除
-
         results = super().get_queryset(request=request)
         for result in results:
             last_fundvalue = FundValue.objects.filter(fund=result.fund_value.fund).order_by('deal_at').last()
@@ -120,10 +117,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 result.hold_rate = 0
             else:
                 result.hold_rate = (((value - result.expense) / result.expense) * 100)
-            if result.sale_using_date and datetime.datetime.now().date() > result.sale_using_date:
-                result.sale_using_date = None
-            if result.id >= 3675:
-                result.sale_using_date = None
             result.save()
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
