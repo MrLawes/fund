@@ -1,5 +1,4 @@
 import datetime  # noqa
-import time
 
 from django.db import transaction
 from django.http import HttpResponseRedirect
@@ -55,7 +54,13 @@ class FundExpenseViewSet(ModelViewSet):
 
     @action(methods=['get'], detail=False, )
     def docker_test(self, request, version, ):  # noqa
-        print('11111111')
-        for i in range(1, 6):
-            time.sleep(1)
-        return Response(f"v3:{str(datetime.datetime.now())[:19]}")
+        user = request.query_params.get('user', )
+        return Response(f"v6:{str(datetime.datetime.now())[:19]} {user=}")
+
+    # @action(methods=['get'], detail=False, )
+    # def docker_test(self, request, version, ):  # noqa
+    #     user = request.query_params.get('user',)
+    #     for i in range(1, 51):
+    #         time.sleep(1)
+    #         print(f'[{str(datetime.datetime.now())[:19]}] {user=}; {i=}')
+    #     return Response(f"v6:{str(datetime.datetime.now())[:19]} {user=}")
