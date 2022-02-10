@@ -56,7 +56,7 @@ class FundExpenseViewSet(ModelViewSet):
     def docker_test(self, request, version, ):  # noqa
         user = request.query_params.get('user', )
         return Response(f"v3:{str(datetime.datetime.now())[:19]} {user=}")
-    #
+
     # @action(methods=['get'], detail=False, )
     # def docker_test(self, request, version, ):  # noqa
     #     import time
