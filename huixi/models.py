@@ -59,7 +59,7 @@ for person_index in range(1, 会员人数 + 1):
     等价年利息 = (最终金额 - 110000) / 110000.0 + 1
     等价年利息 = 等价年利息 ** (1.0 / month)
     等价年利息 = 等价年利息 ** 12 - 1
-    table.add_row(f'会员[{person_index}] ', f'总结', f'', f'', f'', f'等价年利息={等价年利息:0.06f}')
+    table.add_row(f'会员[{person_index}] ', f'总结', f'', f'', f'', f'共计{month}个月; 等价年利息={等价年利息:0.06f}')
 
     console = Console()
     console.print(table)
