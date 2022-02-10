@@ -12,13 +12,13 @@ from rich.table import Table
 for person_index in range(1, 会员人数 + 1):
 
     开始时间 = datetime.datetime(2019, 9, 15)
-
+    最终金额 = 120000
     table = Table(title="")
     table.add_column("姓名", justify="left", no_wrap=True, )
     table.add_column("时间", justify="right", style="red", no_wrap=True)
     table.add_column("得会金额", justify="right", style="cyan", no_wrap=True)
-    table.add_column("付会金额+利息", justify="right", style="cyan", no_wrap=True)
-    table.add_column(f"存入银行利息(月利息={月利息:0.04f})", justify="right", style="cyan", no_wrap=True)
+    table.add_column("支出:付会金额+支付利息", justify="right", style="cyan", no_wrap=True)
+    table.add_column(f"存入银行利息(月利息={月利息:0.010f})", justify="right", style="cyan", no_wrap=True)
     table.add_column("最终金额（初始金额12万）", justify="right", style="red", no_wrap=True)
 
     for month in range(1, 会员人数 * 4 + 1):
@@ -33,8 +33,25 @@ for person_index in range(1, 会员人数 + 1):
             是否得会 = False
             得会金额 = 0
 
-        if (person_index - 1) * 4 == month - 1:
-            table.add_row(f'会员[{person_index}] ', f'{开始时间.date()}', f'{得会金额}', 'xx', 'ss', 'dd')
+        # 计算支付利息
+        支付利息, 付会金额 = 0, 0
+        if (month - 1) % 4 == 0:
+            if (person_index - 1) * 4 < month - 1:
+                支付利息 = 利息
+            付会金额 = 每次付会金额
+        if person_index == 1:
+            支付利息 = 0
+
+        if 是否得会:
+            付会金额 = 0
+
+        最终金额 = 最终金额 - 付会金额 - 支付利息 + 得会金额
+        银行利息 = 最终金额 * 月利息
+        最终金额 += 银行利息
+        最终金额 = round(最终金额, 2)
+
+        table.add_row(f'会员[{person_index}] ', f'{开始时间.date()}', f'{得会金额:,}', f'{付会金额}+{支付利息}', f'{银行利息:0.02f}',
+                      f'{最终金额:,}')
 
         开始时间 = 开始时间 + datetime.timedelta(days=30)
         开始时间 = 开始时间.replace(day=15)
