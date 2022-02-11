@@ -88,19 +88,19 @@ class Command(BaseCommand):
         }
 
         for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
-            待回购市值 = list(
-                FundExpense.objects.filter(
-                    fund=fund, expense_type='buy', need_buy_again=True
-                ).values_list('expense', flat=True))
-            待回购市值 = sum(待回购市值)
+            # 待回购市值 = list(
+            #     FundExpense.objects.filter(
+            #         fund=fund, expense_type='buy', need_buy_again=True
+            #     ).values_list('expense', flat=True))
+            # 待回购市值 = sum(待回购市值)
             fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
             buy_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
             sale_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='sale').values_list('hold', flat=True))
             hold = buy_hold - sale_hold
-            建议购买 = (希望持有市值配置[fund.name] - 待回购市值) - (fund_value.value * hold)
+            建议购买 = 希望持有市值配置[fund.name] - (fund_value.value * hold)
             if 建议购买 < 0:
                 建议购买 = 0
-            table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name] - 待回购市值):0.02f}",
+            table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name]):0.02f}",
                           f"{int(建议购买)}", )
 
         console = Console()
