@@ -65,7 +65,7 @@ class Command(BaseCommand):
         table = Table(title="")
         table.add_column("基金名称", justify="left", no_wrap=True, )
         table.add_column("持有市值", justify="right", style="red", no_wrap=True)
-        table.add_column("目标市值", justify="right", style="cyan", no_wrap=True)
+        table.add_column("目标市值", justify="right", no_wrap=True)
         table.add_column("建议购买（元）", justify="right", style="red", no_wrap=True)
 
         # 更新时间：2022-01-25
@@ -98,8 +98,11 @@ class Command(BaseCommand):
             sale_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='sale').values_list('hold', flat=True))
             hold = buy_hold - sale_hold
             建议购买 = 希望持有市值配置[fund.name] - (fund_value.value * hold)
-            if 建议购买 < 0:
-                建议购买 = 0
+            # 建议出售 = 0
+            # if 建议购买 < 0:
+            #     建议购买 = 0
+            #     建议出售 = abs(建议购买)
+
             table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name]):0.02f}",
                           f"{int(建议购买)}", )
 
