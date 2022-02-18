@@ -248,14 +248,23 @@ class FundExpenseAdmin(admin.ModelAdmin):
         # 最优出售日期，一般短线为 7 天后免手续费
         best_rule_date = datetime.datetime.now() - datetime.timedelta(days=best_transaction_rule_days + 1)
 
-        buy_hold = sum(list(
-            FundExpense.objects.filter(fund=obj.fund, expense_type='buy', deal_at__lt=best_rule_date).values_list(
+        # 所有购买记录
+        all_buy_hold = sum(list(
+            FundExpense.objects.filter(fund=obj.fund, expense_type='buy', ).values_list(
+                'hold', flat=True)))
+        # 所以出售记录
+        all_sale_hold = sum(list(
+            FundExpense.objects.filter(fund=obj.fund, expense_type='sale', ).values_list(
+                'hold', flat=True)))
+        # 当前拥有份额
+        hold = all_buy_hold - all_sale_hold
+
+        # 近 7 天或 30 天内的购买记录，这部分要手续费
+        resently_buy_hold = sum(list(
+            FundExpense.objects.filter(fund=obj.fund, expense_type='buy', deal_at__gt=best_rule_date).values_list(
                 'hold', flat=True)))
 
-        sale_hold = sum(list(
-            FundExpense.objects.filter(fund=obj.fund, expense_type='sale', sale_at__gt=best_rule_date).values_list(
-                'hold', flat=True)))
-        can_sale_hold = buy_hold - sale_hold
+        can_sale_hold = hold - resently_buy_hold
         fund_value = FundValue.objects.filter(fund=obj.fund, ).order_by('deal_at').last()
         return f"{can_sale_hold:0.02f}/{(fund_value.value * can_sale_hold):0.02f}"
 
