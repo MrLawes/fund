@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from rich.console import Console
 from rich.table import Table
 
-from fund.models import Fund, FundValue, FundExpense
+from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
 
 class Command(BaseCommand):
@@ -22,7 +22,6 @@ class Command(BaseCommand):
             newest_url = f'http://fundgz.1234567.com.cn/js/{fund.code}.js?rt=1637210892780'
             r = httpx.get(url=newest_url, headers=headers, timeout=40)
             content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
-            # print(f'{fund}: {newest_url=}; {content=}')
             # 更新昨天的数据
             defaults = {'value': content['dwjz'], 'rate': 0}
 
@@ -82,22 +81,23 @@ class Command(BaseCommand):
             "[医疗]工银前沿医疗股票C": 4000,
         }
 
+        # 计算持有仓位占比
+        FundHoldings.objects.all().delete()
+        for fund_expense in FundExpense.objects.all():
+            catetory_name = fund_expense.fund.name.split(']')[0].split('[')[-1]
+            fund_holdings, _ = FundHoldings.objects.get_or_create(catetory_name=catetory_name)
+            if fund_expense.expense_type == 'buy':
+                fund_holdings.expense += fund_expense.expense
+            elif fund_expense.expense_type == 'sale':
+                fund_holdings.expense -= fund_expense.expense
+            fund_holdings.save()
+
         for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
-            # 待回购市值 = list(
-            #     FundExpense.objects.filter(
-            #         fund=fund, expense_type='buy', need_buy_again=True
-            #     ).values_list('expense', flat=True))
-            # 待回购市值 = sum(待回购市值)
             fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
             buy_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
             sale_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='sale').values_list('hold', flat=True))
             hold = buy_hold - sale_hold
             建议购买 = 希望持有市值配置[fund.name] - (fund_value.value * hold)
-            # 建议出售 = 0
-            # if 建议购买 < 0:
-            #     建议购买 = 0
-            #     建议出售 = abs(建议购买)
-
             table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name]):0.02f}",
                           f"{int(建议购买)}", )
 

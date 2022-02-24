@@ -102,12 +102,3 @@ class FundHoldings(models.Model):
 
     class Meta:
         verbose_name_plural = '基金仓位'
-
-#
-# class FundFee(models.Model):
-#     fund = models.ForeignKey(Fund, on_delete=models.CASCADE, verbose_name='基金名称', )
-#     day = models.IntegerField(verbose_name='天数', )
-#     fee = models.FloatField(verbose_name='手续费%')
-#
-#     class Meta:
-#         verbose_name_plural = '基金手续费配置'
