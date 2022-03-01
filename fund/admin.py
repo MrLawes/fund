@@ -169,8 +169,9 @@ class FundExpenseAdmin(admin.ModelAdmin):
     buttons.short_description = "操作"
 
     def sum_hold(self, request, queryset):
-        hold = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
-        self.message_user(request, f"共计 {hold:0.02f} 份")
+        hold_buy = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
+        hold_sale = sum(queryset.filter(expense_type='sale').values_list('hold', flat=True))
+        self.message_user(request, f"共计 {(hold_buy - hold_sale):0.02f} 份")
 
     sum_hold.short_description = "计算份数"
 
