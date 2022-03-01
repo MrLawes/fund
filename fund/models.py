@@ -64,7 +64,7 @@ class FundExpense(models.Model):
     split_hold = models.FloatField(verbose_name='拆分份额', default=0)
     sale_at = models.DateField(verbose_name='出售日期', default=None, null=True, blank=True, )
     is_buy_again = models.BooleanField(verbose_name='是否已经回购', default=False)  # todo delete
-    need_buy_again = models.BooleanField(verbose_name='卖出去过的', default=False)
+    need_buy_again = models.BooleanField(verbose_name='卖出去过的', default=False)  # todo 改名 is_sale
 
     class Meta:
         verbose_name_plural = '基金购买记录'
