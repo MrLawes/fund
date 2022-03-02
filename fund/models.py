@@ -99,6 +99,7 @@ class FundExpense(models.Model):
 class FundHoldings(models.Model):
     catetory_name = models.CharField(verbose_name='分类', max_length=64, )
     expense = models.FloatField(verbose_name='确认金额', default=0)
+    hold = models.FloatField(verbose_name='持有份额', default=0)
 
     class Meta:
         verbose_name_plural = '基金仓位'

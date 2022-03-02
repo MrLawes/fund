@@ -264,7 +264,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
 @admin.register(FundHoldings)
 class FundHoldingsAdmin(admin.ModelAdmin):
-    list_display = ('id', 'catetory_name', 'expense', 'persent')
+    list_display = ('id', 'catetory_name', 'expense', 'hold', 'persent')
 
     def persent(self, obj):
         result = obj.expense * 100 / max(list(FundHoldings.objects.values_list('expense', flat=True)))
