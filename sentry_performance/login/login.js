@@ -1,14 +1,28 @@
 setTimeout(function () {
     get_performance();
-}, 2000);
+}, 4000);
 
 function get_performance() {
-    let table = document.getElementsByTagName('table')[0]
-    let tbody = table.getElementsByTagName('tbody')[0]
-    let tbody__trs = tbody.getElementsByTagName('tr')
-    for (i = 0; i < tbody__trs.length; i++) {
-        let tbody__tr = tbody__trs[i]
-        console.log(tbody__tr)
+    table = document.getElementsByTagName('table')[0]
+    tbody = table.getElementsByTagName('tbody')[0]
+    tbody__trs = tbody.getElementsByTagName('tr')
+
+    for (tbody__tr_index = 0; tbody__tr_index < tbody__trs.length; tbody__tr_index++) {
+        tbody__tr = tbody__trs[tbody__tr_index]
+        tbody__tds = tbody__tr.getElementsByTagName('td')
+
+        let apdex = tbody__tds[9]   // 改列的数值改为 @ 的开发
+        apdex.innerText = ''
+        transaction = tbody__tds[1]  // 请求的 url
+        let users = tbody__tds[10]   // 改列的数值改为 @ 的开发
+
+        if (transaction.innerText == '/1/{version}/labors/{pk}/identity4/') {
+            apdex.innerText = '[网络请求] 四要素认证'
+        }
+        if (transaction.innerText == '/1/companylabors/contract_download/') {
+            apdex.innerText = '@王旭阳'
+            users.innerText = 'https://redmine.iqusong.com/issues/7634'
+        }
     }
 
 }

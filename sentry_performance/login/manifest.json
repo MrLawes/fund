@@ -9,7 +9,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://sentry.iqusong.com/*"
+        "https://sentry.iqusong.com/organizations/zhongjian/performance/*"
       ],
       "js": [
         "login.js"
