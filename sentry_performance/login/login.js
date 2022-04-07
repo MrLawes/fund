@@ -15,9 +15,11 @@ function get_performance() {
         apdex.innerText = ''
         transaction = tbody__tds[1]  // 请求的 url
         let users = tbody__tds[10]   // 改列的数值改为 @ 的开发
+        method = tbody__tds[4]  // 请求的 url
 
-        if (transaction.innerText == '/1/{version}/labors/{pk}/identity4/') {
+        if (transaction.innerText == '/1/{version}/labors/{pk}/identity4/' && method == 'POST') {
             apdex.innerText = '[网络请求] 四要素认证'
+            console.log(method.innerText)
         }
         if (transaction.innerText == '/1/companylabors/contract_download/') {
             apdex.innerText = '@王旭阳'
