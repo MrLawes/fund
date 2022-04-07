@@ -21,9 +21,23 @@ function get_performance() {
             apdex.innerText = '[网络请求] 四要素认证'
             console.log(method.innerText)
         }
-        if (transaction.innerText == '/1/companylabors/contract_download/') {
-            apdex.innerText = '@王旭阳'
+        if (transaction.innerText == '/1/companylabors/contract_download/' && method == 'GET') {
+            apdex.innerText = '王旭阳'
             users.innerText = 'https://redmine.iqusong.com/issues/7634'
+        }
+        if (transaction.innerText == '/1/{version}/laborbankaccount/{pk}/' && method == 'PUT') {
+            apdex.innerText = '[网络请求] 三要素认证'
+        }
+        if (transaction.innerText == '/1/labors/{pk}/mobile/' && method == 'POST') {
+            apdex.innerText = '陈海鸥'
+        }
+        if (transaction.innerText == '/1/localwallettransaction/' && method == 'GET') {
+            apdex.innerText = '李帅华'
+            users.innerText = 'https://redmine.iqusong.com/issues/7672'
+        }
+        if (transaction.innerText == '/1/{version}/companylabors/' && method == 'GET') {
+            apdex.innerText = '李帅华'
+            users.innerText = 'https://redmine.iqusong.com/issues/7780'
         }
     }
 
