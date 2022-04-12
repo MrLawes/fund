@@ -13,31 +13,35 @@ function get_performance() {
 
         let apdex = tbody__tds[9]   // 改列的数值改为 @ 的开发
         apdex.innerText = ''
-        transaction = tbody__tds[1]  // 请求的 url
+        transaction = tbody__tds[1].innerText  // 请求的 url
         let users = tbody__tds[10]   // 改列的数值改为 @ 的开发
-        method = tbody__tds[4]  // 请求的 url
+        method = tbody__tds[4].innerText  // 请求的 url
 
-        if (transaction.innerText == '/1/{version}/labors/{pk}/identity4/' && method == 'POST') {
+
+        if (transaction == '/1/{version}/labors/{pk}/identity4/' && method == 'POST') {
             apdex.innerText = '[网络请求] 四要素认证'
             console.log(method.innerText)
         }
-        if (transaction.innerText == '/1/companylabors/contract_download/' && method == 'GET') {
+        if (transaction == '/1/companylabors/contract_download/' && method == 'GET') {
             apdex.innerText = '王旭阳'
             users.innerText = 'https://redmine.iqusong.com/issues/7634'
         }
-        if (transaction.innerText == '/1/{version}/laborbankaccount/{pk}/' && method == 'PUT') {
+        if (transaction == '/1/{version}/laborbankaccount/{pk}/' && method == 'PUT') {
             apdex.innerText = '[网络请求] 三要素认证'
         }
-        if (transaction.innerText == '/1/labors/{pk}/mobile/' && method == 'POST') {
+        if (transaction == '/1/labors/{pk}/mobile/' && method == 'POST') {
             apdex.innerText = '陈海鸥'
         }
-        if (transaction.innerText == '/1/localwallettransaction/' && method == 'GET') {
+        if (transaction == '/1/localwallettransaction/' && method == 'GET') {
             apdex.innerText = '李帅华'
             users.innerText = 'https://redmine.iqusong.com/issues/7672'
         }
-        if (transaction.innerText == '/1/{version}/companylabors/' && method == 'GET') {
+        if (transaction == '/1/{version}/companylabors/' && method == 'GET') {
             apdex.innerText = '李帅华'
             users.innerText = 'https://redmine.iqusong.com/issues/7780'
+        }
+        if (transaction == '/1/{version}/laborbankaccount/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 三要素认证'
         }
     }
 
