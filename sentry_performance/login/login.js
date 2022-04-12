@@ -34,7 +34,7 @@ function get_performance() {
         }
         if (transaction == '/1/localwallettransaction/' && method == 'GET') {
             apdex.innerText = '李帅华'
-            users.innerText = 'https://redmine.iqusong.com/issues/7672'
+            users.innerText = 'https://redmine.iqusong.com/issues/7801'
         }
         if (transaction == '/1/{version}/companylabors/' && method == 'GET') {
             apdex.innerText = '李帅华'
