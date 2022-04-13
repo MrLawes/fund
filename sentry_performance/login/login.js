@@ -43,6 +43,24 @@ function get_performance() {
         if (transaction == '/1/{version}/laborbankaccount/' && method == 'POST') {
             apdex.innerText = '[网络请求] 三要素认证'
         }
+        if (transaction == '/1/companies/cmbpay_receipt/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 访问招商银行接口'
+        }
+        if (transaction == '/1/companies/cmbpay_to_card/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 访问招商银行接口'
+        }
+        if (transaction == '/1/labors/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 二要素认证'
+        }
+        if (transaction == '/1/labors/not_code_identity3/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 三要素认证'
+        }
+        if (transaction == '/1/{version}/labors/{pk}/update_real_phone/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 三要素认证'
+        }
+        if (transaction == '/1/{version}/labors/{pk}/update_real_phone/' && method == 'POST') {
+            apdex.innerText = '陈海鸥；先完成第一步的优化，companylabor.update 合并成一个'
+            users.innerText = 'https://redmine.iqusong.com/issues/7802'
+        }
     }
-
 }
