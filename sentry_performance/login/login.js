@@ -62,5 +62,17 @@ function get_performance() {
             apdex.innerText = '陈海鸥；先完成第一步的优化，companylabor.update 合并成一个'
             users.innerText = 'https://redmine.iqusong.com/issues/7802'
         }
+        if (transaction == '/1/companylabors/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 二要素认证'
+        }
+        if (transaction == '/1/qr_code_create_labor/create_labor/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 二要素认证'
+        }
+        if (transaction == '/1/labors/sms_verify/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 发送短信'
+        }
+        if (transaction == '/1/offline/sms_verify/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 发送短信'
+        }
     }
 }
