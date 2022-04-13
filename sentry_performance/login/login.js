@@ -74,5 +74,12 @@ function get_performance() {
         if (transaction == '/1/offline/sms_verify/' && method == 'POST') {
             apdex.innerText = '[网络请求] 发送短信'
         }
+        if (transaction == '/1/companylabors/tax_registration_file_download_serverless/' && method == 'GET') {
+            apdex.innerText = '李帅华'
+            users.innerText = 'https://redmine.iqusong.com/issues/7815'
+        }
+        if (transaction == '/1/companies/cmbpay_receipt_fileurl/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 招商银行'
+        }
     }
 }
