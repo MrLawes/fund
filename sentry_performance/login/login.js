@@ -33,7 +33,7 @@ function get_performance() {
             apdex.innerText = '陈海鸥'
         }
         if (transaction == '/1/localwallettransaction/' && method == 'GET') {
-            apdex.innerText = '李帅华'
+            apdex.innerText = '统计所有的数据，全盘扫描，比较耗时'
             users.innerText = 'https://redmine.iqusong.com/issues/7801'
         }
         if (transaction == '/1/{version}/companylabors/' && method == 'GET') {
