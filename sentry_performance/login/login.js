@@ -58,10 +58,6 @@ function get_performance() {
         if (transaction == '/1/{version}/labors/{pk}/update_real_phone/' && method == 'POST') {
             apdex.innerText = '[网络请求] 三要素认证'
         }
-        if (transaction == '/1/{version}/labors/{pk}/update_real_phone/' && method == 'POST') {
-            apdex.innerText = '陈海鸥；先完成第一步的优化，companylabor.update 合并成一个'
-            users.innerText = 'https://redmine.iqusong.com/issues/7802'
-        }
         if (transaction == '/1/companylabors/' && method == 'POST') {
             apdex.innerText = '[网络请求] 二要素认证'
         }
@@ -80,6 +76,14 @@ function get_performance() {
         }
         if (transaction == '/1/companies/cmbpay_receipt_fileurl/' && method == 'POST') {
             apdex.innerText = '[网络请求] 招商银行'
+        }
+        if (transaction == '/1/companylabors/batch_cancel_tax_registration_certificate/' && method == 'POST') {
+            apdex.innerText = '李帅华'
+            users.innerText = 'https://redmine.iqusong.com/issues/5367'
+        }
+        if (transaction == '/1/companylabors/upload_tax_registration_certificate/' && method == 'POST') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/7847'
         }
     }
 }
