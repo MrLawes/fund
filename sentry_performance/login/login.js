@@ -89,5 +89,21 @@ function get_performance() {
             apdex.innerText = '王旭阳'
             users.innerText = 'https://redmine.iqusong.com/issues/7861'
         }
+        if (transaction == '/1/topup_record/' && method == 'GET') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/7897'
+        }
+        if (transaction == '/1/contract_template/{pk}/' && method == 'PUT') {
+            apdex.innerText = '[网络请求] 企业身认证 TODO 根据二期的原型再考虑是否可以用异步'
+        }
+        if (transaction == '/1/services/two_detection/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 二要素认证'
+        }
+        if (transaction == '/openapi/{version}/agency/labors/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 二要素认证'
+        }
+        if (transaction == '/1/agencies/{pk}/zhaoshang/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 招商银行'
+        }
     }
 }
