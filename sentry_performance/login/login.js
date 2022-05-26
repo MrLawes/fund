@@ -105,5 +105,33 @@ function get_performance() {
         if (transaction == '/1/agencies/{pk}/zhaoshang/' && method == 'GET') {
             apdex.innerText = '[网络请求] 招商银行'
         }
+        if (transaction == '/1/{version}/requirement_agency/labor_ids/' && method == 'GET') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/7962'
+        }
+        if (transaction == '/1/labors/{pk}/get_public_account_list/' && method == 'GET') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/7966'
+        }
+        if (transaction == '/1/{version}/labor_cdl/{pk}/wallet/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 钱包服务'
+        }
+        if (transaction == '/1/agencies/account_confirmation/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 钱包服务'
+        }
+        if (transaction == '/1/labors/wallet_transactions/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 钱包服务'
+        }
+        if (transaction == '/1/{version}/labor_lls/{pk}/wallet/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 钱包服务'
+        }
+        if (transaction == '/1/agencies_four/{pk}/' && method == 'PUT') {
+            apdex.innerText = '王旭阳'
+            users.innerText = 'https://redmine.iqusong.com/issues/7985'
+        }
+        if (transaction == '/1/companylabors/template_download/' && method == 'GET') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/7989'
+        }
     }
 }
