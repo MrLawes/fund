@@ -81,10 +81,6 @@ function get_performance() {
             apdex.innerText = '李帅华'
             users.innerText = 'https://redmine.iqusong.com/issues/5367'
         }
-        if (transaction == '/1/companylabors/upload_tax_registration_certificate/' && method == 'POST') {
-            apdex.innerText = '陈海鸥'
-            users.innerText = 'https://redmine.iqusong.com/issues/7847'
-        }
         if (transaction == '/1/companylabors/update_status/' && method == 'POST') {
             apdex.innerText = '王旭阳'
             users.innerText = 'https://redmine.iqusong.com/issues/7861'
@@ -132,6 +128,10 @@ function get_performance() {
         if (transaction == '/1/companylabors/template_download/' && method == 'GET') {
             apdex.innerText = '陈海鸥'
             users.innerText = 'https://redmine.iqusong.com/issues/7989'
+        }
+        if (transaction == '/1/requirement_agency_list/' && method == 'GET') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/8001'
         }
     }
 }
