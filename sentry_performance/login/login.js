@@ -3,6 +3,11 @@ setTimeout(function () {
 }, 4000);
 
 function get_performance() {
+
+    // 过滤掉不想看的
+    // !transaction:v1.tasks* !transaction:v1.celery_tasks.* !transaction:/aihbvnrugblnjgen*
+
+
     table = document.getElementsByTagName('table')[0]
     tbody = table.getElementsByTagName('tbody')[0]
     tbody__trs = tbody.getElementsByTagName('tr')
@@ -21,10 +26,6 @@ function get_performance() {
         if (transaction == '/1/{version}/labors/{pk}/identity4/' && method == 'POST') {
             apdex.innerText = '[网络请求] 四要素认证'
             console.log(method.innerText)
-        }
-        if (transaction == '/1/companylabors/contract_download/' && method == 'GET') {
-            apdex.innerText = '王旭阳'
-            users.innerText = 'https://redmine.iqusong.com/issues/7634'
         }
         if (transaction == '/1/{version}/laborbankaccount/{pk}/' && method == 'PUT') {
             apdex.innerText = '[网络请求] 三要素认证'
@@ -132,6 +133,25 @@ function get_performance() {
         if (transaction == '/1/requirement_agency_list/' && method == 'GET') {
             apdex.innerText = '陈海鸥'
             users.innerText = 'https://redmine.iqusong.com/issues/8001'
+        }
+        if (transaction == '/1/roles/' && method == 'POST') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/8056'
+        }
+        if (transaction == '/1/{version}/wx_authorization_api/web_access_token/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 微信接口'
+        }
+        if (transaction == '/1/weixin/wx_bind_url2/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 微信'
+        }
+        if (transaction == '/1/contracts/{pk}/sign/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 获得合同服务的链接'
+        }
+        if (transaction == '/1/usersaas/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 钱包服务'
+        }
+        if (transaction == '/1/weixin/redirect/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 微信接口'
         }
     }
 }
