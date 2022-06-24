@@ -153,5 +153,25 @@ function get_performance() {
         if (transaction == '/1/weixin/redirect/' && method == 'GET') {
             apdex.innerText = '[网络请求] 微信接口'
         }
+        if (transaction == '/1/weixin/wx_login/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 微信接口'
+        }
+        if (transaction == '/openapi/{version}/econtracts/plus_create_contract/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 合同接口'
+        }
+        if (transaction == '/1/companylabors/tax_registration_file_download_serverless/' && method == 'GET') {
+            apdex.innerText = '李帅华'
+            users.innerText = 'https://redmine.iqusong.com/issues/8157'
+        }
+        if (transaction == '/1/settlements/get_list_sum/' && method == 'GET') {
+            apdex.innerText = '王旭阳'
+            users.innerText = 'https://redmine.iqusong.com/issues/8156'
+        }
+        if (transaction == '/1/stop_records' && method == 'GET') {
+            apdex.innerText = '李帅华'
+            users.innerText = 'https://redmine.iqusong.com/issues/8155'
+        }
+
+
     }
 }
