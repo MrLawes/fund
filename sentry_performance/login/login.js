@@ -184,6 +184,5 @@ function get_performance() {
         if (transaction == '/openapi/{version}/econtracts/plus_create_contract/' && method == 'POST') {
             apdex.innerText = '[网络请求] 合同服务'
         }
-
     }
 }

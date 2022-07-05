@@ -10,7 +10,7 @@ from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name_html', 'rate', 'expense', 'value',)
+    list_display = ('id', 'name_html', 'rate', 'expense', 'value', 'hold',)
     search_fields = ['name', ]
     list_filter = ('name', 'high_sale_low_buy',)
 
@@ -57,6 +57,12 @@ class FundAdmin(admin.ModelAdmin):
 
     value.short_description = '金额/止赢金额✌️'
 
+    def hold(self, obj):
+        buy_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('hold', flat=True))
+        sale_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='sale').values_list('hold', flat=True))
+        return round(buy_hold - sale_hold, 2)
+
+    hold.short_description = '持有份额'
 
 @admin.register(FundValue)
 class FundValueAdmin(admin.ModelAdmin):

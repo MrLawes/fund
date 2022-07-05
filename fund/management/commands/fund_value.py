@@ -84,8 +84,7 @@ class Command(BaseCommand):
         # 计算持有仓位占比
         FundHoldings.objects.all().delete()
         for fund_expense in FundExpense.objects.all():
-            # catetory_name = fund_expense.fund.name.split(']')[0].split('[')[-1]
-            catetory_name = fund_expense.fund.name
+            catetory_name = fund_expense.fund.name.split(']')[0].split('[')[-1]
             fund_holdings, _ = FundHoldings.objects.get_or_create(catetory_name=catetory_name)
             if fund_expense.expense_type == 'buy':
                 fund_holdings.hold += fund_expense.hold
