@@ -264,11 +264,10 @@ class FundExpenseAdmin(admin.ModelAdmin):
         # 显示购买金额
         instance = result.queryset.first()
         if instance:
-            buy_expense = sum(
-                FundExpense.objects.filter(fund=instance.fund, expense_type='buy').values_list('expense', flat=True))
-            sale_expense = sum(
-                FundExpense.objects.filter(fund=instance.fund, expense_type='sale').values_list('expense', flat=True))
-            expense = round(buy_expense - sale_expense, 2)
+            expense = sum(FundExpense.objects.filter(
+                fund=instance.fund, expense_type='buy', need_buy_again=False
+            ).values_list('expense', flat=True))
+            expense = round(expense, 2)
             result.title += f', 购买金额：{expense} 元'
         return result
 
