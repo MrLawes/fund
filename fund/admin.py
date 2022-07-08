@@ -268,7 +268,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 fund=instance.fund, expense_type='buy', need_buy_again=False
             ).values_list('expense', flat=True))
             expense = round(expense, 2)
-            result.title += f', 购买金额：{expense} 元'
+            result.title += f'，已经购买金额：{expense} 元'
         return result
 
 
