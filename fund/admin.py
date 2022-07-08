@@ -267,7 +267,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             expense = sum(FundExpense.objects.filter(
                 fund=instance.fund, expense_type='buy', need_buy_again=False
             ).values_list('expense', flat=True))
-            expense = round(expense, 2)
+            expense = int(expense)
             hold = sum(FundExpense.objects.filter(
                 fund=instance.fund, expense_type='buy', need_buy_again=False
             ).values_list('hold', flat=True))
