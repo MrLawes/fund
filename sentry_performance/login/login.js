@@ -20,6 +20,7 @@ function get_performance() {
         apdex.innerText = ''
         transaction = tbody__tds[1].innerText  // 请求的 url
         let users = tbody__tds[10]   // 改列的数值改为 @ 的开发
+        users.innerText = ''
         method = tbody__tds[4].innerText  // 请求的 url
 
 
@@ -183,6 +184,10 @@ function get_performance() {
         }
         if (transaction == '/openapi/{version}/econtracts/plus_create_contract/' && method == 'POST') {
             apdex.innerText = '[网络请求] 合同服务'
+        }
+        if (transaction == '/1/offline/identity3/' && method == 'POST') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/8212'
         }
     }
 }

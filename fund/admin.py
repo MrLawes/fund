@@ -149,14 +149,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
             else:
                 if obj.need_buy_again:
                     result = f"""已出售"""
-                    # # 最新净值
-                    # newest_fund_value = FundValue.objects.filter(fund=obj.fund).last()
-                    # buy_fund_value = FundValue.objects.get(fund=obj.fund, deal_at=obj.deal_at)
-                    # if newest_fund_value.value < buy_fund_value.value:
-                    #     title = f'最新净值::{newest_fund_value.value}; 购买时净值:{buy_fund_value.value}'
-                    #     result = f""" <a href="/v4/fund_expense/{obj.id}/buy_again/" title="{title}">可回购</a>"""
-                    # else:
-                    #     result = f"""等待回购"""
                 else:
                     result = f"""<a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
 
@@ -266,6 +258,19 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return f"{can_sale_hold:0.02f}/{(fund_value.value * can_sale_hold):0.02f}"
 
     can_sale_hold.short_description = '可售份额/等价金额'
+
+    def get_changelist_instance(self, request):
+        result = super().get_changelist_instance(request=request)
+        # 显示购买金额
+        instance = result.queryset.first()
+        if instance:
+            buy_expense = sum(
+                FundExpense.objects.filter(fund=instance.fund, expense_type='buy').values_list('expense', flat=True))
+            sale_expense = sum(
+                FundExpense.objects.filter(fund=instance.fund, expense_type='sale').values_list('expense', flat=True))
+            expense = round(buy_expense - sale_expense, 2)
+            result.title += f', 购买金额：{expense} 元'
+        return result
 
 
 @admin.register(FundHoldings)
