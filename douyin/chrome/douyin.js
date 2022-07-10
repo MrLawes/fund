@@ -2,6 +2,10 @@ function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time * 1000));
 }
 
+// 每10秒自动刷新一次
+setInterval(function () {
+    document.getElementsByClassName('xgplayer-playswitch-next')[1].click()
+}, 10000)
 
 function douyin() {
 
