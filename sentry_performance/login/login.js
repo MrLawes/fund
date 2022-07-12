@@ -189,5 +189,9 @@ function get_performance() {
             apdex.innerText = '陈海鸥'
             users.innerText = 'https://redmine.iqusong.com/issues/8212'
         }
+        if (transaction == '/1/companylabors/update_stop_status/' && method == 'POST') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/8210'
+        }
     }
 }

@@ -272,7 +272,19 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 fund=instance.fund, expense_type='buy', need_buy_again=False
             ).values_list('hold', flat=True))
             hold = round(hold, 2)
-            result.title += f'，投入：{expense} 元；持有份额：{hold}'
+            fund_value = FundValue.objects.filter(fund=instance.fund).last()
+            if instance.fund_id == 2:  # 白酒
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 4000'
+            elif instance.fund_id == 6:  # 新能源
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 1000'
+            elif instance.fund_id == 14:  # 半导体
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 2500'
+            elif instance.fund_id == 3:  # 医疗
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 10500'
+            elif instance.fund_id == 7:  # 军工
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 1500'
+            else:
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}'
         return result
 
 
