@@ -3,7 +3,6 @@ import json
 
 import httpx
 from django.core.management.base import BaseCommand
-from rich.console import Console
 from rich.table import Table
 
 from fund.models import Fund, FundValue, FundExpense, FundHoldings
@@ -68,18 +67,18 @@ class Command(BaseCommand):
         table.add_column("建议购买（元）", justify="right", style="red", no_wrap=True)
 
         # 更新时间：2022-01-25
-        希望持有市值配置 = {
-            "[新能源]农银工业4.0混合": 1500,
-            # "[新能源]工银瑞信新能源汽车主题混合C": 3500,
-            "[军工]易方达国防军工混合": 1500,
-            # "[军工]鹏华空天军工指数(LOF)C": 1500,
-            "[白酒]招商中证白酒指数(LOF)A": 4000,
-            # "[白酒]招商中证白酒指数C": 1500,  # 份数核对正确：2022-03-01
-            "[半导体]银河创新成长混合A": 2500,
-            # "[半导体]华夏国证半导体芯片ETF联接C": 3500,
-            "[医疗]中欧医疗A": 11500,
-            # "[医疗]工银前沿医疗股票C": 4000,
-        }
+        # 希望持有市值配置 = {
+        #     "[新能源]农银工业4.0混合": 1500,
+        #     # "[新能源]工银瑞信新能源汽车主题混合C": 3500,
+        #     "[军工]易方达国防军工混合": 1500,
+        #     # "[军工]鹏华空天军工指数(LOF)C": 1500,
+        #     "[白酒]招商中证白酒指数(LOF)A": 4000,
+        #     # "[白酒]招商中证白酒指数C": 1500,  # 份数核对正确：2022-03-01
+        #     "[半导体]银河创新成长混合A": 2500,
+        #     # "[半导体]华夏国证半导体芯片ETF联接C": 3500,
+        #     "[医疗]中欧医疗A": 11500,
+        #     # "[医疗]工银前沿医疗股票C": 4000,
+        # }
 
         # 计算持有仓位占比
         FundHoldings.objects.all().delete()
@@ -94,15 +93,15 @@ class Command(BaseCommand):
                 fund_holdings.expense -= fund_expense.expense
             fund_holdings.save()
 
-        for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
-            fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
-            buy_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
-            sale_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='sale').values_list('hold', flat=True))
-            hold = buy_hold - sale_hold
-            建议购买 = 希望持有市值配置[fund.name] - (fund_value.value * hold)
-            table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name]):0.02f}",
-                          f"{int(建议购买)}", )
+        # for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
+        #     fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
+        #     buy_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
+        #     sale_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='sale').values_list('hold', flat=True))
+        #     hold = buy_hold - sale_hold
+        #     建议购买 = 希望持有市值配置[fund.name] - (fund_value.value * hold)
+        #     table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name]):0.02f}",
+        #                   f"{int(建议购买)}", )
 
-        console = Console()
-        console.print(table)
-        print('\n\n\n\n\n\n\n\n\n')
+        # console = Console()
+        # console.print(table)
+        # print('\n\n\n\n\n\n\n\n\n')
