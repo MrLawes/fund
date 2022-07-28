@@ -274,7 +274,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             hold = round(hold, 2)
             fund_value = FundValue.objects.filter(fund=instance.fund).last()
             if instance.fund_id == 2:  # 白酒
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 4000'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 5000'
             elif instance.fund_id == 6:  # 新能源
                 result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 1000'
             elif instance.fund_id == 14:  # 半导体
