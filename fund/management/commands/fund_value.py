@@ -101,7 +101,6 @@ class Command(BaseCommand):
         #     建议购买 = 希望持有市值配置[fund.name] - (fund_value.value * hold)
         #     table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name]):0.02f}",
         #                   f"{int(建议购买)}", )
-
         # console = Console()
         # console.print(table)
         # print('\n\n\n\n\n\n\n\n\n')
