@@ -172,10 +172,6 @@ function get_performance() {
             apdex.innerText = '李帅华'
             users.innerText = 'https://redmine.iqusong.com/issues/8155'
         }
-        if (transaction == '/1/screen_deal_amount_data/get_data_count/' && method == 'GET') {
-            apdex.innerText = '前端正在优化'
-            users.innerText = 'https://redmine.iqusong.com/issues/8160'
-        }
         if (transaction == '/1/weixin/wx_bind_url1/' && method == 'GET') {
             apdex.innerText = '[网络请求] parse 接口'
         }
