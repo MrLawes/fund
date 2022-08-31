@@ -89,7 +89,7 @@ function get_performance() {
         }
         if (transaction == '/1/topup_record/' && method == 'GET') {
             apdex.innerText = '陈海鸥'
-            users.innerText = 'https://redmine.iqusong.com/issues/7897'
+            users.innerText = 'https://redmine.iqusong.com/issues/8439'
         }
         if (transaction == '/1/contract_template/{pk}/' && method == 'PUT') {
             apdex.innerText = '[网络请求] 企业身认证 TODO 根据二期的原型再考虑是否可以用异步'
@@ -169,8 +169,8 @@ function get_performance() {
             users.innerText = 'https://redmine.iqusong.com/issues/8156'
         }
         if (transaction == '/1/stop_records' && method == 'GET') {
-            apdex.innerText = '李帅华'
-            users.innerText = 'https://redmine.iqusong.com/issues/8155'
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/8453'
         }
         if (transaction == '/1/screen_deal_amount_data/get_data_count/' && method == 'GET') {
             apdex.innerText = '陈海鸥'
@@ -192,6 +192,10 @@ function get_performance() {
         if (transaction == '/1/companylabors/update_stop_status/' && method == 'POST') {
             apdex.innerText = '陈海鸥'
             users.innerText = 'https://redmine.iqusong.com/issues/8210'
+        }
+        if (transaction == '/1/{version}/parks/saas_index_data_statistics/' && method == 'GET') {
+            apdex.innerText = '陈海鸥'
+            users.innerText = 'https://redmine.iqusong.com/issues/8483'
         }
     }
 }
