@@ -197,5 +197,11 @@ function get_performance() {
             apdex.innerText = '陈海鸥'
             users.innerText = 'https://redmine.iqusong.com/issues/8483'
         }
+        if (transaction == '/1/settlements/{pk}/settle/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 招商银行'
+        }
+        if (transaction == '/1/companies/cmbpay_prepay_to_card/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 招商银行'
+        }
     }
 }
