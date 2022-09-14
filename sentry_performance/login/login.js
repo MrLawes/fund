@@ -203,5 +203,8 @@ function get_performance() {
         if (transaction == '/1/companies/cmbpay_prepay_to_card/' && method == 'POST') {
             apdex.innerText = '[网络请求] 招商银行'
         }
+        if (transaction == '/1/businesspromotionfee/bpf_cdl/' && method == 'PUT') {
+            apdex.innerText = '[网络请求] cdl 获得业务推广费'
+        }
     }
 }
