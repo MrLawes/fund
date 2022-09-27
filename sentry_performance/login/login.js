@@ -206,5 +206,8 @@ function get_performance() {
         if (transaction == '/1/businesspromotionfee/bpf_cdl/' && method == 'PUT') {
             apdex.innerText = '[网络请求] cdl 获得业务推广费'
         }
+        if (transaction == '/1/companies/{pk}/enterprise_identity/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 合同服务 获得企业认证地址'
+        }
     }
 }
