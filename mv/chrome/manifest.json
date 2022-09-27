@@ -1,0 +1,20 @@
+{
+  "name": "mv",
+  "manifest_version": 2,
+  "version": "1.0",
+  "description": "mv",
+  "browser_action": {
+    "default_icon": "mv.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://bilibili.iiilab.com/*"
+      ],
+      "js": [
+        "http.js",
+        "mv.js"
+      ]
+    }
+  ]
+}
