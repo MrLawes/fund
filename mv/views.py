@@ -1,7 +1,6 @@
 import datetime  # noqa
 import time
 
-import requests
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import ModelSerializer
@@ -38,21 +37,18 @@ class MvViewSet(ModelViewSet):
     @action(methods=['put'], detail=True, )
     def set_downloading(self, request, *args, **kargs):
         data = self.request.data
-        name = data.get('name', '')  # 'F.I.R.飞儿乐团 歌曲选集 - 你的微笑\n\n下载视频视频封面\n\n清空'
+        name = data.get('name', '').split('\n')[0]  # 'F.I.R.飞儿乐团 歌曲选集 - 你的微笑\n\n下载视频视频封面\n\n清空'
         href = data.get('href', '')
-        if not href:
-            return Response({})
-
-        requests.get(href)
+        # if not href:
+        #     return Response({})
+        #
+        # with open(f'{str(str(settings.BASE_DIR))}/{name}.mp4', 'wb') as f:
+        #     f.write(requests.get(href).content)
 
         mv = self.get_object()
-        mv.action = '下载中'
+        mv.action = '下载完成'
         if not mv.name:
             mv.name = name
         mv.save()
-
-        while 1:
-            print('正在下载中')
-            time.sleep(3)
         # https://upos-sz-mirrorcos.bilivideo.com/upgcxcode/84/07/170000784/170000784-1-208.mp4?e=ig8euxZM2rNcNbhghbdVhwdlhzNghwdVhoNvNC8BqJIzNbfq9rVEuxTEnE8L5F6VnEsSTx0vkX8fqJeYTj_lta53NCM=&uipk=5&nbs=1&deadline=1664306611&gen=playurlv2&os=vcache&oi=1866715013&trid=000181e5e9674df84916b52ee5131e882c94T&mid=0&platform=html5&upsig=c6ec70061bb17240be828558796fbcd9&uparams=e,uipk,nbs,deadline,gen,os,oi,trid,mid,platform&cdnid=5177&bvc=vod&nettype=0&bw=323300&orderid=0,1&logo=80000000
         return Response({})

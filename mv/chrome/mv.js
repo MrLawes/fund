@@ -8,6 +8,7 @@ function mv() {
             data, function (status, responseText) {
                 let input_ele = document.getElementsByTagName('input')[0]
                 let download_url = JSON.parse(responseText)['download_url']
+                console.log('获得下载内容:' + responseText)
                 if (download_url) {
                     let mv_id = JSON.parse(responseText)['id']
                     let evt = document.createEvent('HTMLEvents');
@@ -25,8 +26,11 @@ function mv() {
                         'http://127.0.0.1:8000/v4/mv/' + mv_id + '/set_downloading',
                         {'name': name, 'href': href}, function (status, responseText) {
                         })
-
-
+                    // document.getElementsByClassName('btn btn-success')[0].click()
+                    http.get(
+                        'http://127.0.0.1:8000/v4/mv/sleep/',
+                        {}, function (status, responseText) {
+                        })
                     // setTimeout(function () {
                     //     // const data = {};
                     //     // http.get(
@@ -51,7 +55,7 @@ function mv() {
                 }
             }
         );
-    }, 12000)
+    }, 3000)
     // }, 1000)
 }
 
