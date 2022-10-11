@@ -122,7 +122,10 @@ class FundExpenseAdmin(admin.ModelAdmin):
             if result.need_buy_again:
                 result.hold_rate = 0
             else:
-                result.hold_rate = (((value - result.expense) / result.expense) * 100)
+                if result.expense == 0:
+                    result.hold_rate = 0
+                else:
+                    result.hold_rate = (((value - result.expense) / result.expense) * 100)
             result.save()
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
@@ -195,7 +198,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
             color = 'green'
         else:
             color = 'red'
-
+        if obj.id == 3849:
+            value = f'3---{value}---'
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
@@ -209,7 +213,10 @@ class FundExpenseAdmin(admin.ModelAdmin):
         if obj.need_buy_again:
             return ''
         else:
-            return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
+            if obj.expense == 0:
+                return ''
+            else:
+                return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate_persent.short_description = '持有收益率'
 
@@ -278,7 +285,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             elif instance.fund_id == 6:  # 新能源
                 result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 4000'
             elif instance.fund_id == 14:  # 半导体
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 3500'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 4000'
             elif instance.fund_id == 3:  # 医疗
                 result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 10500'
             elif instance.fund_id == 7:  # 军工
