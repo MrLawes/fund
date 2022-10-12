@@ -199,7 +199,9 @@ class FundExpenseAdmin(admin.ModelAdmin):
         else:
             color = 'red'
         if obj.id == 3849:
-            value = f'3---{value}---'
+            value = f'[1500]---{value}---'
+        elif obj.id == 3854:
+            value = f'[2000]---{value}---'
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
