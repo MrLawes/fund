@@ -112,6 +112,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
     list_filter = ('fund__name', 'fund__high_sale_low_buy')
     actions = ['sum_hold', 'sale', ]
     form = FundExpenseForm
+    list_per_page = 500
 
     def get_queryset(self, request):
         results = super().get_queryset(request=request)
@@ -200,8 +201,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
             color = 'red'
         if obj.id == 3849:  # 半导体
             value = f'[1500]---{value}---'
-        elif obj.id == 3854:  #
+        elif obj.id == 3854:  # 新能源
             value = f'[2000]---{value}---'
+        elif obj.id == 3841:  # 军工
+            value = f'[1000]---{value}---'
+        elif obj.id == 3834:  # 医疗
+            value = f'[2000]---{value}---'
+        elif obj.id == 3838:  # 白酒
+            value = f'[2500]---{value}---'
+
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
