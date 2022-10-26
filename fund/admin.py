@@ -199,15 +199,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
         else:
             color = 'red'
         if obj.id == 3849:  # 半导体
-            value = f'[1*1000]---{value}---'
+            value = f'[1*1000]{value}'
         elif obj.id == 3854:  # 新能源
-            value = f'[2*1000]---{value}---'
+            value = f'[2*1000]{value}'
         elif obj.id == 3841:  # 军工
-            value = f'[1*1000]---{value}---'
+            value = f'[1*1000]{value}'
         elif obj.id == 3834:  # 医疗
-            value = f'[2*1000]---{value}---'
+            value = f'[2*1000]{value}'
         elif obj.id == 3838:  # 白酒
-            value = f'[2*1000]---{value}---'
+            value = f'[2*1000]{value}'
 
         return format_html(f'<span style="color: {color};">{value}</span>')
 
