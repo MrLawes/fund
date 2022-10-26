@@ -309,15 +309,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
             hold = round(hold, 2)
 
             if instance.fund.category == 1:  # 医疗
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 18000'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 10000'
             elif instance.fund.category == 2:  # 白酒
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 9500'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 10000'
             elif instance.fund.category == 3:  # 半导体
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 10500'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 10000'
             elif instance.fund.category == 4:  # 军工
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 2500'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 10000'
             elif instance.fund.category == 5:  # 新能源
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 11000'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 10000'
             else:
                 result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
 
