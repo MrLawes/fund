@@ -214,18 +214,19 @@ class FundExpenseAdmin(admin.ModelAdmin):
     hold_value.short_description = '持有市值'
 
     def hold_rate_persent(self, obj):
-        if obj.expense_type == 'sale':
-            return ''
+        # if obj.expense_type == 'sale':
+        #     return ''
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = obj.hold * last_fundvalue.value
-        # 卖出去过的，不展示收益率
-        if obj.need_buy_again:
-            return ''
-        else:
-            if obj.expense == 0:
-                return ''
-            else:
-                return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
+        return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
+        # # 卖出去过的，不展示收益率
+        # if obj.need_buy_again:
+        #     return ''
+        # else:
+        #     if obj.expense == 0:
+        #         return ''
+        #     else:
+        #         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate_persent.short_description = '持有收益率'
 
