@@ -109,7 +109,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         'id', 'deal_at', 'transaction_rule', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
         'hope_value', 'can_sale_hold', 'buttons',)
     search_fields = ['fund__name', 'id', ]
-    list_filter = ('fund__name', 'fund__high_sale_low_buy')
+    list_filter = ('fund__category', 'fund__name',)
     actions = ['sum_hold', 'sale', ]
     form = FundExpenseForm
     list_per_page = 500
@@ -179,7 +179,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
             else:
                 fund = queryset.filter(expense_type='buy').first().fund
                 now_date = datetime.datetime.now().date()
-                # now_date = datetime.datetime(2022, 1, 17).date()
                 hold = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
                 expense = hold * FundValue.objects.get(fund=fund, deal_at=now_date).value
                 FundExpense.objects.create(
@@ -281,15 +280,28 @@ class FundExpenseAdmin(admin.ModelAdmin):
         # 显示购买金额
         instance = result.queryset.first()
         if instance:
-            expense = sum(FundExpense.objects.filter(
-                fund=instance.fund, expense_type='buy', need_buy_again=False
-            ).values_list('expense', flat=True))
-            expense = int(expense)
+
+            # expense_type = models.CharField(verbose_name='基金交易类型: buy: 购买；sale：出售', max_length=8, default='buy')
+
+            # expense = sum(FundExpense.objects.filter(
+            #     fund=instance.fund, expense_type='buy', need_buy_again=False
+            # ).values_list('expense', flat=True))
+            # expense = int(expense)
+
             hold = sum(FundExpense.objects.filter(
                 fund=instance.fund, expense_type='buy', need_buy_again=False
             ).values_list('hold', flat=True))
             hold = round(hold, 2)
             fund_value = FundValue.objects.filter(fund=instance.fund).last()
+
+            expense = 0
+            for r in result.queryset:
+                if r.expense_type == 'buy':
+                    expense += r.expense
+                elif r.expense_type == 'sale':
+                    expense -= r.expense
+            expense = int(expense)
+
             if instance.fund_id == 2:  # 白酒
                 result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 5000'
             elif instance.fund_id == 6:  # 新能源
@@ -302,6 +314,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 1500'
             else:
                 result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}'
+
         return result
 
 
