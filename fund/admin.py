@@ -292,32 +292,34 @@ class FundExpenseAdmin(admin.ModelAdmin):
             #     fund=instance.fund, expense_type='buy', need_buy_again=False
             # ).values_list('hold', flat=True))
             # hold = round(hold, 2)
-            fund_value = FundValue.objects.filter(fund=instance.fund).last()
+            # fund_value_old = FundValue.objects.filter(fund=instance.fund).last()
 
-            expense, hold = 0, 0
+            expense, hold, fund_value = 0, 0, 0
 
             for r in result.queryset:
                 if r.expense_type == 'buy':
                     expense += r.expense
                     hold += r.hold
+                    fund_value += FundValue.objects.filter(fund=r.fund).last().value * r.hold
                 elif r.expense_type == 'sale':
                     expense -= r.expense
                     hold -= r.hold
+                    fund_value -= FundValue.objects.filter(fund=r.fund).last().value * r.hold
             expense = int(expense)
             hold = round(hold, 2)
 
-            if instance.fund.category == 2:  # 白酒
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 10000'
-            elif instance.fund.category == 5:  # 新能源
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 4000'
+            if instance.fund.category == 1:  # 医疗
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 18000'
+            elif instance.fund.category == 2:  # 白酒
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 9500'
             elif instance.fund.category == 3:  # 半导体
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 4000'
-            elif instance.fund.category == 1:  # 医疗
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 10500'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 10500'
             elif instance.fund.category == 4:  # 军工
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}|恒定 1500'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 2500'
+            elif instance.fund.category == 5:  # 新能源
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 11000'
             else:
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(hold * fund_value.value)}'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
 
         return result
 

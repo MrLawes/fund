@@ -5,11 +5,11 @@ from django.db import models
 
 class Fund(models.Model):
     FUND_CATEGORY = (
-        (1, '🏥'),
-        (2, '🍶'),
-        (3, '📻'),
-        (4, '🎖️'),
-        (5, '🚗'),
+        (1, '医疗'),
+        (2, '白酒'),
+        (3, '半导体'),
+        (4, '军工'),
+        (5, '新能源'),
     )
     category = models.IntegerField(choices=FUND_CATEGORY, default=0)
     name = models.CharField(max_length=64, verbose_name='基金名称', db_index=True, )
