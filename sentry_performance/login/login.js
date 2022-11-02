@@ -209,5 +209,8 @@ function get_performance() {
         if (transaction == '/1/companies/{pk}/enterprise_identity/' && method == 'POST') {
             apdex.innerText = '[网络请求] 合同服务 获得企业认证地址'
         }
+        if (transaction == '/1/users/sms_agency_offline_settle/' && method == 'POST') {
+            apdex.innerText = '[网络请求] 短信服务'
+        }
     }
 }
