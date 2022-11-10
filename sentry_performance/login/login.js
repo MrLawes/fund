@@ -8,7 +8,7 @@ function get_performance() {
     // !transaction:v1.tasks* !transaction:v1.celery_tasks.* !transaction:/aihbvnrugblnjgen*
 
     // 为定位到的代码的位置添加链接
-    function refresh_op_link() {
+    setInterval(function () {
         spans = document.getElementsByClassName('val-string')
         for (span_index = 0; span_index < spans.length; span_index++) {
             span_inner_html = spans[span_index].innerHTML
@@ -23,9 +23,7 @@ function get_performance() {
                 }
             }
         }
-    }
-
-    setInterval("refresh_op_link()", "1000");
+    }, 1000)
 
     table = document.getElementsByTagName('table')[0]
     tbody = table.getElementsByTagName('tbody')[0]
