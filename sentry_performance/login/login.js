@@ -8,19 +8,23 @@ function get_performance() {
     // !transaction:v1.tasks* !transaction:v1.celery_tasks.* !transaction:/aihbvnrugblnjgen*
 
     // 为定位到的代码的位置添加链接
-    spans = document.getElementsByClassName('val-string')
-    for (span_index = 0; span_index < spans.length; span_index++) {
-        span_inner_html = spans[span_index].innerHTML
-        if (span_inner_html.indexOf('href') == -1) {
-            if (span_inner_html.indexOf('b at File "') == 1) {
-                replace_str = span_inner_html.substring(span_inner_html.indexOf('"') + 1, span_inner_html.indexOf('",'))
-                line = span_inner_html.substring(span_inner_html.indexOf(', line ') + 7, span_inner_html.indexOf(', in '))
-                href = 'https://gitlab.iqusong.com/llsaas/api/-/blob/master/' + replace_str + '#L' + line
-                replace_to = '<a href="' + href + '" target="_blank" >' + replace_str + '</a>'
-                spans[span_index].innerHTML = span_inner_html.replace(replace_str, replace_to)
+    function refresh_op_link() {
+        spans = document.getElementsByClassName('val-string')
+        for (span_index = 0; span_index < spans.length; span_index++) {
+            span_inner_html = spans[span_index].innerHTML
+            if (span_inner_html.indexOf('href') == -1) {
+                if (span_inner_html.indexOf('b at File "') == 1) {
+                    replace_str = span_inner_html.substring(span_inner_html.indexOf('"') + 1, span_inner_html.indexOf('",'))
+                    line = span_inner_html.substring(span_inner_html.indexOf(', line ') + 7, span_inner_html.indexOf(', in '))
+                    href = 'https://gitlab.iqusong.com/llsaas/api/-/blob/master/' + replace_str + '#L' + line
+                    replace_to = '<a href="' + href + '" target="_blank" >' + replace_str + '</a>'
+                    spans[span_index].innerHTML = span_inner_html.replace(replace_str, replace_to)
+                }
             }
         }
     }
+
+    setInterval("refresh_op_link()", "1000");
 
     table = document.getElementsByTagName('table')[0]
     tbody = table.getElementsByTagName('tbody')[0]
