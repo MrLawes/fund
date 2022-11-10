@@ -13,7 +13,7 @@ function get_performance() {
         for (span_index = 0; span_index < spans.length; span_index++) {
             span_inner_html = spans[span_index].innerHTML
             if (span_inner_html.indexOf('href') == -1) {
-                if (span_inner_html.indexOf('b at File "') == 1) {
+                if (span_inner_html.indexOf(' at File "') != -1) {
                     replace_str = span_inner_html.substring(span_inner_html.indexOf('"') + 1, span_inner_html.indexOf('",'))
                     line = span_inner_html.substring(span_inner_html.indexOf(', line ') + 7, span_inner_html.indexOf(', in '))
                     release = document.getElementsByClassName('css-1xdhyk6 eqmhduc3')[0].innerHTML
