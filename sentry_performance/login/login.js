@@ -9,15 +9,28 @@ function get_performance() {
 
     // 为定位到的代码的位置添加链接
     setInterval(function () {
+
+        // 找到所有 Operation 的描述内容
         spans = document.getElementsByClassName('val-string')
+
         for (span_index = 0; span_index < spans.length; span_index++) {
             span_inner_html = spans[span_index].innerHTML
+
+            // 如果描述的内容已经添加链接，不再操作
             if (span_inner_html.indexOf('href') == -1) {
+
+                // 内容中存在 db at File 或者 http at File，说明是有具体代码位置的内容
                 if (span_inner_html.indexOf(' at File "') != -1) {
+
+                    // 获得文件路径
                     replace_str = span_inner_html.substring(span_inner_html.indexOf('"') + 1, span_inner_html.indexOf('",'))
+                    // 获得执行的代码在第几行
                     line = span_inner_html.substring(span_inner_html.indexOf(', line ') + 7, span_inner_html.indexOf(', in '))
+                    // 获得代码的版本号
                     release = document.getElementsByClassName('css-1xdhyk6 eqmhduc3')[0].innerHTML
+                    // 拼接出可以精确定位到所在代码行的 gitlab 链接，
                     href = 'https://gitlab.iqusong.com/llsaas/api/-/blob/release-' + release + '/' + replace_str + '#L' + line
+                    // 将文件路径替换成带链接的文件名
                     replace_to = '<a href="' + href + '" target="_blank" >' + replace_str + '</a>'
                     spans[span_index].innerHTML = span_inner_html.replace(replace_str, replace_to)
                 }
