@@ -116,24 +116,17 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         results = super().get_queryset(request=request)
-        for result in results:
-
-            value = result.hold * result.newest_value
-            # 卖出去过的，不展示持有收益率
-            if result.need_buy_again:
-                result.hold_rate = 0
-            else:
-                if result.expense == 0:
-                    result.hold_rate = 0
-                else:
-                    result.hold_rate = (((value - result.expense) / result.expense) * 100)
-
-            print('#' * 50)
-            print(f'{result.hold_rate=}; {result.hold_rate_test=}')
-            if result.hold_rate != result.hold_rate_test:
-                xxxxx
-
-            result.save()
+        # for result in results:
+        #     value = result.hold * result.newest_value
+        #     # 卖出去过的，不展示持有收益率
+        #     if result.need_buy_again:
+        #         result.hold_rate = 0
+        #     else:
+        #         if result.expense == 0:
+        #             result.hold_rate = 0
+        #         else:
+        #             result.hold_rate = (((value - result.expense) / result.expense) * 100)
+        #     result.save()
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
 

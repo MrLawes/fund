@@ -106,13 +106,13 @@ class Command(BaseCommand):
 
             # 更新所有交易的持有收益率，用于排序
             if fe.need_buy_again:
-                fe.hold_rate_test = 0
+                fe.hold_rate = 0
             else:
                 if fe.expense == 0:
-                    fe.hold_rate_test = 0
+                    fe.hold_rate = 0
                 else:
-                    fe.hold_rate_test = ((((fe.hold * fe.newest_value) - fe.expense) / fe.expense) * 100)
-            fe.save(update_fields=['hold_rate_test', ])
+                    fe.hold_rate = ((((fe.hold * fe.newest_value) - fe.expense) / fe.expense) * 100)
+            fe.save(update_fields=['hold_rate', ])
 
             # 计算持有仓位占比
             catetory_name = fe.fund.name.split(']')[0].split('[')[-1]
