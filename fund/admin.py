@@ -117,9 +117,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         results = super().get_queryset(request=request)
         for result in results:
-            # todo chenhaiou 每个交易记录中存有最新
-            last_fundvalue = FundValue.objects.filter(fund=result.fund_value.fund).order_by('deal_at').last()
-            value = result.hold * last_fundvalue.value
+
+            value = result.hold * result.newest_value
             # 卖出去过的，不展示持有收益率
             if result.need_buy_again:
                 result.hold_rate = 0
@@ -128,6 +127,12 @@ class FundExpenseAdmin(admin.ModelAdmin):
                     result.hold_rate = 0
                 else:
                     result.hold_rate = (((value - result.expense) / result.expense) * 100)
+
+            print('#' * 50)
+            print(f'{result.hold_rate=}; {result.hold_rate_test=}')
+            if result.hold_rate != result.hold_rate_test:
+                xxxxx
+
             result.save()
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results

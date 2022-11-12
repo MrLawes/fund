@@ -60,6 +60,11 @@ class Command(BaseCommand):
                 defaults = {'value': value, 'rate': rate}
                 FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
 
+            # 获得最新的净值数据
+            last_fundvalue = FundValue.objects.filter(fund=fund).order_by('deal_at').last()
+            # 将最新的净值数据，更新到所有的交易记录，方便计算
+            FundExpense.objects.filter(fund=fund).update(newest_value=last_fundvalue.value)
+
         table = Table(title="")
         table.add_column("基金名称", justify="left", no_wrap=True, )
         table.add_column("持有市值", justify="right", style="red", no_wrap=True)
@@ -82,15 +87,42 @@ class Command(BaseCommand):
 
         # 计算持有仓位占比
         FundHoldings.objects.all().delete()
-        for fund_expense in FundExpense.objects.all():
-            catetory_name = fund_expense.fund.name.split(']')[0].split('[')[-1]
+
+        # value = result.hold * result.newest_value
+        # # 卖出去过的，不展示持有收益率
+        # if result.need_buy_again:
+        #     result.hold_rate = 0
+        # else:
+        #     if result.expense == 0:
+        #         result.hold_rate = 0
+        #     else:
+        #         result.hold_rate = (((value - result.expense) / result.expense) * 100)
+        #
+        #
+        #
+        # result.save()
+
+        for fe in FundExpense.objects.all():
+
+            # 更新所有交易的持有收益率，用于排序
+            if fe.need_buy_again:
+                fe.hold_rate_test = 0
+            else:
+                if fe.expense == 0:
+                    fe.hold_rate_test = 0
+                else:
+                    fe.hold_rate_test = ((((fe.hold * fe.newest_value) - fe.expense) / fe.expense) * 100)
+            fe.save(update_fields=['hold_rate_test', ])
+
+            # 计算持有仓位占比
+            catetory_name = fe.fund.name.split(']')[0].split('[')[-1]
             fund_holdings, _ = FundHoldings.objects.get_or_create(catetory_name=catetory_name)
-            if fund_expense.expense_type == 'buy':
-                fund_holdings.hold += fund_expense.hold
-                fund_holdings.expense += fund_expense.expense
-            elif fund_expense.expense_type == 'sale':
-                fund_holdings.hold -= fund_expense.hold
-                fund_holdings.expense -= fund_expense.expense
+            if fe.expense_type == 'buy':
+                fund_holdings.hold += fe.hold
+                fund_holdings.expense += fe.expense
+            elif fe.expense_type == 'sale':
+                fund_holdings.hold -= fe.hold
+                fund_holdings.expense -= fe.expense
             fund_holdings.save()
 
         # for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
