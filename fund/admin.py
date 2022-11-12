@@ -115,18 +115,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
     list_per_page = 500
 
     def get_queryset(self, request):
-        # results = super().get_queryset(request=request)
-        # for result in results:
-        #     value = result.hold * result.newest_value
-        #     # 卖出去过的，不展示持有收益率
-        #     if result.need_buy_again:
-        #         result.hold_rate = 0
-        #     else:
-        #         if result.expense == 0:
-        #             result.hold_rate = 0
-        #         else:
-        #             result.hold_rate = (((value - result.expense) / result.expense) * 100)
-        #     result.save()
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
 
@@ -216,19 +204,9 @@ class FundExpenseAdmin(admin.ModelAdmin):
     hold_value.short_description = '持有市值'
 
     def hold_rate_persent(self, obj):
-        # if obj.expense_type == 'sale':
-        #     return ''
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = obj.hold * last_fundvalue.value
         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
-        # # 卖出去过的，不展示收益率
-        # if obj.need_buy_again:
-        #     return ''
-        # else:
-        #     if obj.expense == 0:
-        #         return ''
-        #     else:
-        #         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate_persent.short_description = '持有收益率'
 
@@ -244,58 +222,11 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     transaction_rule.short_description = '交易规则'
 
-    # def can_sale_hold(self, obj):
-    #     """ 获得最佳可售份额 """
-    #     if obj.expense_type == 'sale':
-    #         return ""
-    #
-    #     fund = obj.fund
-    #     # 最优出售天数, 一般短线 7 天，长线 30 天。
-    #     best_transaction_rule_days = fund.best_transaction_rule_days
-    #
-    #     # 最优出售日期，一般短线为 7 天后免手续费
-    #     best_rule_date = datetime.datetime.now() - datetime.timedelta(days=best_transaction_rule_days + 1)
-    #
-    #     # 所有购买记录
-    #     all_buy_hold = sum(list(
-    #         FundExpense.objects.filter(fund=obj.fund, expense_type='buy', ).values_list(
-    #             'hold', flat=True)))
-    #     # 所以出售记录
-    #     all_sale_hold = sum(list(
-    #         FundExpense.objects.filter(fund=obj.fund, expense_type='sale', ).values_list(
-    #             'hold', flat=True)))
-    #     # 当前拥有份额
-    #     hold = all_buy_hold - all_sale_hold
-    #
-    #     # 近 7 天或 30 天内的购买记录，这部分要手续费
-    #     resently_buy_hold = sum(list(
-    #         FundExpense.objects.filter(fund=obj.fund, expense_type='buy', deal_at__gt=best_rule_date).values_list(
-    #             'hold', flat=True)))
-    #
-    #     can_sale_hold = hold - resently_buy_hold
-    #     fund_value = FundValue.objects.filter(fund=obj.fund, ).order_by('deal_at').last()
-    #     return f"{can_sale_hold:0.02f}/{(fund_value.value * can_sale_hold):0.02f}"
-    #
-    # can_sale_hold.short_description = '可售份额/等价金额'
-
     def get_changelist_instance(self, request):
         result = super().get_changelist_instance(request=request)
         # 显示购买金额
         instance = result.queryset.first()
         if instance:
-
-            # expense_type = models.CharField(verbose_name='基金交易类型: buy: 购买；sale：出售', max_length=8, default='buy')
-
-            # expense = sum(FundExpense.objects.filter(
-            #     fund=instance.fund, expense_type='buy', need_buy_again=False
-            # ).values_list('expense', flat=True))
-            # expense = int(expense)
-
-            # hold = sum(FundExpense.objects.filter(
-            #     fund=instance.fund, expense_type='buy', need_buy_again=False
-            # ).values_list('hold', flat=True))
-            # hold = round(hold, 2)
-            # fund_value_old = FundValue.objects.filter(fund=instance.fund).last()
 
             expense, hold, fund_value = 0, 0, 0
 
