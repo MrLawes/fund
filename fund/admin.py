@@ -115,7 +115,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
     list_per_page = 500
 
     def get_queryset(self, request):
-        results = super().get_queryset(request=request)
+        # results = super().get_queryset(request=request)
         # for result in results:
         #     value = result.hold * result.newest_value
         #     # 卖出去过的，不展示持有收益率
