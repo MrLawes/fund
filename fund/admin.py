@@ -137,14 +137,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
             if obj.need_buy_again:
                 return f"""已出售"""
-
-            if obj.is_buy_again:  # todo delete
-                result = '已回购'
             else:
-                if obj.need_buy_again:
-                    result = f"""已出售"""
-                else:
-                    result = f"""<a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
+                result = f"""<a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
 
         return format_html(result)
 
