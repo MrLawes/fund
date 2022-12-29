@@ -26,7 +26,7 @@ class Fund(models.Model):
 
     class Meta:
         verbose_name_plural = '基金'
-        ordering = ['name']
+        # ordering = ['name']
 
     def __str__(self):
         return self.name

@@ -10,7 +10,7 @@ from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name_html', 'rate', 'expense', 'value', 'hold',)
+    list_display = ('id', 'name_html', 'rate', 'expense', 'value', 'hold', 'month_min',)
     search_fields = ['name', ]
     list_filter = ('name', 'high_sale_low_buy',)
 
@@ -63,6 +63,23 @@ class FundAdmin(admin.ModelAdmin):
         return round(buy_hold - sale_hold, 2)
 
     hold.short_description = '持有份额'
+
+    def month_min(self, obj):
+
+        min_value, min_deal_at = 999999, ''
+        for fund_value in FundValue.objects.filter(
+                fund=obj, deal_at__gte=datetime.datetime.now() - datetime.timedelta(days=31)
+        ):
+            if fund_value.value < min_value:
+                min_value = fund_value.value
+                min_deal_at = fund_value.deal_at
+
+        if str(min_deal_at) == str(datetime.datetime.now().date()):
+            return format_html(f"""<span style="color: red;">{min_deal_at}</span>""")
+        return min_deal_at
+
+    month_min.short_description = '30天内最低'
+
 
 @admin.register(FundValue)
 class FundValueAdmin(admin.ModelAdmin):
