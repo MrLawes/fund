@@ -79,7 +79,7 @@ class ChessBoard:
                 col = blank_index[1] + item_cow
                 if self.data[row][col]:
                     print('已存在棋子')
-                    raise Exception('已存在棋子')
+                    return False
                 self.data[row][col] = value
 
         print('放入棋子:')
@@ -93,6 +93,7 @@ class ChessBoard:
                 f.write('完成棋子')
                 for i in items:
                     f.write(i)
+        return True
 
 class Chess:
 
@@ -189,8 +190,6 @@ for chesses in itertools.permutations(chess_list, len(chess_list)):
                 continue
         chess_board = ChessBoard()
         for index, item in enumerate(items):
-            try:
-                chess_board.put_chess(item)
-            except Exception:
-                error_chess = index, item
+            result = chess_board.put_chess(item)
+            if not result:
                 break
