@@ -67,11 +67,9 @@ class ChessBoard:
             return -1, -1
 
     def put_chess(self, items):
-        print('放入棋子:')
-        for i in items:
-            print(i)
 
         blank_index = self.blank_index
+
         for item_row, item in enumerate(items):
             for item_cow, value in enumerate(item):
                 if value == 0:
@@ -83,8 +81,18 @@ class ChessBoard:
                     print('已存在棋子')
                     raise Exception('已存在棋子')
                 self.data[row][col] = value
+
+        print('放入棋子:')
+        for i in items:
+            print(i)
+
         self.print_data()
 
+        if blank_index == (-1, -1):
+            with open('resutl.log', 'a+') as f:
+                f.write('完成棋子')
+                for i in items:
+                    f.write(i)
 
 class Chess:
 
@@ -166,18 +174,23 @@ chess_data.append([
 ])
 chess_list = []
 for data in chess_data:
-    chess_list.append(Chess(data=data).data)
+    chess_list.append(Chess(data=data))
 
 # 遍历出所有的组合
-error_chess = None, None
-for items in itertools.product(*chess_list):
-    if error_chess[0]:
-        if items[error_chess[0]] == error_chess[1]:
-            continue
-    chess_board = ChessBoard()
-    for index, item in enumerate(items):
-        try:
-            chess_board.put_chess(item)
-        except Exception:
-            error_chess = index, item
-            break
+for chesses in itertools.permutations(chess_list, len(chess_list)):
+    data = []
+    for chess in chesses:
+        data.append(chess.data)
+
+    error_chess = None, None
+    for items in itertools.product(*data):
+        if error_chess[0]:
+            if items[error_chess[0]] == error_chess[1]:
+                continue
+        chess_board = ChessBoard()
+        for index, item in enumerate(items):
+            try:
+                chess_board.put_chess(item)
+            except Exception:
+                error_chess = index, item
+                break
