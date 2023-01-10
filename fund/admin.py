@@ -74,9 +74,14 @@ class FundAdmin(admin.ModelAdmin):
                 min_value = fund_value.value
                 min_deal_at = fund_value.deal_at
 
+        now = datetime.datetime.now()
+        this_month_buy = FundExpense.objects.filter(fund=obj, deal_at__year=now.year, deal_at__month=now.month,
+                                                    expense_type='buy').exists()
+        this_month_buy = '本月已购买' if this_month_buy else ''
+
         if str(min_deal_at) == str(datetime.datetime.now().date()):
-            return format_html(f"""<span style="color: red;">{min_deal_at}</span>""")
-        return min_deal_at
+            return format_html(f"""<span style="color: red;">{min_deal_at} {this_month_buy}</span>""")
+        return f'{min_deal_at} {this_month_buy}'
 
     month_min.short_description = '30天内最低'
 
@@ -207,8 +212,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
             value = f'[1*1000]{value}'
         elif obj.id == 3834:  # 医疗
             value = f'[2*1000]{value}'
-        elif obj.id == 3838:  # 白酒
-            value = f'[2*1000]{value}'
+        elif obj.id == 3813:  # 白酒
+            value = f'[0*1000]{value}'
 
         return format_html(f'<span style="color: {color};">{value}</span>')
 
