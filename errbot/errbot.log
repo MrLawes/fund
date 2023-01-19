@@ -278,3 +278,7 @@ Contains more than one plugin, only one will be loaded.
 2023-01-11 18:19:33,378 INFO     errbot.core               Processing command "hello" with parameters "a" from @luser
 2023-01-11 18:19:39,395 INFO     errbot.plugins.ACLs       Matching ACL {} against username @luser for command Example:hello.
 2023-01-11 18:19:39,395 INFO     errbot.core               Processing command "hello" with parameters "bbb fdf ff" from @luser
+2023-01-12 10:20:36,868 INFO     errbot.core               Disconnect callback, deactivating all the plugins.
+2023-01-12 10:20:36,954 INFO     errbot.plugin_manager     Shutdown.
+2023-01-12 10:20:36,955 INFO     errbot.plugin_manager     Bye.
+2023-01-12 10:20:36,958 INFO     errbot.cli                Process exiting
