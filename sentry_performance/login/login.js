@@ -4,6 +4,23 @@ setTimeout(function () {
 
 function get_performance() {
 
+    if (location.pathname.startsWith("/organizations/zhongjian/performance/lls_api:")) {
+        console.log('Performance -> Transaction Summary -> Event Details')
+
+        // 根据 X-Request-Id 找到用户
+        setInterval(function () {
+            tds = document.getElementsByClassName('key css-1y4sfnd e7hu3jh0')
+            for (td_index = 0; td_index < tds.length; td_index++) {
+                td_html = tds[td_index].innerHTML
+                if (td_html == 'X-Request-Id') {
+                    x_request_id = tds[td_index].nextElementSibling.textContent
+                    console.log('x_request_id' + ':' + x_request_id)
+                }
+            }
+        }, 1000)
+
+    }
+
     // 过滤掉不想看的
     // !transaction:v1.tasks* !transaction:v1.celery_tasks.* !transaction:/aihbvnrugblnjgen*
 
