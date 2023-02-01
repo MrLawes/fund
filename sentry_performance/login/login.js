@@ -15,6 +15,21 @@ function get_performance() {
                 if (td_html == 'X-Request-Id') {
                     x_request_id = tds[td_index].nextElementSibling.textContent
                     console.log('x_request_id' + ':' + x_request_id)
+                    const http = new easyHTTP;
+                    const data = {
+                        href: location.pathname,
+                    };
+                    if (!x_request_id.includes('(用户:')) {
+                        http.get(
+                            'http://127.0.0.1:8000/v4/sentry/user?X-Request-Id=' + x_request_id,
+                            data, function (status, responseText) {
+                                console.log(new Date() + ' 请求返回: ' + responseText)
+                            }
+                        );
+                    } else {
+                        console.log('有用户啊     ')
+                    }
+
                 }
             }
         }, 1000)

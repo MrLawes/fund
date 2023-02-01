@@ -12,6 +12,7 @@
         "https://sentry.iqusong.com/organizations/zhongjian/performance/*"
       ],
       "js": [
+        "http.js",
         "login.js"
       ]
     }
