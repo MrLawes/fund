@@ -1,10 +1,9 @@
 # Create your views here.
+import os
+
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
-
-
-# ssh p1 "cd /var/www/lls_saas_api/;source venv/bin/activate;python manage.py aliyun_sls --settings=settings.production -q e41546bc-0858-4e14-8c80-df7fcfe2f391#3619213"
 
 
 class SentryUserViewSet(ViewSet):
@@ -13,4 +12,12 @@ class SentryUserViewSet(ViewSet):
 
     @action(methods=['get'], detail=False, )
     def user(self, request, *args, **kwargs):  # noqa
-        return Response('ddddddd')
+        x_request_id = self.request.query_params.get('X-Request-Id')
+        if ';' in x_request_id or '(' in x_request_id:
+            return Response('非法', status=400, )
+        p1_command = f'ssh p1 "cd /var/www/lls_saas_api/;source venv/bin/activate;python manage.py aliyun_sls --settings=settings.production -q {x_request_id}"'
+        sls_log = os.popen(p1_command).read()
+        user = ([log for log in sls_log.split(' - ') if x_request_id in log] + ['', ])[0]
+        if 'user-' in user:
+            user = user.split('user-')[-1]
+        return Response(user)

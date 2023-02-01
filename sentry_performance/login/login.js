@@ -13,17 +13,21 @@ function get_performance() {
             for (td_index = 0; td_index < tds.length; td_index++) {
                 td_html = tds[td_index].innerHTML
                 if (td_html == 'X-Request-Id') {
-                    x_request_id = tds[td_index].nextElementSibling.textContent
-                    console.log('x_request_id' + ':' + x_request_id)
+                    x_request_id = tds[td_index].nextElementSibling
+                    console.log('x_request_id' + ':' + x_request_id.textContent)
                     const http = new easyHTTP;
                     const data = {
                         href: location.pathname,
                     };
-                    if (!x_request_id.includes('(用户:')) {
+                    if (!x_request_id.textContent.includes('(用户:')) {
                         http.get(
-                            'http://127.0.0.1:8000/v4/sentry/user?X-Request-Id=' + x_request_id,
+                            'http://127.0.0.1:8000/v4/sentry/user?X-Request-Id=' + encodeURIComponent(x_request_id.textContent),
                             data, function (status, responseText) {
                                 console.log(new Date() + ' 请求返回: ' + responseText)
+                                if (!x_request_id.textContent.includes('(用户:')) {
+                                    x_request_id_span = x_request_id.children[0].children[0]
+                                    x_request_id_span.innerText = x_request_id_span.innerText + '(用户:' + responseText + ')'
+                                }
                             }
                         );
                     } else {
