@@ -5,12 +5,14 @@ from rest_framework import routers
 
 from douyin.views import DouYinUserViewSet
 from fund.views import FundExpenseViewSet
+from sentry_performance.views import SentryUserViewSet
 
 router = routers.DefaultRouter()
 router.trailing_slash = '/?'
 
 router.register(r'(?P<version>(v4))/douyin/users', DouYinUserViewSet, )
 router.register(r'(?P<version>(v4))/fund_expense', FundExpenseViewSet, )
+router.register(r'(?P<version>(v4))/sentry', SentryUserViewSet, basename='sentry')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
