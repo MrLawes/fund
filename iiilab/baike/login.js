@@ -23,7 +23,7 @@ function run() {
                 // names[index].select()
             }
         }
-        value = '[' + release_time + '][' + singer + '][' + album + '][' + song + '].mp4'
+        value = '[' + release_time + '][' + singer + '][' + album + '][' + song + ']'
         document.getElementById('query').value = value
     }, 1000)
 
