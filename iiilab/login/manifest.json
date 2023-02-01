@@ -1,0 +1,20 @@
+{
+  "name": "sentry",
+  "manifest_version": 2,
+  "version": "1.0",
+  "description": "sentry",
+  "browser_action": {
+    "default_icon": "iiilab.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://bilibili.iiilab.com/*"
+      ],
+      "js": [
+        "http.js",
+        "login.js"
+      ]
+    }
+  ]
+}
