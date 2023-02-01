@@ -13,14 +13,21 @@ function run() {
                 release_time = release_time.split('年')[0]
             }
             if (name == '歌曲原唱') {
-                singer = names[index].nextElementSibling.children[0].innerHTML
+                if (names[index].nextElementSibling.children.length == 0) {
+                    singer = names[index].nextElementSibling.innerHTML
+                } else {
+                    singer = names[index].nextElementSibling.children[0].innerHTML
+                }
             }
             if (name == '所属专辑') {
-                album = names[index].nextElementSibling.children[0].innerHTML
+                if (names[index].nextElementSibling.children.length == 0) {
+                    album = names[index].nextElementSibling.innerHTML
+                } else {
+                    album = names[index].nextElementSibling.children[0].innerHTML
+                }
             }
             if (name == '中文名') {
                 song = names[index].nextElementSibling.innerHTML.replace('\n', '')
-                // names[index].select()
             }
         }
         value = '[' + release_time + '][' + singer + '][' + album + '][' + song + ']'
