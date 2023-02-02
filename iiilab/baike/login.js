@@ -5,6 +5,10 @@ setTimeout(function () {
 function run() {
     setInterval(function () {
         names = document.getElementsByClassName('basicInfo-item name')
+        release_time = ''
+        singer = ''
+        album = ''
+        song = ''
         for (index = 0; index < names.length; index++) {
             name = names[index].innerHTML
             if (name == '发行日期') {
@@ -21,7 +25,6 @@ function run() {
             if (name == '所属专辑') {
                 if (names[index].nextElementSibling.children.length == 0) {
                     album = names[index].nextElementSibling.innerHTML
-                    console.log(11111)
                 } else {
                     album = names[index].nextElementSibling.children[0].innerHTML
                 }

@@ -7,9 +7,8 @@ function run() {
         caption = document.getElementsByClassName('caption')[0]
         song = caption.children[0]
         if (!song.innerHTML.includes('href')) {
-            href = "https://www.baidu.com/s?wd=" + encodeURIComponent(song.innerHTML)
+            href = "https://www.baidu.com/s?wd=" + encodeURIComponent('张韶涵 ' + song.innerHTML)
             song.innerHTML = '<a href="' + href + '" target="_blank">' + song.innerHTML + '</a>'
-            console.log(song + ':song')
         }
     }, 1000)
 }
