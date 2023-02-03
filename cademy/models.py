@@ -17,6 +17,7 @@ class Cademy(models.Model):
     name = models.CharField(verbose_name='网站名称', max_length=64, default='', )
     host = models.CharField(verbose_name='网站地址', max_length=200, default='')
     process = models.IntegerField(verbose_name='进度', choices=PROCESS, default=1)
+    remark = models.CharField(verbose_name='描述', max_length=200, default='')
 
 
 class MathCademy(Cademy):
