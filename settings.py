@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'douyin',
     'rest_framework',
     'corsheaders',
+    'cademy',
 ]
 
 MIDDLEWARE = [
