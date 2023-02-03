@@ -14,9 +14,13 @@ class Cademy(models.Model):
         (2, '学习中'),
         (3, '学习完成'),
     )
-    name = models.CharField(max_length=64, verbose_name='基金名称', db_index=True, )
-    process = models.IntegerField(choices=PROCESS, default=1)
+    name = models.CharField(verbose_name='网站名称', max_length=64, db_index=True, )
+    host = models.CharField(verbose_name='网站地址', max_length=200, default='')
+    process = models.IntegerField(verbose_name='进度', choices=PROCESS, default=1)
 
 
 class MathCademy(models.Model):
     category = models.IntegerField(choices=Cademy.CATEGORY, default=1)
+
+    class Meta:
+        verbose_name_plural = '数学'
