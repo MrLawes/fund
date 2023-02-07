@@ -24,4 +24,11 @@ class MathCademy(Cademy):
     category = models.IntegerField(choices=Cademy.CATEGORY, default=1)
 
     class Meta:
-        verbose_name_plural = '数学'
+        verbose_name_plural = '数学类'
+
+
+class TechnologyCademy(Cademy):
+    category = models.IntegerField(choices=Cademy.CATEGORY, default=1)
+
+    class Meta:
+        verbose_name_plural = '技术类'
