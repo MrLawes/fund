@@ -2,6 +2,6 @@ from fund.fund_celery import app
 
 
 @app.task(bind=True)
-def test(self, ):
-    with open('a', 'a+') as f:
-        f.write('fffffff\n')
+def refresh_fund(self, ):
+    from fund.management.commands.fund_value import Command
+    Command().handle()

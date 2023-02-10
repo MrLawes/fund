@@ -14,12 +14,16 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks()
 app.conf.timezone = 'Asia/Shanghai'
 app.conf.beat_schedule = {
-    'redis_heart_beat': {  # redis 心跳
-        'task': 'fund.tasks.test',
-        'schedule': crontab(),
-        'args': ()
+    'refresh_fund_1': {
+        'task': 'fund.tasks.refresh_fund',
+        'schedule': crontab(hour=14, minute=30),
+        'args': (),
     },
-
+    'refresh_fund_2': {
+        'task': 'fund.tasks.refresh_fund',
+        'schedule': crontab(hour=12, minute=0),
+        'args': (),
+    },
 }
 
 default_exchange = Exchange('fund_celery', type='direct')
