@@ -140,3 +140,5 @@ CACHES = {
         },
     },
 }
+
+CELERY_BROKER_URL = CACHES['default']['LOCATION']

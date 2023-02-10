@@ -6,7 +6,7 @@ from kombu import Exchange, Queue
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
 
-app = Celery('lls_saas_api')
+app = Celery('fund_celery')
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
