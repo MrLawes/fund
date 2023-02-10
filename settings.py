@@ -129,3 +129,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ORIGIN_ALLOW_ALL = True
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://@127.0.0.1:6379/11',
+        'OPTIONS': {
+            'DB': 10,
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        },
+    },
+}
