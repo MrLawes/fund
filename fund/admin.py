@@ -214,8 +214,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
             value = f'[1*1000][4000]{value}'
         elif obj.id == 3834:  # 医疗
             value = f'[2*1000][18000]{value}'
-        elif obj.id == 3885:  # 白酒
-            value = f'假[0*1000][7000]{value}'
+        elif obj.id == 3886:  # 白酒
+            value = f'[0*1000][7000]{value}'
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
@@ -223,6 +223,10 @@ class FundExpenseAdmin(admin.ModelAdmin):
     def hold_rate_persent(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = obj.hold * last_fundvalue.value
+        if obj.expense == 0:
+            fund_value = obj.fund_value
+            return f"{(((last_fundvalue.value - fund_value.value) / fund_value.value) * 100):0.02f}%"
+
         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate_persent.short_description = '持有收益率'
