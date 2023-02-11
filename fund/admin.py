@@ -214,8 +214,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
             value = f'[1*1000][4000]{value}'
         elif obj.id == 3834:  # 医疗
             value = f'[2*1000][18000]{value}'
-        elif obj.id == 3832:  # 白酒
-            value = f'[0*1000][7000]{value}'
+        elif obj.id == 3885:  # 白酒
+            value = f'假[0*1000][7000]{value}'
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
