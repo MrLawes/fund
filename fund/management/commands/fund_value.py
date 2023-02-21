@@ -2,9 +2,11 @@ import datetime
 import json
 
 import httpx
+import requests
 from django.core.management.base import BaseCommand
 from rich.console import Console
 from rich.table import Table
+from tabulate import tabulate
 
 from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
@@ -100,13 +102,19 @@ class Command(BaseCommand):
         #                   f"{int(建议购买)}", )
 
         table = Table(title="")
-        table.add_column("ID", justify="left", no_wrap=True, )
-        table.add_column("交易日期", justify="right", no_wrap=True)
-        table.add_column("基金名称", justify="left", no_wrap=True)
-        table.add_column("确认份额", justify="right", no_wrap=True)
-        table.add_column("确认金额", justify="right", no_wrap=True)
-        table.add_column("持有市值", justify="right", no_wrap=True)
+        headers = ['ID', '交易日期', '基金名称', '确认份额', '确认金额', '持有市值', ]
+        for header in headers:
+            table.add_column(header, justify="left", no_wrap=True)
 
+        #
+        # table.add_column("ID", justify="left", no_wrap=True, )
+        # table.add_column("交易日期", justify="right", no_wrap=True)
+        # table.add_column("基金名称", justify="left", no_wrap=True)
+        # table.add_column("确认份额", justify="right", no_wrap=True)
+        # table.add_column("确认金额", justify="right", no_wrap=True)
+        # table.add_column("持有市值", justify="right", no_wrap=True)
+
+        tabulate_table = []
         for fund_category in dict(Fund.FUND_CATEGORY).keys():
             for fund_expense in FundExpense.objects.filter(fund__category=fund_category, expense_type='buy').exclude(
                     expense=0).order_by('-hold_rate')[:5]:
@@ -121,7 +129,41 @@ class Command(BaseCommand):
                     f'{fund_expense.expense}',
                     f'{hold_rate_persent}',
                 )
+                tabulate_table.append([
+                    f'{fund_expense.id}',
+                    f'{fund_expense.deal_at}',
+                    f'{fund_expense.fund.name}',
+                    f'{fund_expense.hold}',
+                    f'{fund_expense.expense}',
+                    f'{hold_rate_persent}',
+                ])
 
         console = Console()
         console.print(table)
         print('\n\n\n\n\n\n\n\n\n\n\n\n')
+
+        ret = tabulate(tabulate_table, headers=headers)
+
+        payload = {
+            "msg_type": "interactive",
+            "card": {
+                "header": {
+                    "title": {
+                        "content": f"❗️待审核通知",
+                        "tag": "plain_text"
+                    },
+                    "template": "red",
+                },
+                "elements": [
+                    {
+                        "tag": "div",
+                        "text": {
+                            "content": ret,
+                            "tag": "lark_md",
+                        }
+                    },
+                ],
+            }
+        }
+        requests.post('https://open.feishu.cn/open-apis/bot/v2/hook/f815d87c-433d-47dc-8377-d61c18f3e231', json=payload,
+                      timeout=5, )
