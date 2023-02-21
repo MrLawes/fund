@@ -125,14 +125,11 @@ class Command(BaseCommand):
                 fund_holdings.expense -= fe.expense
             fund_holdings.save()
 
-        # for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
-        #     fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
-        #     buy_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
-        #     sale_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='sale').values_list('hold', flat=True))
-        #     hold = buy_hold - sale_hold
-        #     建议购买 = 希望持有市值配置[fund.name] - (fund_value.value * hold)
-        #     table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name]):0.02f}",
-        #                   f"{int(建议购买)}", )
-        # console = Console()
-        # console.print(table)
-        # print('\n\n\n\n\n\n\n\n\n')
+        for fund_category in dict(Fund.FUND_CATEGORY).keys():
+            for fund_expense in FundExpense.objects.filter(fund__category=fund_category, expense_type='buy').exclude(
+                    expense=0).order_by('-hold_rate')[:5]:
+                last_fundvalue = FundValue.objects.filter(fund=fund_expense.fund).order_by('deal_at').last()
+                value = round(fund_expense.hold * last_fundvalue.value, 2)
+                hold_rate_persent = f"{(((value - fund_expense.expense) / fund_expense.expense) * 100):0.02f}%"
+                print(
+                    f'{fund_expense.id=}; {fund_expense.deal_at}; {fund_expense.fund.name}; {fund_expense.hold}; {fund_expense.expense}; {hold_rate_persent=}')
