@@ -124,4 +124,4 @@ class Command(BaseCommand):
 
         console = Console()
         console.print(table)
-        print('\n\n\n\n\n\n\n\n\n')
+        print('\n\n\n\n\n\n\n\n\n\n\n\n')
