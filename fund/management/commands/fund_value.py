@@ -137,6 +137,14 @@ class Command(BaseCommand):
                     f'{fund_expense.expense}',
                     f'{hold_rate_persent}',
                 ])
+            tabulate_table.append([
+                f'---',
+                f'---',
+                f'---',
+                f'---',
+                f'---',
+                f'---',
+            ])
 
         console = Console()
         console.print(table)
