@@ -137,6 +137,14 @@ class Command(BaseCommand):
                     f'{fund_expense.expense}',
                     f'{hold_rate_persent}',
                 ])
+            table.add_row(
+                f'---',
+                f'---',
+                f'---',
+                f'---',
+                f'---',
+                f'---',
+            )
             tabulate_table.append([
                 f'---',
                 f'---',
