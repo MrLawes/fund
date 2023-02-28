@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Cademy(models.Model):
+class Cademyabstract(models.Model):
     class Meta:
         """ meta """
         abstract = True
@@ -20,15 +20,15 @@ class Cademy(models.Model):
     remark = models.CharField(verbose_name='描述', max_length=200, default='')
 
 
-class MathCademy(Cademy):
-    category = models.IntegerField(choices=Cademy.CATEGORY, default=1)
+class MathCademy(Cademyabstract):
+    category = models.IntegerField(choices=Cademyabstract.CATEGORY, default=1)
 
     class Meta:
         verbose_name_plural = '数学类'
 
 
-class TechnologyCademy(Cademy):
-    category = models.IntegerField(choices=Cademy.CATEGORY, default=1)
+class TechnologyCademy(Cademyabstract):
+    category = models.IntegerField(choices=Cademyabstract.CATEGORY, default=1)
 
     class Meta:
         verbose_name_plural = '技术类'

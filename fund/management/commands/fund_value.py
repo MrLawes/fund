@@ -116,7 +116,8 @@ class Command(BaseCommand):
 
         tabulate_table = []
         for fund_category in dict(Fund.FUND_CATEGORY).keys():
-            for fund_expense in FundExpense.objects.filter(fund__category=fund_category, expense_type='buy').exclude(
+            for fund_expense in FundExpense.objects.filter(fund__category=fund_category, expense_type='buy',
+                                                           need_buy_again=False).exclude(
                     expense=0).order_by('-hold_rate')[:5]:
                 last_fundvalue = FundValue.objects.filter(fund=fund_expense.fund).order_by('deal_at').last()
                 value = round(fund_expense.hold * last_fundvalue.value, 2)
