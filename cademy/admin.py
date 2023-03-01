@@ -10,7 +10,7 @@ class CademyAdmin(admin.ModelAdmin):
     # 点击进入可编辑部分
     fields = ('name', 'category', 'process', 'host', 'remark',)
     search_fields = ['name', 'remark', ]
-    list_filter = ('category',)
+    list_filter = ('category', 'process',)
 
     def host_with_link(self, obj):
         return format_html(f'<a href="{obj.host}" target="_blank">{obj.host}</a>')
