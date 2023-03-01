@@ -1,13 +1,10 @@
 from django.db import models
 
 
-class Cademyabstract(models.Model):
-    class Meta:
-        """ meta """
-        abstract = True
-
+class Cademy(models.Model):
     CATEGORY = (
-        (1, '数学'),
+        (1, '数学类'),
+        (2, '工具类'),
     )
     PROCESS = (
         (1, '未开始学习'),
@@ -18,17 +15,7 @@ class Cademyabstract(models.Model):
     host = models.CharField(verbose_name='网站地址', max_length=200, default='')
     process = models.IntegerField(verbose_name='进度', choices=PROCESS, default=1)
     remark = models.CharField(verbose_name='描述', max_length=200, default='')
-
-
-class MathCademy(Cademyabstract):
-    category = models.IntegerField(choices=Cademyabstract.CATEGORY, default=1)
+    category = models.IntegerField(choices=CATEGORY, default=1, verbose_name='类别')
 
     class Meta:
-        verbose_name_plural = '数学类'
-
-
-class TechnologyCademy(Cademyabstract):
-    category = models.IntegerField(choices=Cademyabstract.CATEGORY, default=1)
-
-    class Meta:
-        verbose_name_plural = '技术类'
+        verbose_name_plural = '学院'
