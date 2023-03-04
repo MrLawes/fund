@@ -184,3 +184,5 @@ class Command(BaseCommand):
         }
         requests.post('https://open.feishu.cn/open-apis/bot/v2/hook/f815d87c-433d-47dc-8377-d61c18f3e231', json=payload,
                       timeout=5, )
+        # requests.post('https://open.feishu.cn/open-apis/bot/v2/hook/c1169627-b49d-4e19-82f5-a3d8bb262688', json=payload,
+        #               timeout=5, )
