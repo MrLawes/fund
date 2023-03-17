@@ -5,6 +5,7 @@ class Cademy(models.Model):
     CATEGORY = (
         (1, '数学类'),
         (2, '工具类'),
+        (3, '网络安全'),
     )
     PROCESS = (
         (1, '未开始学习'),
@@ -16,6 +17,7 @@ class Cademy(models.Model):
     process = models.IntegerField(verbose_name='进度', choices=PROCESS, default=1)
     remark = models.CharField(verbose_name='描述', max_length=200, default='')
     category = models.IntegerField(choices=CATEGORY, default=1, verbose_name='类别')
+    every_day = models.BooleanField(default=False, verbose_name='每日了解')
 
     class Meta:
         verbose_name_plural = '学院'
