@@ -6,6 +6,7 @@ class Cademy(models.Model):
         (1, '数学类'),
         (2, '工具类'),
         (3, '网络安全'),
+        (4, '前端'),
     )
     PROCESS = (
         (1, '未开始学习'),
@@ -15,7 +16,7 @@ class Cademy(models.Model):
     name = models.CharField(verbose_name='网站名称', max_length=64, default='', )
     host = models.CharField(verbose_name='网站地址', max_length=200, default='')
     process = models.IntegerField(verbose_name='进度', choices=PROCESS, default=1)
-    remark = models.CharField(verbose_name='描述', max_length=200, default='')
+    remark = models.TextField(verbose_name='描述', max_length=1024, default='')
     category = models.IntegerField(choices=CATEGORY, default=1, verbose_name='类别')
     every_day = models.BooleanField(default=False, verbose_name='每日了解')
 
