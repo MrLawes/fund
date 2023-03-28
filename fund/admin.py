@@ -207,15 +207,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
         # 长期A，超过第二个[]可以出售。短期C超过5%可以出售
         if obj.id == 3903:  # 半导体
-            value = f'[1*1000][17000]{value}'
+            value = f'[1*1000][17k]{value}'
         elif obj.id == 3895:  # 新能源
-            value = f'[13500]{value}'
+            value = f'[13.5k]{value}'
         elif obj.id == 3896:  # 军工
-            value = f'[恒定][7000]{value}'
+            value = f'[恒定][7k]{value}'
         elif obj.id == 3834:  # 医疗
-            value = f'[2*1000][18000]{value}'
+            value = f'[2*1000][18k]{value}'
         elif obj.id == 3899:  # 白酒
-            value = f'[0*1000][8000]{value}'
+            value = f'[0*1000][8k]{value}'
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
@@ -264,15 +264,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
             hold = round(hold, 2)
 
             if instance.fund.category == 1:  # 医疗
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 11000'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
             elif instance.fund.category == 2:  # 白酒
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 11000'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
             elif instance.fund.category == 3:  # 半导体
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 11000'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
             elif instance.fund.category == 4:  # 军工
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 11000'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
             elif instance.fund.category == 5:  # 新能源
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}|恒定 11000'
+                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
             else:
                 result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
 
