@@ -8,8 +8,6 @@ function run() {
         if (search) {
             input = document.getElementsByTagName('input')[0]
             input.value = location.search.slice(11, location.search.length)
-
-
         }
         caption = document.getElementsByClassName('caption')[0]
         if (caption) {
@@ -19,6 +17,5 @@ function run() {
                 song.innerHTML = '<a href="' + href + '" target="_blank">' + song.innerHTML + '</a>'
             }
         }
-
     }, 1000)
 }

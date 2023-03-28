@@ -81,6 +81,17 @@ class Command(BaseCommand):
                     fe.hold_rate = ((((fe.hold * fe.newest_value) - fe.expense) / fe.expense) * 100)
             fe.save(update_fields=['hold_rate', ])
 
+            if fe.fund.name in (
+                    '[军工]易方达国防军工混合A',
+            ):
+                fund_value = FundValue.objects.get(fund=fe.fund, deal_at=fe.deal_at)
+                fee = fe.fund.fee
+                expense = fe.expense
+                hold = FundExpense.get_hold(fund_value=fund_value.value, expense=expense, fee=fee)
+                fe.hold = hold
+
+            fe.save(update_fields=['hold_rate', 'hold', ])
+
             # 计算持有仓位占比
             catetory_name = fe.fund.name.split(']')[0].split('[')[-1]
             fund_holdings, _ = FundHoldings.objects.get_or_create(catetory_name=catetory_name)
@@ -92,27 +103,10 @@ class Command(BaseCommand):
                 fund_holdings.expense -= fe.expense
             fund_holdings.save()
 
-        # for fund in Fund.objects.filter(name__in=list(希望持有市值配置.keys())):
-        #     fund_value = FundValue.objects.filter(fund=fund, ).order_by('deal_at').last()
-        #     buy_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='buy').values_list('hold', flat=True))
-        #     sale_hold = sum(FundExpense.objects.filter(fund=fund, expense_type='sale').values_list('hold', flat=True))
-        #     hold = buy_hold - sale_hold
-        #     建议购买 = 希望持有市值配置[fund.name] - (fund_value.value * hold)
-        #     table.add_row(fund.name, f"{(fund_value.value * hold):0.02f}", f"{(希望持有市值配置[fund.name]):0.02f}",
-        #                   f"{int(建议购买)}", )
-
         table = Table(title="")
         headers = ['ID', '交易日期', '基金名称', '确认份额', '确认金额', '持有市值', ]
         for header in headers:
             table.add_column(header, justify="left", no_wrap=True)
-
-        #
-        # table.add_column("ID", justify="left", no_wrap=True, )
-        # table.add_column("交易日期", justify="right", no_wrap=True)
-        # table.add_column("基金名称", justify="left", no_wrap=True)
-        # table.add_column("确认份额", justify="right", no_wrap=True)
-        # table.add_column("确认金额", justify="right", no_wrap=True)
-        # table.add_column("持有市值", justify="right", no_wrap=True)
 
         tabulate_table = []
         for fund_category in dict(Fund.FUND_CATEGORY).keys():
