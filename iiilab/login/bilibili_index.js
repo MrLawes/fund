@@ -5,9 +5,14 @@ setTimeout(function () {
 function run() {
     setInterval(function () {
         toolbar_left = document.getElementsByClassName('toolbar-left')[0]
+
+        if (toolbar_left.children.length > 4) {
+            toolbar_left.removeChild(toolbar_left.lastElementChild);
+        }
+
         if (toolbar_left.children.length <= 4) {
             iiilab = document.createElement("a");
-            iiilab.href = 'https://bilibili.iiilab.com/'
+            iiilab.href = 'https://bilibili.iiilab.com/?blibliurl=' + location.href
             iiilab.target = '_blank'
             textnode = document.createTextNode("下载");
             iiilab.appendChild(textnode)
@@ -16,7 +21,6 @@ function run() {
             toolbar_left.appendChild(span);
             console.log(toolbar_left.children.length)
         }
-
     }, 1000)
 }
 
