@@ -214,7 +214,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             value = f'[恒定][7k]{value}'
         elif obj.id == 3834:  # 医疗
             value = f'[2*1000][18k]{value}'
-        elif obj.id == 3899:  # 白酒
+        elif obj.id == 3894:  # 白酒
             value = f'[0*1000][8k]{value}'
         return format_html(f'<span style="color: {color};">{value}</span>')
 
