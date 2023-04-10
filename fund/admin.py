@@ -206,8 +206,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
             color = 'red'
 
         # 长期A，超过第二个[]可以出售。短期C超过5%可以出售
-        if obj.id == 3842:  # 半导体
-            value = f'[1*1000][17.5k]{value}'
+        if obj.id == 3792:  # 半导体
+            value = f'[1*1000][14.5k]{value}'
         elif obj.id == 3895:  # 新能源
             value = f'[13.5k]{value}'
         elif obj.id == 3896:  # 军工
