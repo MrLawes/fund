@@ -83,6 +83,8 @@ class Command(BaseCommand):
 
             if fe.fund.name in (
                     '[军工]易方达国防军工混合A',
+                    '[半导体]银河创新成长混合C',
+                    '[白酒]招商中证白酒指数C',
             ):
                 fund_value = FundValue.objects.get(fund=fe.fund, deal_at=fe.deal_at)
                 fee = fe.fund.fee
@@ -180,3 +182,95 @@ class Command(BaseCommand):
                       timeout=5, )
         # requests.post('https://open.feishu.cn/open-apis/bot/v2/hook/c1169627-b49d-4e19-82f5-a3d8bb262688', json=payload,
         #               timeout=5, )
+
+        app_id = '1111'
+        app_secret = '222222'
+        verification_token = '33333333'
+
+        # @action(methods=['post'], detail=False, authentication_classes=())
+        # def signature_test(self, request):
+        #     """
+        #     data = {
+        #         'schema': '2.0',
+        #         'header':
+        #             {
+        #                 'event_id': '1111111111', 'token': '333333333',
+        #                 'create_time': '1678074365164', 'event_type': 'im.message.receive_v1', 'tenant_key': 'xxxxx',
+        #                 'app_id': '1111'
+        #             },
+        #         'event': {
+        #             'message': {
+        #                 'chat_id': 'fffffffff', 'chat_type': 'group',
+        #                 'content': '{"text":"@_user_1 11111"}',
+        #                 'create_time': '1678074364916',
+        #                 'mentions': [
+        #                     {'id': {
+        #                         'open_id': 'fffff',
+        #                         'union_id': 'fffffff',
+        #                         'user_id': ''}, 'key': '@_user_1', 'name': 'chatgpt', 'tenant_key': 'ffffff'}
+        #                 ],
+        #                 'message_id': 'fffff', 'message_type': 'text'},
+        #             'sender': {
+        #                 'sender_id': {'open_id': 'fffff',
+        #                               'union_id': 'ffff', 'user_id': 'fffff'},
+        #                 'sender_type': 'user',
+        #                 'tenant_key': '1766dc162abed740'}
+        #         }
+        #     }
+        #     """
+        #
+        #     import json
+        #     import requests
+        #     import uuid
+        #
+        #     data = request.data
+        #
+        #     at_chatgpt = False
+        #
+        #     message = data['event']['message']
+        #     print(f'{message=}')
+        #     if 'mentions' not in message:
+        #         return Response(data)
+        #
+        #     for mention in message['mentions']:
+        #         if mention['name'] == 'chatgpt':
+        #             at_chatgpt = True
+        #             break
+        #
+        #     if not at_chatgpt:
+        #         return Response(data)
+        #
+        #     message_id = message['message_id']
+        #     content = json.loads(message['content'])['text']
+        #     content = content.split(' ')
+        #     content = [c for c in content if not c.startswith('@_')]
+        #     content = ' '.join(content)
+        #
+        #     # 获得 token
+        #     payload = {
+        #         "app_id": "111111",
+        #         "app_secret": "2222222"
+        #     }
+        #     r = requests.post('https://open.feishu.cn/open-apis/auth/v3/tenant_access_token/internal', payload)
+        #     tenant_access_token = r.json()['tenant_access_token']
+        #
+        #     # 回复
+        #     url = f"https://open.feishu.cn/open-apis/im/v1/messages/{message_id}/reply"
+        #     payload = json.dumps({
+        #         "content": json.dumps({
+        #             'text': f'正在回复 {content}'}
+        #         ),
+        #         "msg_type": "text",
+        #         "uuid": uuid.uuid4().hex,
+        #     })
+        #     headers = {
+        #         'Content-Type': 'application/json',
+        #         'Authorization': f'Bearer {tenant_access_token}'
+        #     }
+        #     requests.post(url, headers=headers, data=payload)
+        #     return Response(data)
+        #
+
+        """
+        就是 App ID 和 App Secret
+        """
