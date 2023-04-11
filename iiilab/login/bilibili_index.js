@@ -11,8 +11,16 @@ function run() {
         }
 
         if (toolbar_left.children.length <= 4) {
+
+            title = document.getElementsByClassName('video-title tit')[0].title
+            title = title.split('歌曲')[0].split(']')
+            if (title.length == 1) {
+                title = title[0]
+            } else {
+                title = title[1]
+            }
             iiilab = document.createElement("a");
-            iiilab.href = 'https://bilibili.iiilab.com/?blibliurl=' + location.href
+            iiilab.href = 'https://bilibili.iiilab.com/?singer=' + title + '&blibliurl=' + location.href
             iiilab.target = '_blank'
             textnode = document.createTextNode("下载");
             iiilab.appendChild(textnode)

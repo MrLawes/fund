@@ -17,7 +17,7 @@ function run() {
             }
             if (name == '发行时间') {
                 release_time = names[index].nextElementSibling.textContent.split("\n")[1]
-                release_time = release_time.split('年')[0]
+                release_time = release_time.split('年')[0].split('-')[0]
             }
             if (name == '歌曲原唱') {
                 if (names[index].nextElementSibling.children.length == 0) {

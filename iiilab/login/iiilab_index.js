@@ -7,13 +7,17 @@ function run() {
         search = location.search.slice(5, location.search.length)
         if (search) {
             input = document.getElementsByTagName('input')[0]
-            input.value = location.search.slice(11, location.search.length)
+            input.value = location.search.split('blibliurl=')[1]
         }
         caption = document.getElementsByClassName('caption')[0]
         if (caption) {
             song = caption.children[0]
-            if (!song.innerHTML.includes('href')) {
-                href = "https://www.baidu.com/s?wd=" + encodeURIComponent('原唱 ' + song.innerHTML + ' 百科')
+            song_innerHTML = song.innerHTML
+            signer = location.search.split('singer=')[1].split('&')[0]
+            signer = decodeURIComponent(signer)
+            if (!song_innerHTML.includes('href')) {
+                song_innerHTML = song_innerHTML.split('|')[0]
+                href = "https://www.baidu.com/s?wd=" + encodeURIComponent(signer + ' ' + song_innerHTML + ' 百科')
                 song.innerHTML = '<a href="' + href + '" target="_blank">' + song.innerHTML + '</a>'
             }
         }
