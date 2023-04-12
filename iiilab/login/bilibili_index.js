@@ -19,6 +19,7 @@ function run() {
             } else {
                 title = title[1]
             }
+            title = title.split('】')[0]
             iiilab = document.createElement("a");
             iiilab.href = 'https://bilibili.iiilab.com/?singer=' + title + '&blibliurl=' + location.href
             iiilab.target = '_blank'

@@ -207,15 +207,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
         # 长期A，超过第二个[]可以出售。短期C超过5%可以出售
         if obj.id == 3792:  # 半导体
-            value = f'[1*1000][14.5k]{value}'
+            value = f'[14.5k]{value}'
         elif obj.id == 3895:  # 新能源
             value = f'[13.5k]{value}'
         elif obj.id == 3896:  # 军工
-            value = f'[恒定][7k]{value}'
+            value = f'[7k]{value}'
         elif obj.id == 3834:  # 医疗
-            value = f'[2*1000][18k]{value}'
-        elif obj.id == 3894:  # 白酒
-            value = f'[0*1000][8k]{value}'
+            value = f'[18k]{value}'
+        elif obj.id == 3912:  # 白酒
+            value = f'[10k]{value}'
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
