@@ -194,6 +194,16 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     sale.short_description = "全部出售"
 
+    def get_goal(self, fund_type):
+        config = {
+            '医疗': 18,
+            '白酒': 10,
+            '半导体': 14.5,
+            '军工': 10,
+            '新能源': 13.5,
+        }
+        return config[fund_type]
+
     def hold_value(self, obj):
         if obj.expense_type == 'sale':
             return ""
@@ -205,17 +215,23 @@ class FundExpenseAdmin(admin.ModelAdmin):
         else:
             color = 'red'
 
+        fund_type = obj.fund.name.split(']')[0].split('[')[-1]
+
+        if obj.id in (3792, 3895, 3896, 3834, 3912):
+            value = f'[{self.get_goal(fund_type)}k]{value}'
+
         # 长期A，超过第二个[]可以出售。短期C超过5%可以出售
-        if obj.id == 3792:  # 半导体
-            value = f'[14.5k]{value}'
-        elif obj.id == 3895:  # 新能源
-            value = f'[13.5k]{value}'
-        elif obj.id == 3896:  # 军工
-            value = f'[7k]{value}'
-        elif obj.id == 3834:  # 医疗
-            value = f'[18k]{value}'
-        elif obj.id == 3912:  # 白酒
-            value = f'[10k]{value}'
+        # if obj.id == 3792:  # 半导体
+        #     value = f'[{self.get_goal(fund_type)}k]{value}'
+        # elif obj.id == 3895:  # 新能源
+        #     value = f'[{self.goal[1]}k]{value}'
+        # elif obj.id == 3896:  # 军工
+        #     value = f'[{self.goal[2]}k]{value}'
+        # elif obj.id == 3834:  # 医疗
+        #     value = f'[{self.goal[3]}k]{value}'
+        # elif obj.id == 3912:  # 白酒
+        #     value = f'[{self.goal[4]}k]{value}'
+
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
@@ -247,6 +263,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         result = super().get_changelist_instance(request=request)
         # 显示购买金额
         instance = result.queryset.first()
+
         if instance:
 
             expense, hold, fund_value = 0, 0, 0
@@ -265,18 +282,48 @@ class FundExpenseAdmin(admin.ModelAdmin):
             lose = (expense - int(fund_value)) * 100 / expense
             lose = round(lose, 2)
 
-            if instance.fund.category == 1:  # 医疗
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
-            elif instance.fund.category == 2:  # 白酒
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
-            elif instance.fund.category == 3:  # 半导体
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
-            elif instance.fund.category == 4:  # 军工
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
-            elif instance.fund.category == 5:  # 新能源
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
-            else:
-                result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
+            # 基金类型
+            fund_type = instance.fund.name.split(']')[0].split('[')[-1]
+            goal = self.get_goal(fund_type)
+            for stage in (0.1, 0.3, 0.6, 1,):
+                next_goal = goal * stage * 1000
+                if fund_value > next_goal:
+                    continue
+                break
+
+            next_goal = int(next_goal / 1000)
+            result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 下次投资上限：{next_goal}k;  亏损：-{lose}%'
+
+            #
+            # if instance.fund.category == 1:  # 医疗
+            #     result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
+            # elif instance.fund.category == 2:  # 白酒
+            #     result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
+            # elif instance.fund.category == 3:  # 半导体
+            #     result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
+            # elif instance.fund.category == 4:  # 军工
+            #     result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
+            # elif instance.fund.category == 5:  # 新能源
+            #     result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 亏损：-{lose}%'
+            # else:
+            #     result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}'
+            #
+            # 1, 3, 6, 10
+            #
+            # 长期A，超过第二个[]可以出售。短期C超过5%可以出售
+            # if obj.id == 3792:  # 半导体
+            #     value = f'[14.5k]{value}'
+            # elif obj.id == 3895:  # 新能源
+            #     value = f'[13.5k]{value}'
+            # elif obj.id == 3896:  # 军工
+            #     value = f'[7k]{value}'
+            # elif obj.id == 3834:  # 医疗
+            #     value = f'[18k]{value}'
+            # elif obj.id == 3912:  # 白酒
+            #     value = f'[10k]{value}'
+            # return format_html(f'<span style="color: {color};">{value}</span>')
+            #
+            #
 
         return result
 
