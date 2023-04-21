@@ -8,6 +8,7 @@ class Cademy(models.Model):
         (3, '网络安全'),
         (4, '前端'),
         (5, '快速构建网站'),
+        (6, 'Python'),
     )
     PROCESS = (
         (1, '未开始学习'),
