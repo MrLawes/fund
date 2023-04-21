@@ -65,6 +65,8 @@ class FundAdmin(admin.ModelAdmin):
     hold.short_description = '持有份额'
 
     def month_min(self, obj):
+        if obj.id == 10:
+            return ''
 
         min_value, min_deal_at = 999999, ''
         for fund_value in FundValue.objects.filter(
@@ -198,9 +200,9 @@ class FundExpenseAdmin(admin.ModelAdmin):
         config = {
             '医疗': 18,
             '白酒': 10,
-            '半导体': 14.5,
+            '半导体': 15,
             '军工': 10,
-            '新能源': 13.5,
+            '新能源': 13,
         }
         return config[fund_type]
 
@@ -217,20 +219,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
         fund_type = obj.fund.name.split(']')[0].split('[')[-1]
 
-        if obj.id in (3792, 3895, 3896, 3834, 3912):
+        if obj.id in (3915, 3895, 3896, 3834, 3912):
             value = f'[{self.get_goal(fund_type)}k]{value}'
-
-        # 长期A，超过第二个[]可以出售。短期C超过5%可以出售
-        # if obj.id == 3792:  # 半导体
-        #     value = f'[{self.get_goal(fund_type)}k]{value}'
-        # elif obj.id == 3895:  # 新能源
-        #     value = f'[{self.goal[1]}k]{value}'
-        # elif obj.id == 3896:  # 军工
-        #     value = f'[{self.goal[2]}k]{value}'
-        # elif obj.id == 3834:  # 医疗
-        #     value = f'[{self.goal[3]}k]{value}'
-        # elif obj.id == 3912:  # 白酒
-        #     value = f'[{self.goal[4]}k]{value}'
 
         return format_html(f'<span style="color: {color};">{value}</span>')
 
