@@ -199,10 +199,10 @@ class FundExpenseAdmin(admin.ModelAdmin):
     def get_goal(self, fund_type):
         config = {
             '医疗': 18,
-            '白酒': 10,
+            '白酒': 11,
             '半导体': 15,
             '军工': 10,
-            '新能源': 13,
+            '新能源': 14,
         }
         return config[fund_type]
 

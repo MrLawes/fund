@@ -18,7 +18,7 @@ function run() {
             signer = signer.replace('【', '')
             if (!song_innerHTML.includes('href')) {
                 song_innerHTML = song_innerHTML.split('|')[0].split('（')[0]
-                href = "https://www.baidu.com/s?wd=" + encodeURIComponent(signer + ' ' + song_innerHTML + ' 百科')
+                href = "https://www.baidu.com/s?wd=" + encodeURIComponent(signer + ' ' + song_innerHTML + ' 百度百科')
                 song.innerHTML = '<a href="' + href + '" target="_blank">' + song.innerHTML + '</a>'
             }
         }
