@@ -200,7 +200,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         config = {
             '医疗': 18,
             '白酒': 11,
-            '半导体': 15,
+            '半导体': 16,
             '军工': 10,
             '新能源': 14,
         }
