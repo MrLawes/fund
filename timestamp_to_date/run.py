@@ -1,10 +1,14 @@
 import datetime
 import os
 
-for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/pic"):
+for root, dirs, files in os.walk("/Users/chenhaiou/Documents/等待上传"):
     for file in files:
         file_path = os.path.join(root, file)
         if 'DS_Store' in file_path:
+            continue
+        if '2023-' in file_path:
+            continue
+        if '2016-' in file_path:
             continue
         if '_2023' in file_path:
             timestamp = file_path.split('_')[1]
@@ -23,5 +27,5 @@ for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/pic"):
         to_file_path = '/'.join(file_path_split)
 
         print(f'{file_path=}; {timestamp=}; {to_file_path}')
-        # os.rename(file_path, to_file_path)
-        # input()
+        os.rename(file_path, to_file_path)
+        input()
