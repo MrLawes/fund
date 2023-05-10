@@ -4,7 +4,7 @@ setTimeout(function () {
 
 function run() {
     setInterval(function () {
-        toolbar_left = document.getElementsByClassName('toolbar-left')[0]
+        toolbar_left = document.getElementsByClassName('video-toolbar-left')[0]
 
         if (toolbar_left.children.length > 4) {
             toolbar_left.removeChild(toolbar_left.lastElementChild);
