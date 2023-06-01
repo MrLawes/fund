@@ -24,6 +24,11 @@ app.conf.beat_schedule = {
         'schedule': crontab(hour=12, minute=0),
         'args': (),
     },
+    'refresh_fund_3': {
+        'task': 'fund.tasks.refresh_fund',
+        'schedule': crontab(hour=15, minute=0),
+        'args': (),
+    },
 }
 
 default_exchange = Exchange('fund_celery', type='direct')
