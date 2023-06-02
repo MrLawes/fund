@@ -26,7 +26,7 @@ app.conf.beat_schedule = {
     },
     'refresh_fund_3': {
         'task': 'fund.tasks.refresh_fund',
-        'schedule': crontab(hour=15, minute=0),
+        'schedule': crontab(hour=14, minute=55),
         'args': (),
     },
 }
