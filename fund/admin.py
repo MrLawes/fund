@@ -222,6 +222,9 @@ class FundExpenseAdmin(admin.ModelAdmin):
         if obj.id in (3915, 3895, 3896, 3834, 3912):
             value = f'[{self.get_goal(fund_type)}k]{value}'
 
+        if obj.id == 3920:  # 半导体
+            value = f'[1*N]{value}'
+
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
