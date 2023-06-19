@@ -224,6 +224,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
         if obj.id == 3920:  # 半导体
             value = f'[1*N]{value}'
+        elif obj.id == 3917:  # 白酒
+            value = f'[1*N]{value}'
 
         return format_html(f'<span style="color: {color};">{value}</span>')
 
