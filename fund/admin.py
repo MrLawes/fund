@@ -226,6 +226,12 @@ class FundExpenseAdmin(admin.ModelAdmin):
             value = f'[1*N]{value}'
         elif obj.id == 3917:  # 白酒
             value = f'[1*N]{value}'
+        elif obj.id == 3932:  # 医疗
+            value = f'[1*N]{value}'
+        elif obj.id == 3935:  # 军工
+            value = f'[1*N]{value}'
+        elif obj.id == 3895:  # 新能源
+            value = f'[1*N]{value}'
 
         return format_html(f'<span style="color: {color};">{value}</span>')
 
