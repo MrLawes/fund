@@ -163,6 +163,9 @@ function get_performance() {
         if (transaction == '/1/services/two_detection/' && method == 'GET') {
             apdex.innerText = '[网络请求] 二要素认证'
         }
+        if (transaction == '/1/services/ic/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 天眼查'
+        }
         if (transaction == '/openapi/{version}/agency/labors/' && method == 'POST') {
             apdex.innerText = '[网络请求] 二要素认证'
         }
