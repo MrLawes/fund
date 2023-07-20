@@ -12,7 +12,7 @@ function run() {
 
         if (toolbar_left.children.length <= 4) {
 
-            title = document.getElementsByClassName('video-title tit')[0].title
+            title = document.getElementsByClassName('video-title')[0].title
             title = title.split('歌曲')[0].split(']')
             if (title.length == 1) {
                 title = title[0]
