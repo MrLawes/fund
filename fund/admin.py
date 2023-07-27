@@ -208,7 +208,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             value = f'[1*N]{value}'
         elif obj.id == 3932:  # 医疗
             value = f'[1*N]{value}'
-        elif obj.id == 3935:  # 军工
+        elif obj.id == 3950:  # 军工
             value = f'[1*N]{value}'
         elif obj.id == 3895:  # 新能源
             value = f'[1*N]{value}'
