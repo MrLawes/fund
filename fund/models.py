@@ -1,5 +1,3 @@
-import datetime
-
 from django.db import models
 
 
@@ -92,19 +90,6 @@ class FundExpense(models.Model):
     @property
     def fund_value(self):
         return FundValue.objects.get(fund=self.fund, deal_at=self.deal_at)
-
-    @property
-    def hope_value(self):
-        # 天化
-        day_change = self.fund_value.fund.day_change
-        # 持有时间
-        days = datetime.datetime.now().date() - self.fund_value.deal_at
-        days = days.days
-        # 通过天化得期望市值，再加上手续费
-        value = ((1 + day_change) ** days) * self.expense
-        value *= 1.0065
-        return round(value, 2)
-
 
 class FundHoldings(models.Model):
     catetory_name = models.CharField(verbose_name='分类', max_length=64, )

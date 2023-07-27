@@ -10,7 +10,7 @@ from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name_html', 'rate', 'expense', 'value', 'hold', 'month_min',)
+    list_display = ('id', 'name_html', 'rate', 'expense', 'hold', 'month_min',)
     search_fields = ['name', ]
     list_filter = ('name', 'high_sale_low_buy',)
 
@@ -41,21 +41,6 @@ class FundAdmin(admin.ModelAdmin):
 
     rate.short_description = '估算涨幅'
 
-    def value(self, obj):
-        hold = sum(FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('hold', flat=True))
-        fund_value = FundValue.objects.filter(fund=obj, ).order_by('deal_at').last()
-        if not fund_value:
-            return '0'
-        hope_value = 0
-        for fund_expense in FundExpense.objects.filter(fund=obj, expense_type='buy'):
-            hope_value += fund_expense.hope_value
-        if hold * fund_value.value > hope_value:
-            result = f"""<span style="color: red;">{(hold * fund_value.value):0.02f}</span>"""
-        else:
-            result = f"""<span style="color: green;">{(hold * fund_value.value):0.02f}</span>"""
-        return format_html(f"""{result}/{hope_value:0.02f}　　　　　""")
-
-    value.short_description = '金额/止赢金额✌️'
 
     def hold(self, obj):
         buy_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('hold', flat=True))
@@ -131,7 +116,7 @@ class FundExpenseForm(forms.ModelForm):
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'deal_at', 'transaction_rule', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
-        'hope_value', 'buttons',)
+        'buttons',)
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__category', 'fund__name',)
     actions = ['sum_hold', 'sale', ]
@@ -211,12 +196,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             return ""
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
         value = round(obj.hold * last_fundvalue.value, 2)
-        hope_value = obj.hope_value
-        if hope_value > value:
-            color = 'green'
-        else:
-            color = 'red'
-
+        color = 'green'
         fund_type = obj.fund.name.split(']')[0].split('[')[-1]
 
         if obj.id in (3915, 3895, 3896, 3834, 3912):
@@ -247,13 +227,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate_persent.short_description = '持有收益率'
-
-    def hope_value(self, obj):
-        if obj.expense_type == 'sale':
-            return ""
-        return obj.hope_value
-
-    hope_value.short_description = '期望市值'
 
     def transaction_rule(self, obj):
         return obj.fund.transaction_rule
