@@ -6,16 +6,6 @@ for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv"):
         file_path = os.path.join(root, file)
         if 'DS_Store' in file_path:
             continue
-        elif 'IMG_' in file_path:
-            continue
-        elif 'VID_' in file_path:
-            continue
-        elif 'petal_' in file_path:
-            continue
-        elif 'lv_' in file_path:
-            continue
-        elif 'Screenshot_' in file_path:
-            continue
         else:
             timestamp = file_path.split('mmexport')[-1].split('.')[0]
             timestamp = timestamp.split('/')[-1]
