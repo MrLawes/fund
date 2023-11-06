@@ -23,7 +23,7 @@ for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/mv/"):
 
         file_path_split = file_path.split('/')
         file_path_split[-1] = f"{date} {file_path_split[-1]}"
+        # file_path_split[-1] = f"{date} {file_path_split[-1].split(' ')[-1]}"
         to_file_path = '/'.join(file_path_split)
-
         print(f'{file_path=}; {to_file_path}')
         # os.rename(file_path, to_file_path)
