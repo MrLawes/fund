@@ -106,6 +106,16 @@ class Command(BaseCommand):
             if fe.id == 3920:
                 fe.hold = 348.03
 
+            # todo 军工
+            if fe.id == 3892:
+                fe.hold = 593.12
+            if fe.id == 3950:
+                fe.hold = 654.45
+            if fe.id == 3954:
+                fe.hold = 704.32
+            if fe.id == 3957:
+                fe.hold = 753.58
+
             fe.save(update_fields=['hold_rate', 'hold', ])
 
             # 计算持有仓位占比

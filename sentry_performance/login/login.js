@@ -281,5 +281,11 @@ function get_performance() {
         if (transaction == '/1/users/sms_agency_offline_settle/' && method == 'POST') {
             apdex.innerText = '[网络请求] 短信服务'
         }
+        if (transaction == '/1/common/tencent_h5_face_redirect/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 腾讯人脸识别结果'
+        }
+        if (transaction == '/1/{version}/labors/facial_identification_rule/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 腾讯人脸识别申请请求'
+        }
     }
 }
