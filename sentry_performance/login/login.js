@@ -287,5 +287,11 @@ function get_performance() {
         if (transaction == '/1/{version}/labors/facial_identification_rule/' && method == 'GET') {
             apdex.innerText = '[网络请求] 腾讯人脸识别申请请求'
         }
+        if (transaction == '/1/companies/{pk}/enterprise_identity_notify/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 合同服务'
+        }
+        if (transaction == '/1/{version}/companies/{pk}/update_company_contract_info/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 二要素认证'
+        }
     }
 }
