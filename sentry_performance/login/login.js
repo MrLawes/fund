@@ -293,5 +293,11 @@ function get_performance() {
         if (transaction == '/1/{version}/companies/{pk}/update_company_contract_info/' && method == 'GET') {
             apdex.innerText = '[网络请求] 二要素认证'
         }
+        if (transaction == '/1/{version}/companies/{pk}/add_base_info/' && method == 'PUT') {
+            apdex.innerText = '[网络请求] OSS'
+        }
+        if (transaction == '/1/{version}/companies/' && method == 'POST') {
+            apdex.innerText = '[网络请求] OSS'
+        }
     }
 }
