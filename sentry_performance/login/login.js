@@ -299,5 +299,11 @@ function get_performance() {
         if (transaction == '/1/{version}/companies/' && method == 'POST') {
             apdex.innerText = '[网络请求] OSS'
         }
+        if (transaction == '/1/contracts/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 合同服务'
+        }
+        if (transaction == '/1/{version}/labors/certification4thirdparty_result/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 福建税务'
+        }
     }
 }
