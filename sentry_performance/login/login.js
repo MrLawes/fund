@@ -305,5 +305,8 @@ function get_performance() {
         if (transaction == '/1/{version}/labors/certification4thirdparty_result/' && method == 'GET') {
             apdex.innerText = '[网络请求] 福建税务'
         }
+        if (transaction == '/1/labors/{pk}/get_wxpay_income/' && method == 'GET') {
+            apdex.innerText = '[网络请求] 微信支付查询'
+        }
     }
 }
