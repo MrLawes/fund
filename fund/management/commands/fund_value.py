@@ -101,6 +101,10 @@ class Command(BaseCommand):
                 fe.hold = 410.21
             if fe.id == 3912:
                 fe.hold = 1296.57
+            if fe.id == 3956:
+                fe.hold = 978.37
+            if fe.id == 3963:
+                fe.hold = 521.75
 
             # todo 半导体
             if fe.id == 3920:
@@ -115,6 +119,24 @@ class Command(BaseCommand):
                 fe.hold = 704.32
             if fe.id == 3957:
                 fe.hold = 753.58
+
+            # todo 新能源汽车
+            if fe.id == 3943:
+                fe.hold = 183.18
+            if fe.id == 3955:
+                fe.hold = 414.13
+
+            # todo 医疗
+            if fe.id == 3932:
+                fe.hold = 143.72
+            if fe.id == 3931:
+                fe.hold = 143.72
+            if fe.id == 3931:
+                fe.hold = 143.72
+            if fe.id == 3947:
+                fe.hold = 153.28
+            if fe.id == 3615:
+                fe.hold = 234.74
 
             fe.save(update_fields=['hold_rate', 'hold', ])
 
