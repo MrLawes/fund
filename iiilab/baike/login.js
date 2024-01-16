@@ -4,7 +4,7 @@ setTimeout(function () {
 
 function run() {
     setInterval(function () {
-        names = document.getElementsByClassName('basicInfo-item name')
+        names = document.getElementsByClassName('basicInfoItem_dQpCj itemName_HvzSE')
         release_time = ''
         singer = ''
         album = ''
@@ -12,7 +12,9 @@ function run() {
         for (index = 0; index < names.length; index++) {
             name = names[index].innerHTML
             if (name == '发行日期') {
-                release_time = names[index].nextElementSibling.textContent.split("\n")[1]
+                // console.log(names[index])
+                // console.log(names[index].nextElementSibling.textContent)
+                release_time = names[index].nextElementSibling.textContent
                 release_time = release_time.split('年')[0]
             }
             if (name == '发行时间') {
@@ -47,7 +49,7 @@ function run() {
             }
         }
         value = '[' + release_time + '][' + singer + '][' + album + '][' + song + ']'
-        document.getElementById('query').value = value
+        document.getElementsByTagName("input")[0].value = value
     }, 1000)
 
 }
