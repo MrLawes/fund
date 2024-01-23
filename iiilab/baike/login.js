@@ -12,8 +12,6 @@ function run() {
         for (index = 0; index < names.length; index++) {
             name = names[index].innerHTML
             if (name == '发行日期') {
-                // console.log(names[index])
-                // console.log(names[index].nextElementSibling.textContent)
                 release_time = names[index].nextElementSibling.textContent
                 release_time = release_time.split('年')[0]
             }
@@ -34,6 +32,9 @@ function run() {
                 } else {
                     singer = names[index].nextElementSibling.children[0].innerHTML
                 }
+                singer = singer.split("</a>")[0]
+                singer = singer.split(">")
+                singer = singer[singer.length - 1]
             }
             if (name == '所属专辑') {
                 if (names[index].nextElementSibling.children.length == 0) {
@@ -45,8 +46,14 @@ function run() {
             }
             if (name == '中文名') {
                 song = names[index].nextElementSibling.innerHTML.replace('\n', '')
+                song = song.split('</span>')[0]
+                song = song.split('">')
+                song = song[song.length - 1]
                 song = song.split('<')[0]
             }
+        }
+        if (album == "") {
+            album = song
         }
         value = '[' + release_time + '][' + singer + '][' + album + '][' + song + ']'
         document.getElementsByTagName("input")[0].value = value
