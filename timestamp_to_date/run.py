@@ -7,7 +7,7 @@ for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/mv/"):
         # print(f"{file_path=}")
         if 'DS_Store' in file_path:
             continue
-        elif "IMG_" in file_path or "VID_" in file_path:
+        elif "IMG_" in file_path or "VID_" in file_path or "Screenshot_" in file_path:
             date = file_path.split('_')[1]
             date = f"{date[:4]}-{date[4:6]}-{date[6:8]}"
         elif file_path.split('/')[-1].startswith("202"):
@@ -23,7 +23,7 @@ for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/mv/"):
 
         file_path_split = file_path.split('/')
         file_path_split[-1] = f"{date} {file_path_split[-1]}"
-        # file_path_split[-1] = f"{date} {file_path_split[-1].split(' ')[-1]}"
+        file_path_split[-1] = f"{date} {file_path_split[-1].split(' ')[-1]}"
         to_file_path = '/'.join(file_path_split)
         print(f'{file_path=}; {to_file_path}')
         # os.rename(file_path, to_file_path)
