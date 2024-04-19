@@ -41,7 +41,6 @@ class FundAdmin(admin.ModelAdmin):
 
     rate.short_description = '估算涨幅'
 
-
     def hold(self, obj):
         buy_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('hold', flat=True))
         sale_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='sale').values_list('hold', flat=True))
@@ -62,10 +61,14 @@ class FundAdmin(admin.ModelAdmin):
                 min_deal_at = fund_value.deal_at
 
         now = datetime.datetime.now()
-        this_month_buy = FundExpense.objects.filter(fund=obj, deal_at__year=now.year, deal_at__month=now.month,
-                                                    expense_type='buy').exists()
+        name_prefix = obj.name.split(']')[0] + "]"
+        this_month_buy = FundExpense.objects.filter(
+            fund__name__startswith=name_prefix,
+            deal_at__year=now.year,
+            deal_at__month=now.month,
+            expense_type='buy'
+        ).exists()
         this_month_buy = '本月已购买' if this_month_buy else ''
-
         if str(min_deal_at) == str(datetime.datetime.now().date()):
             return format_html(f"""<span style="color: red;">{min_deal_at} {this_month_buy}</span>""")
         return f'{min_deal_at} {this_month_buy}'
