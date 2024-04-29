@@ -137,6 +137,8 @@ class Command(BaseCommand):
                 fe.hold = 153.28
             if fe.id == 3615:
                 fe.hold = 234.74
+            elif fe.id == 3970:
+                fe.hold = 175.01
 
             fe.save(update_fields=['hold_rate', 'hold', ])
 
