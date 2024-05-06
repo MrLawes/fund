@@ -45,7 +45,7 @@ class Command(BaseCommand):
             print(f'{fund.name}: {url=}')
             try:
                 r = httpx.get(url=url, headers=headers, timeout=10)
-            except:
+            except:  # noqa
                 continue
             content = str(r.content)
             content_split_list = content.split('<tr>')
