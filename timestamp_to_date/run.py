@@ -15,6 +15,8 @@ for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/mv/"):
         else:
             if "wx_camera_" in file_path:
                 timestamp = file_path.split('wx_camera_')[-1].split('.')[0]
+            elif "Image_" in file_path:
+                timestamp = file_path.split('Image_')[-1].split('.')[0]
             else:
                 timestamp = file_path.split('mmexport')[-1].split('.')[0]
             timestamp = timestamp.split('/')[-1]
