@@ -119,12 +119,16 @@ class Command(BaseCommand):
                 fe.hold = 704.32
             if fe.id == 3957:
                 fe.hold = 753.58
+            elif fe.id == 3966:
+                fe.hold = 401.61
 
             # todo 新能源汽车
             if fe.id == 3943:
                 fe.hold = 183.18
             if fe.id == 3955:
                 fe.hold = 414.13
+            elif fe.id == 3990:
+                fe.hold = 451.47
 
             # todo 医疗
             if fe.id == 3932:
