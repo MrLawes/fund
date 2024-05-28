@@ -105,6 +105,8 @@ class Command(BaseCommand):
                 fe.hold = 978.37
             if fe.id == 3963:
                 fe.hold = 521.75
+            if fe.id == 3989:
+                fe.hold = 1044.05
 
             # todo 半导体
             if fe.id == 3920:
