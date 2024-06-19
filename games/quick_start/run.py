@@ -1,4 +1,5 @@
 # Example file showing a circle moving on screen
+import datetime
 import random
 import time
 
@@ -9,7 +10,6 @@ pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
 running = True
-dt = 0
 
 player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
 player_pos_list = [player_pos, ]
@@ -29,8 +29,9 @@ while running:
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_e]:
+        print(datetime.datetime.now())
         player_pos_dict[int(time.time())] = pygame.Vector2(random.randint(1, 1280), random.randint(1, 720))
     pygame.display.flip()
-    dt = clock.tick(60) / 1000
+    clock.tick(60)
 
 pygame.quit()
