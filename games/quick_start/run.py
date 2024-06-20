@@ -7,6 +7,7 @@ screen = pygame.display.set_mode((1280, 720))
 IS_KEYDOWN = False
 IS_KEYUP = False
 screen.fill("purple")
+pygame.display.flip()
 
 while True:
 
