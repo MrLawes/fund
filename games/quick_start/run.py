@@ -1,10 +1,7 @@
-# Example file showing a circle moving on screen
 import random
-import time
 
 import pygame
 
-# pygame setup
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
@@ -12,23 +9,27 @@ running = True
 
 player_pos = pygame.Vector2(1280 / 2, 720 / 2)
 player_pos_list = [player_pos, ]
-player_pos_dict = {'1': player_pos}
+
+IS_KEYDOWN = False
+IS_KEYUP = False
 
 while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
 
-    # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
-    for player_pos in player_pos_dict.values():
+
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            IS_KEYDOWN = True
+        elif event.type == pygame.KEYUP:
+            IS_KEYUP = True
+        if IS_KEYDOWN and IS_KEYUP:
+            IS_KEYDOWN = False
+            IS_KEYUP = False
+            player_pos_list.append(pygame.Vector2(random.randint(1, 1280), random.randint(1, 720)))
+
+    for player_pos in player_pos_list:
         pygame.draw.ellipse(screen, "red", (player_pos.x, player_pos.y, 50, 70))
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_e]:
-        player_pos_dict[int(time.time())] = pygame.Vector2(random.randint(1, 1280), random.randint(1, 720))
     pygame.display.flip()
     clock.tick(60)
 
