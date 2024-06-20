@@ -17,8 +17,7 @@ while True:
         elif event.type == pygame.KEYUP:
             IS_KEYUP = True
         if IS_KEYDOWN and IS_KEYUP:
-            IS_KEYDOWN = False
-            IS_KEYUP = False
+            IS_KEYUP = IS_KEYDOWN = False
             pygame.draw.ellipse(screen, "red", (random.randint(1, 1280), random.randint(1, 720), 50, 70))
 
     pygame.display.flip()
