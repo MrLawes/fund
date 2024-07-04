@@ -6,7 +6,7 @@ pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 IS_KEYDOWN = False
 IS_KEYUP = False
-screen.fill("purple")
+screen.fill((89, 181, 248))
 pygame.display.flip()
 
 while True:
@@ -18,7 +18,7 @@ while True:
             IS_KEYUP = True
         if IS_KEYDOWN and IS_KEYUP:
             IS_KEYUP = IS_KEYDOWN = False
-            pygame.draw.ellipse(screen, "red", (random.randint(1, 1280), random.randint(1, 720), 50, 70))
+            pygame.draw.ellipse(screen, (254, 252, 193), (random.randint(1, 1280), random.randint(1, 720), 50, 70))
 
     pygame.display.flip()
     pygame.time.Clock().tick(60)
