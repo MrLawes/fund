@@ -14,10 +14,6 @@ score = 0
 surface = font.render(f'{score:>03}', False, "white")
 screen.blit(surface, [1150 + 20, 30 + 20])
 
-font_list = pygame.font.get_fonts()
-for f in font_list:
-    print(f)
-# xxxxx
 while True:
 
     for event in pygame.event.get():
