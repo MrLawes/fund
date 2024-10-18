@@ -269,7 +269,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 break
 
             next_goal = int(next_goal / 1000)
-            result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}; 下次投资上限：{next_goal}k;  亏损：-{lose}%'
+            result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}({int(fund_value) - expense}); 下次投资上限：{next_goal}k;  亏损：-{lose}%'
 
             #
             # if instance.fund.category == 1:  # 医疗
