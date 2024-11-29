@@ -10,7 +10,7 @@ from fund.models import Fund, FundValue, FundExpense, FundHoldings
 
 @admin.register(Fund)
 class FundAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name_html', 'rate', 'expense', 'hold', 'month_min',)
+    list_display = ('id', 'name_html', 'rate', 'expense', 'month_min',)
     search_fields = ['name', ]
     list_filter = ('name', 'high_sale_low_buy',)
 
@@ -19,7 +19,8 @@ class FundAdmin(admin.ModelAdmin):
 
     def expense(self, obj):
         expense = FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('expense', flat=True, )
-        return round(sum(expense), 2)
+        return f"{sum(expense):,.2f}"
+        # return round(sum(expense), 2)
 
     expense.short_description = '已投入资金'
 
@@ -29,7 +30,7 @@ class FundAdmin(admin.ModelAdmin):
     name_html.short_description = '基金名称'
 
     def rate(self, obj):
-        fund_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
+        fund_value: FundValue = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
         if not fund_value:
             return 0
         rate = fund_value.rate
@@ -41,12 +42,12 @@ class FundAdmin(admin.ModelAdmin):
 
     rate.short_description = '估算涨幅'
 
-    def hold(self, obj):
-        buy_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('hold', flat=True))
-        sale_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='sale').values_list('hold', flat=True))
-        return round(buy_hold - sale_hold, 2)
-
-    hold.short_description = '持有份额'
+    # def hold(self, obj):
+    #     buy_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('hold', flat=True))
+    #     sale_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='sale').values_list('hold', flat=True))
+    #     return round(buy_hold - sale_hold, 2)
+    #
+    # hold.short_description = '持有份额'
 
     def month_min(self, obj):
         min_value, min_deal_at = 999999, ''
@@ -66,9 +67,24 @@ class FundAdmin(admin.ModelAdmin):
             expense_type='buy'
         ).exists()
         this_month_buy = '本月已购买' if this_month_buy else ''
+
+        now_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last().value
+        rate = f"{((now_value - min_value) / min_value) * 100:.2f}"
         if str(min_deal_at) == str(datetime.datetime.now().date()):
-            return format_html(f"""<span style="color: red;">{min_deal_at} {this_month_buy}</span>""")
-        return f'{min_deal_at} {this_month_buy}'
+            return format_html(f"""<span style="color: red;">{min_deal_at} (↑{rate}) {this_month_buy}</span>""")
+        return f'{min_deal_at} (↑{rate}) {this_month_buy}'
+
+    #
+    # fund_value: FundValue = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
+    # if not fund_value:
+    #     return 0
+    # rate = fund_value.rate
+    # if rate > 0:
+    #     rate = f"""<span style="color: red;">{rate}</span>"""
+    # else:
+    #     rate = f"""<span style="color: green;">{rate}</span>"""
+    # return format_html(f"({str(fund_value.deal_at)[5:]}) {rate}　　　")
+    #
 
     month_min.short_description = '30天内最低'
 
