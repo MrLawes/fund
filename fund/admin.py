@@ -74,18 +74,6 @@ class FundAdmin(admin.ModelAdmin):
             return format_html(f"""<span style="color: red;">{min_deal_at} (↑{rate}) {this_month_buy}</span>""")
         return f'{min_deal_at} (↑{rate}) {this_month_buy}'
 
-    #
-    # fund_value: FundValue = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
-    # if not fund_value:
-    #     return 0
-    # rate = fund_value.rate
-    # if rate > 0:
-    #     rate = f"""<span style="color: red;">{rate}</span>"""
-    # else:
-    #     rate = f"""<span style="color: green;">{rate}</span>"""
-    # return format_html(f"({str(fund_value.deal_at)[5:]}) {rate}　　　")
-    #
-
     month_min.short_description = '30天内最低'
 
 
