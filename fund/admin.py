@@ -49,9 +49,6 @@ class FundAdmin(admin.ModelAdmin):
     hold.short_description = '持有份额'
 
     def month_min(self, obj):
-        if obj.id == 10:
-            return ''
-
         min_value, min_deal_at = 999999, ''
         for fund_value in FundValue.objects.filter(
                 fund=obj, deal_at__gte=datetime.datetime.now() - datetime.timedelta(days=31)
@@ -131,6 +128,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return results
 
     def fund_name(self, obj):
+        result = ''
         if obj.expense_type == 'buy':
             if obj.need_buy_again:
                 result = f'<a style="text-decoration: line-through" href="/admin/fund/fundexpense/?fund__name={obj.fund.name}" target="_blank">{obj.fund.name}</a>'
