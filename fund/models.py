@@ -8,6 +8,7 @@ class Fund(models.Model):
         (3, '半导体'),
         (4, '军工'),
         (5, '新能源'),
+        (6, '黄金'),
     )
     category = models.IntegerField(choices=FUND_CATEGORY, default=0)
     name = models.CharField(max_length=64, verbose_name='基金名称', db_index=True, )
