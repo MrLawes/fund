@@ -68,7 +68,8 @@ class FundAdmin(admin.ModelAdmin):
         ).exists()
         this_month_buy = '本月已购买' if this_month_buy else ''
 
-        now_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last().value
+        last_fund_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
+        now_value = last_fund_value.value if last_fund_value else 0
         rate = f"{((now_value - min_value) / min_value) * 100:.2f}"
         if str(min_deal_at) == str(datetime.datetime.now().date()):
             return format_html(f"""<span style="color: red;">{min_deal_at} (↑{rate}) {this_month_buy}</span>""")
