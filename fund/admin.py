@@ -94,6 +94,10 @@ class FundExpenseForm(forms.ModelForm):
         model = FundExpense
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super(FundExpenseForm, self).__init__(*args, **kwargs)
+        self.fields['fund'].queryset = Fund.objects.order_by('name')  # noqa
+
     def clean(self):
         fund_value = FundValue.objects.get(fund=self.cleaned_data['fund'], deal_at=self.cleaned_data['deal_at'])
         # 买入费率
