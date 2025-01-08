@@ -121,9 +121,10 @@ class FundExpenseForm(forms.ModelForm):
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'deal_at', 'transaction_rule', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
-        'buttons',)
+        'buttons',
+    )
     search_fields = ['fund__name', 'id', ]
-    list_filter = ('fund__category', 'fund__name',)
+    list_filter = ('fund__category', 'fund__name', 'fund__high_sale_low_buy',)
     actions = ['sum_hold', 'sale', ]
     form = FundExpenseForm
     list_per_page = 500
