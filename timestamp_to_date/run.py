@@ -1,7 +1,7 @@
 import datetime
 import os
 
-for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/8/"):
+for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/09/"):
     for file in files:
         file_path = os.path.join(root, file)
         # print(f"{file_path=}")
@@ -19,6 +19,8 @@ for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/8/"):
                 timestamp = file_path.split('Image_')[-1].split('.')[0]
             else:
                 timestamp = file_path.split('mmexport')[-1].split('.')[0]
+                if '_' in timestamp:
+                    timestamp = timestamp.split('_')[-1]
             timestamp = timestamp.split('/')[-1]
             timestamp = int(timestamp[:10])
             date = str(datetime.datetime.fromtimestamp(timestamp))[:10]
