@@ -128,7 +128,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         'buttons',
     )
     search_fields = ['fund__name', 'id', ]
-    list_filter = ('fund__category', 'fund__name', 'fund__high_sale_low_buy',)
+    list_filter = ('fund__category', 'fund__high_sale_low_buy', 'fund__name',)
     actions = ['sum_hold', 'sale', ]
     form = FundExpenseForm
     list_per_page = 500
