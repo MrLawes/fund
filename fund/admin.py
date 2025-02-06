@@ -124,7 +124,7 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'deal_at', 'transaction_rule', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
+        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
         'buttons',
     )
     search_fields = ['fund__name', 'id', ]
@@ -212,11 +212,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate_persent.short_description = '持有收益率'
-
-    def transaction_rule(self, obj):
-        return obj.fund.transaction_rule
-
-    transaction_rule.short_description = '交易规则'
 
     def get_changelist_instance(self, request):
         result = super().get_changelist_instance(request=request)

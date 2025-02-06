@@ -9,6 +9,7 @@ class Fund(models.Model):
         (4, '军工'),
         (5, '新能源'),
         (6, '黄金'),
+        (7, '债券'),
     )
     category = models.IntegerField(choices=FUND_CATEGORY, default=0)
     name = models.CharField(max_length=64, verbose_name='基金名称', db_index=True, )
@@ -19,7 +20,6 @@ class Fund(models.Model):
     to_value = models.FloatField(verbose_name='到该单位净值结束', default=0)
     fee = models.FloatField(verbose_name='买入费率 %', default=0)
     newest_rate = models.FloatField(verbose_name='最新估算涨幅', default=0, null=True)
-    transaction_rule = models.CharField(max_length=64, verbose_name='交易规则', default='', )
     high_sale_low_buy = models.BooleanField(verbose_name='高抛低吸', default=False, )
     best_transaction_rule_days = models.IntegerField(verbose_name='最优出售天数', default=30)
 
@@ -91,6 +91,7 @@ class FundExpense(models.Model):
     @property
     def fund_value(self):
         return FundValue.objects.get(fund=self.fund, deal_at=self.deal_at)
+
 
 class FundHoldings(models.Model):
     catetory_name = models.CharField(verbose_name='分类', max_length=64, )
