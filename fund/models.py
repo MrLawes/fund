@@ -22,6 +22,7 @@ class Fund(models.Model):
     newest_rate = models.FloatField(verbose_name='最新估算涨幅', default=0, null=True)
     high_sale_low_buy = models.BooleanField(verbose_name='高抛低吸', default=False, )
     best_transaction_rule_days = models.IntegerField(verbose_name='最优出售天数', default=30)
+    is_advance = models.BooleanField(verbose_name='是否是进阶理财', default=True, )
 
     class Meta:
         verbose_name_plural = '基金'

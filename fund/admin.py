@@ -42,13 +42,6 @@ class FundAdmin(admin.ModelAdmin):
 
     rate.short_description = '估算涨幅'
 
-    # def hold(self, obj):
-    #     buy_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('hold', flat=True))
-    #     sale_hold = sum(FundExpense.objects.filter(fund=obj, expense_type='sale').values_list('hold', flat=True))
-    #     return round(buy_hold - sale_hold, 2)
-    #
-    # hold.short_description = '持有份额'
-
     def month_min(self, obj):
         min_value, min_deal_at = 999999, ''
         for fund_value in FundValue.objects.filter(
@@ -128,7 +121,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         'buttons',
     )
     search_fields = ['fund__name', 'id', ]
-    list_filter = ('fund__category', 'fund__high_sale_low_buy', 'fund__name',)
+    list_filter = ('fund__category', 'fund__high_sale_low_buy', 'fund__is_advance', 'fund__name',)
     actions = ['sum_hold', 'sale', ]
     form = FundExpenseForm
     list_per_page = 500
