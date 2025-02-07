@@ -18,7 +18,7 @@ class FundAdmin(admin.ModelAdmin):
         return super().get_queryset(request=request).order_by('-newest_rate')
 
     def expense(self, obj):
-        expense = FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('expense', flat=True, )
+        expense = FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('expense', flat=True, )  # noqa
         remark = '(弃投)' if obj.id in [1, 3, 6, 7, 8, 9, 10, 11, 16, ] else ''
         return f"{sum(expense):,.2f}{remark}"
 
@@ -30,7 +30,7 @@ class FundAdmin(admin.ModelAdmin):
     name_html.short_description = '基金名称'
 
     def rate(self, obj):
-        fund_value: FundValue = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
+        fund_value: FundValue = FundValue.objects.filter(fund=obj).order_by('deal_at').last()  # noqa
         if not fund_value:
             return 0
         rate = fund_value.rate
@@ -44,7 +44,7 @@ class FundAdmin(admin.ModelAdmin):
 
     def month_min(self, obj):
         min_value, min_deal_at = 999999, ''
-        for fund_value in FundValue.objects.filter(
+        for fund_value in FundValue.objects.filter(  # noqa
                 fund=obj, deal_at__gte=datetime.datetime.now() - datetime.timedelta(days=31)
         ):
             if fund_value.value < min_value:
@@ -53,7 +53,7 @@ class FundAdmin(admin.ModelAdmin):
 
         now = datetime.datetime.now()
         name_prefix = obj.name.split(']')[0] + "]"
-        this_month_buy = FundExpense.objects.filter(
+        this_month_buy = FundExpense.objects.filter(  # noqa
             fund__name__startswith=name_prefix,
             deal_at__year=now.year,
             deal_at__month=now.month,
@@ -61,7 +61,7 @@ class FundAdmin(admin.ModelAdmin):
         ).exists()
         this_month_buy = '本月已购买' if this_month_buy else ''
 
-        last_fund_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last()
+        last_fund_value = FundValue.objects.filter(fund=obj).order_by('deal_at').last()  # noqa
         now_value = last_fund_value.value if last_fund_value else 0
         rate = f"{((now_value - min_value) / min_value) * 100:.2f}"
         if str(min_deal_at) == str(datetime.datetime.now().date()):
@@ -92,7 +92,7 @@ class FundExpenseForm(forms.ModelForm):
         self.fields['fund'].queryset = Fund.objects.order_by('name')  # noqa
 
     def clean(self):
-        fund_value = FundValue.objects.get(fund=self.cleaned_data['fund'], deal_at=self.cleaned_data['deal_at'])
+        fund_value = FundValue.objects.get(fund=self.cleaned_data['fund'], deal_at=self.cleaned_data['deal_at'])  # noqa
         # 买入费率
         fee = self.cleaned_data['fund'].fee
         # 扣除买入费率，计算出购买份额
@@ -101,14 +101,14 @@ class FundExpenseForm(forms.ModelForm):
         split_hold = self.cleaned_data.get('split_hold', 0)
         if split_hold:  # 如果需要拆分
             # 创建一份拆分后的交易记录
-            split_expense = round(self.cleaned_data['expense'] * split_hold / total_hold, 2)
+            split_expense = round(self.cleaned_data['expense'] * split_hold / total_hold, 2)  # noqa
             self.cleaned_data['split_hold'] = 0
             self.cleaned_data['expense'] = split_expense
             self.cleaned_data['hold'] = split_hold
-            FundExpense.objects.create(**self.cleaned_data)
+            FundExpense.objects.create(**self.cleaned_data)  # noqa
             # 修改原交易数据
-            self.cleaned_data['expense'] = round(total_expense - split_expense, 2)
-            self.cleaned_data['hold'] = round(total_hold - split_hold, 2)
+            self.cleaned_data['expense'] = round(total_expense - split_expense, 2)  # noqa
+            self.cleaned_data['hold'] = round(total_hold - split_hold, 2)  # noqa
         else:  # 不拆分，记录下总的份额
             self.cleaned_data['hold'] = total_hold
         return self.cleaned_data
@@ -177,8 +177,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 fund = queryset.filter(expense_type='buy').first().fund
                 now_date = datetime.datetime.now().date()
                 hold = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
-                expense = hold * FundValue.objects.get(fund=fund, deal_at=now_date).value
-                FundExpense.objects.create(
+                expense = hold * FundValue.objects.get(fund=fund, deal_at=now_date).value  # noqa
+                FundExpense.objects.create(  # noqa
                     fund=fund, deal_at=now_date, expense=expense, hold=hold, expense_type='sale', sale_at=now_date,
                 )
                 queryset.update(need_buy_again=True, )
@@ -188,15 +188,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
     def hold_value(self, obj):
         if obj.expense_type == 'sale':
             return ""
-        last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
-        value = round(obj.hold * last_fundvalue.value, 2)
+        last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
+        value = round(obj.hold * last_fundvalue.value, 2)  # noqa
         color = 'green'
         return format_html(f'<span style="color: {color};">{value}</span>')
 
     hold_value.short_description = '持有市值'
 
     def hold_rate_persent(self, obj):
-        last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()
+        last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
         value = obj.hold * last_fundvalue.value
         if obj.expense == 0:
             fund_value = obj.fund_value
@@ -219,18 +219,22 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 if r.expense_type == 'buy':
                     expense += r.expense
                     hold += r.hold
-                    fund_value += FundValue.objects.filter(fund=r.fund).last().value * r.hold
+                    fund_value += FundValue.objects.filter(fund=r.fund).last().value * r.hold  # noqa
                 elif r.expense_type == 'sale':
                     expense -= r.expense
                     hold -= r.hold
-                    fund_value -= FundValue.objects.filter(fund=r.fund).last().value * r.hold
+                    fund_value -= FundValue.objects.filter(fund=r.fund).last().value * r.hold  # noqa
             expense = int(expense)
-            hold = round(hold, 2)
+            hold = round(hold, 2)  # noqa
             lose = (expense - int(fund_value)) * 100 / expense
-            lose = round(lose, 2)
+            lose = -round(lose, 2)  # noqa
+            if lose < 0:
+                lose = f'亏损：{lose}%'
+            else:
+                lose = f'盈利：{lose}%'
 
             # 基金类型
-            result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}({int(fund_value) - expense}); 亏损：-{lose}%'
+            result.title += f'，投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}({int(fund_value) - expense}); {lose}'
 
         return result
 
@@ -240,7 +244,7 @@ class FundHoldingsAdmin(admin.ModelAdmin):
     list_display = ('id', 'catetory_name', 'expense', 'hold', 'persent')
 
     def persent(self, obj):
-        result = obj.expense * 100 / max(list(FundHoldings.objects.values_list('expense', flat=True)))
+        result = obj.expense * 100 / max(list(FundHoldings.objects.values_list('expense', flat=True)))  # noqa
         return f"{result:0.02f}%"
 
     persent.short_description = '仓位占比'
