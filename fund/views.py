@@ -34,11 +34,10 @@ class FundExpenseViewSet(ModelViewSet):
             return HttpResponseRedirect(referer)
 
     @action(methods=['get'], detail=True, )
-    def buy_again(self, request, version, pk):  # noqa
+    def buy_again(self, request, version, pk):  # noqa # todo delete
 
         with transaction.atomic():
             fund_expense = self.get_object()
-            fund_expense.is_buy_again = True
             fund_expense.need_buy_again = False
             fund_expense.save()
             fund_expense_form = FundExpenseForm()
