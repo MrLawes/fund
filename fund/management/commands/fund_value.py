@@ -81,6 +81,9 @@ class Command(BaseCommand):
                     fe.hold_rate = ((((fe.hold * fe.newest_value) - fe.expense) / fe.expense) * 100)
             fe.save(update_fields=['hold_rate', ])
 
+            # 计算投资回报的年化率
+            fe.set_annual_interest_rate()
+
             if fe.fund.name in (
                     '[军工]易方达国防军工混合A',
                     '[半导体]银河创新成长混合C',

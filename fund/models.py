@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Fund(models.Model):
@@ -43,7 +44,7 @@ class Fund(models.Model):
         min_value = min(self.from_value, self.to_value)
         # half = min_value + (max_value - min_value) / 2
         stage_value = (max_value - min_value) / 10
-        stage = [min_value + stage_value * i for i in range(0, 11)]
+        stage = [min_value + stage_value * i for i in range(0, 11)]  # noqa
         if self.from_value < self.to_value:
             stage = stage[::-1]
         return stage
@@ -74,23 +75,34 @@ class FundExpense(models.Model):
     sale_at = models.DateField(verbose_name='出售日期', default=None, null=True, blank=True, )
     need_buy_again = models.BooleanField(verbose_name='卖出去过的', default=False)  # todo 改名 is_sale
     newest_value = models.FloatField(verbose_name='最新单位净值', default=0)
+    annual_interest_rate = models.DecimalField(verbose_name='投资回报年化率%', default=0, decimal_places=2, max_digits=10)
 
     class Meta:
         verbose_name_plural = '基金购买记录'
 
+    def set_annual_interest_rate(self):
+        """ 更新投资回报年化率 """
+
+        # 增值部分
+        appreciation = self.newest_value * self.hold - self.expense
+        days = (timezone.localtime().date() - self.deal_at).days
+        if days > 0:
+            self.annual_interest_rate = (appreciation / days / self.expense) * 356 * 100
+            self.save(update_fields=['annual_interest_rate', ])
+
     @classmethod
-    def get_hold(self, fund_value, expense, fee):
+    def get_hold(cls, fund_value, expense, fee):
         """ 计算持有份数
         :param: expense:        确认金额
         :param: fund_value:     单位净值
         """
         expense -= expense * fee / 100
         # 持有份数 = 确认金额 / 单位净值
-        return round(expense / fund_value, 2)
+        return round(expense / fund_value, 2)  # noqa
 
     @property
     def fund_value(self):
-        return FundValue.objects.get(fund=self.fund, deal_at=self.deal_at)
+        return FundValue.objects.get(fund=self.fund, deal_at=self.deal_at)  # noqa
 
 
 class FundHoldings(models.Model):

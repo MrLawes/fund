@@ -117,7 +117,7 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent',
+        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'annual_interest_rate',
         'buttons',
     )
     search_fields = ['fund__name', 'id', ]
@@ -139,6 +139,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 result = f'<a href="/admin/fund/fundexpense/?fund__name={obj.fund.name}" target="_blank">{obj.fund.name}</a>'
         elif obj.expense_type == 'sale':
             result = f"""<span style="text-decoration: line-through">{obj.fund.name}</span>"""
+
         return format_html(result)
 
     fund_name.short_description = "基金名称"
