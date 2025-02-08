@@ -3,8 +3,7 @@ from tkinter import messagebox
 
 
 class Gomoku:
-    def __init__(self):
-        root = tk.Tk()
+    def __init__(self, root):
         self.root = root
         self.root.title("五子棋")
         self.board_size = 15
@@ -68,6 +67,7 @@ class Gomoku:
 
 
 if __name__ == "__main__":
-    game = Gomoku()
+    root = tk.Tk()
+    game = Gomoku(root)
 
     # [10101, 20102, 10103, 20104, ]
