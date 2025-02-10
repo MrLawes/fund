@@ -116,10 +116,8 @@ def predict_next_number(model, sequence):
 
 
 # 示例预测
-#
-#     [1, 2, 3, 4, 5, 6, 7],
-#     [1, 2, 3, 4, 5, 8, 9],
-#     [1, 2, 3, 4, 5, 7, 2]
-test_sequence = [1, 2, 3, 4, 5, 6]
-predicted_number = predict_next_number(model, test_sequence)
-print(f'输入序列: {test_sequence}, 预测的下一个数字: {predicted_number}')
+print(f'{data=}')
+for test_sequence in data:
+    test_sequence = test_sequence[:-1]
+    predicted_number = predict_next_number(model, test_sequence)
+    print(f'输入序列: {test_sequence}, 预测的下一个数字: {predicted_number}')
