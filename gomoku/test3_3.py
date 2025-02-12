@@ -11,7 +11,8 @@ import torch.optim as optim
 data = [
     [1, 2, 3, 4, 5, 6, 7],
     [1, 2, 3, 4, 5, 8, 9],
-    [1, 2, 3, 4, 5, 7, 2]
+    [1, 2, 3, 4, 5, 7, 2],
+    [0, 0, 0, 0, 0, 1, 2],
 ]
 
 # 将数据转换为PyTorch张量
@@ -28,8 +29,8 @@ data_tensor = torch.tensor(data, dtype=torch.float32)
 input_size = 1
 hidden_size = 20
 num_layers = 2
-output_size = 10  # 假设数字范围是0-9
-num_epochs = 5000
+output_size = 15  # 假设数字范围是0-9
+num_epochs = 10000
 learning_rate = 0.001
 model_path = 'lstm_model.pth'
 
@@ -123,5 +124,9 @@ for test_sequence in data:
     print(f'输入序列: {test_sequence}, 预测的下一个数字: {predicted_number}')
 
 test_sequence = [1, 2, 3, 4, 5, 8]
+predicted_number = predict_next_number(model, test_sequence)
+print(f'输入序列: {test_sequence}, 预测的下一个数字: {predicted_number}')
+
+test_sequence = [0, 1, ]
 predicted_number = predict_next_number(model, test_sequence)
 print(f'输入序列: {test_sequence}, 预测的下一个数字: {predicted_number}')

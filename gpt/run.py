@@ -139,11 +139,11 @@ class Command(BaseCommand):
                     # 添加分词后的 token
                     new_tokens = new_tokens | set(jieba_cut)
 
-        # tokenizer.add_tokens(new_tokens=list(new_tokens)) # todo chenhaiou
+        tokenizer.add_tokens(new_tokens=list(new_tokens))  # todo chenhaiou
         # tokenizer.add_tokens(new_tokens=list(lambda_keys))
         # tokenizer.add_tokens(new_tokens=['给我集团企业的', '给我登录运营公司', '给我登录企业客户', '帮我清空', '实名认证次数', '登录运营公司', "[rep]", ])
         # tokenizer.add_tokens(new_tokens=['：user-UserPlatform-', 'user-UserPlatform-', 'UserPlatform-', ])
-        tokenizer.save_pretrained('gpt/tokenizer')
+        tokenizer.save_pretrained('tokenizer')
         return tokenizer
 
     @classmethod
@@ -244,8 +244,8 @@ class Command(BaseCommand):
         # rep_token = tokenizer.get_vocab()['[rep]']
         text_generator = TextGenerationPipeline(model, tokenizer, return_tensors=True)
         text_inputs = {
-            '帮我查下关于"13520231413"的日志': {'testcase': 'lambda_sls'},
-            # '帮我清空"371327198602012242"的身份证实名认证次数': {'testcase': 'lambda_clean_verify_labor_id_no'},
+            # '帮我查下关于"13520231413"的日志': {'testcase': 'lambda_sls'},
+            '帮我清空身份证实名认证次数': {'testcase': 'lambda_clean_verify_labor_id_no'},
             # '给我登录企业客户"浙江壹米时空物流有限公司宁波分公司"的方式': {'testcase': 'lambda_company_login'},
             # '给我登录运营公司"浙江壹米时空物流有限公司宁波分公司"的方式': {'testcase': 'lambda_agency_login'},
             # '给我登录集团"浙江壹米时空物流有限公司宁波分公司"的方式': {'testcase': 'lambda_platform_login'},
@@ -326,7 +326,7 @@ if __name__ == '__main__':
     self = Command()
     tokenizer = self.cut_words()
     # 训练模型
-    self.train_main(tokenizer)
+    self.train_main()
     # 预判
     self.predict(tokenizer)
     time.sleep(30)
