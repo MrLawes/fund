@@ -31,6 +31,8 @@ class Command(BaseCommand):
             deal_at = content['jzrq']
             if len(deal_at.split('-')[0]) == 2:
                 deal_at = '20' + deal_at
+            if len(deal_at) == 8:
+                deal_at = deal_at[:4] + '-' + deal_at[4:6] + '-' + deal_at[6:]
             FundValue.objects.update_or_create(fund=fund, deal_at=deal_at, defaults=defaults)
             # 更新今天的数据
             defaults = {'value': content['gsz'], 'rate': content['gszzl']}
