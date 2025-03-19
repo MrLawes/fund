@@ -31,7 +31,7 @@ class FundValue(models.Model):
     fund = models.ForeignKey(Fund, on_delete=models.CASCADE, verbose_name='基金名称')
     deal_at = models.DateField(verbose_name='发布日期', db_index=True, )
     value = models.FloatField(verbose_name='单位净值', )
-    rate = models.FloatField(verbose_name='日增长率', )
+    rate = models.FloatField(verbose_name='日增长率', default=0)
 
     class Meta:
         unique_together = ('fund', 'deal_at',)
