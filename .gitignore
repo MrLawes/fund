@@ -1,2 +1,7 @@
 venv/*
 .idea
+sentry_performance/login/data
+mv/data
+celerybeat.pid
+celerybeat-schedule.db
+nohup.out

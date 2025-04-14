@@ -1,0 +1,20 @@
+{
+  "name": "sentry",
+  "manifest_version": 2,
+  "version": "1.0",
+  "description": "sentry",
+  "browser_action": {
+    "default_icon": "performance.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://sentry.iqusong.com/organizations/zhongjian/performance/*"
+      ],
+      "js": [
+        "http.js",
+        "login.js"
+      ]
+    }
+  ]
+}

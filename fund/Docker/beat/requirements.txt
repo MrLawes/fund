@@ -1,0 +1,14 @@
+Django==3.2.9
+httpx==0.20.0
+ipython==7.29.0
+djangorestframework==3.12.4
+six==1.16.0
+markdown==3.3.4
+django-cors-headers==3.10.0
+uWSGI==2.0.17
+supervisor==4.2.0
+moviepy==1.0.3
+celery==4.2.1
+django-utils-six==2.0
+redis==3.2.0
+django-redis==4.10.0

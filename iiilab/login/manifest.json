@@ -1,0 +1,29 @@
+{
+  "name": "iiilab",
+  "manifest_version": 2,
+  "version": "1.0",
+  "description": "iiilab",
+  "browser_action": {
+    "default_icon": "iiilab.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://bili.iiilab.com/*"
+      ],
+      "js": [
+        "http.js",
+        "iiilab_index.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.bilibili.com/video/*"
+      ],
+      "js": [
+        "http.js",
+        "bilibili_index.js"
+      ]
+    }
+  ]
+}

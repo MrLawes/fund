@@ -1,0 +1,284 @@
+2023-01-11 18:09:02,599 INFO     errbot.bootstrap          Found Storage plugin: Shelf.
+2023-01-11 18:09:02,613 INFO     errbot.bootstrap          Found Backend plugin: Text
+2023-01-11 18:09:03,298 INFO     errbot                    webhooks: Flag to bind /echo to echo
+2023-01-11 18:09:03,443 INFO     errbot.core               Activate internal commands
+2023-01-11 18:09:03,444 INFO     errbot.plugin_manager     Activate bot plugins...
+2023-01-11 18:09:03,444 INFO     errbot.plugin_manager     Activate plugin: ACLs.
+2023-01-11 18:09:03,445 INFO     errbot.core_plugins.wsview Checking ACLS for webhooks
+2023-01-11 18:09:03,445 INFO     errbot.plugin_manager     Activate plugin: Flows.
+2023-01-11 18:09:03,446 INFO     errbot.core_plugins.wsview Checking Flows for webhooks
+2023-01-11 18:09:03,447 INFO     errbot.plugin_manager     Activate plugin: CommandNotFoundFilter.
+2023-01-11 18:09:03,447 INFO     errbot.core_plugins.wsview Checking CommandNotFoundFilter for webhooks
+2023-01-11 18:09:03,448 INFO     errbot.plugin_manager     Activate plugin: Health.
+2023-01-11 18:09:03,449 INFO     errbot.core_plugins.wsview Checking Health for webhooks
+2023-01-11 18:09:03,450 INFO     errbot.plugin_manager     Activate plugin: Backup.
+2023-01-11 18:09:03,451 INFO     errbot.core_plugins.wsview Checking Backup for webhooks
+2023-01-11 18:09:03,451 INFO     errbot.plugin_manager     Activate plugin: Webserver.
+2023-01-11 18:09:03,452 INFO     errbot.plugins.Webserver  Webserver is not configured. Forbid activation
+2023-01-11 18:09:03,452 INFO     errbot.core_plugins.wsview Checking Webserver for webhooks
+2023-01-11 18:09:03,452 INFO     errbot.core_plugins.wsview Webhook routing echo
+2023-01-11 18:09:03,453 INFO     errbot.plugin_manager     Activate plugin: TextCmds.
+2023-01-11 18:09:03,456 INFO     errbot.core_plugins.wsview Checking TextModeCmds for webhooks
+2023-01-11 18:09:03,456 INFO     errbot.plugin_manager     Activate plugin: VersionChecker.
+2023-01-11 18:09:03,456 INFO     errbot.plugins.VersionChecker Skip version checking under text mode.
+2023-01-11 18:09:03,457 INFO     errbot.core_plugins.wsview Checking VersionChecker for webhooks
+2023-01-11 18:09:03,457 INFO     errbot.plugin_manager     Activate plugin: Plugins.
+2023-01-11 18:09:03,458 INFO     errbot.core_plugins.wsview Checking Plugins for webhooks
+2023-01-11 18:09:03,458 INFO     errbot.plugin_manager     Activate plugin: Help.
+2023-01-11 18:09:03,459 INFO     errbot.core_plugins.wsview Checking Help for webhooks
+2023-01-11 18:09:03,459 INFO     errbot.plugin_manager     Activate plugin: ChatRoom.
+2023-01-11 18:09:03,460 INFO     errbot.core_plugins.wsview Checking ChatRoom for webhooks
+2023-01-11 18:09:03,460 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:09:03,460 INFO     errbot.plugin_manager     Activate plugin: Utils.
+2023-01-11 18:09:03,461 INFO     errbot.core_plugins.wsview Checking Utils for webhooks
+2023-01-11 18:09:03,462 INFO     errbot.plugin_manager     Activate plugin: Example.
+2023-01-11 18:09:03,463 INFO     errbot.core_plugins.wsview Checking Example for webhooks
+2023-01-11 18:09:03,463 INFO     errbot.core               Notifying connection to all the plugins...
+2023-01-11 18:09:03,463 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:09:03,463 INFO     errbot.core               Plugin activation done.
+2023-01-11 18:10:21,706 INFO     errbot.plugins.ACLs       Matching ACL {} against username @CHANGE_ME for command Example:tryme.
+2023-01-11 18:10:21,706 INFO     errbot.core               Processing command "tryme" with parameters "" from @CHANGE_ME
+2023-01-11 18:13:00,427 INFO     errbot.core               Disconnect callback, deactivating all the plugins.
+2023-01-11 18:13:00,461 INFO     errbot.plugin_manager     Shutdown.
+2023-01-11 18:13:00,461 INFO     errbot.plugin_manager     Bye.
+2023-01-11 18:13:00,463 INFO     errbot.cli                Process exiting
+2023-01-11 18:13:04,656 INFO     errbot.bootstrap          Found Storage plugin: Shelf.
+2023-01-11 18:13:04,667 INFO     errbot.bootstrap          Found Backend plugin: Text
+2023-01-11 18:13:06,293 INFO     errbot                    webhooks: Flag to bind /echo to echo
+2023-01-11 18:13:06,556 INFO     errbot.core               Activate internal commands
+2023-01-11 18:13:06,556 INFO     errbot.plugin_manager     Activate bot plugins...
+2023-01-11 18:13:06,556 INFO     errbot.plugin_manager     Activate plugin: ACLs.
+2023-01-11 18:13:06,558 INFO     errbot.core_plugins.wsview Checking ACLS for webhooks
+2023-01-11 18:13:06,558 INFO     errbot.plugin_manager     Activate plugin: Flows.
+2023-01-11 18:13:06,560 INFO     errbot.core_plugins.wsview Checking Flows for webhooks
+2023-01-11 18:13:06,560 INFO     errbot.plugin_manager     Activate plugin: CommandNotFoundFilter.
+2023-01-11 18:13:06,561 INFO     errbot.core_plugins.wsview Checking CommandNotFoundFilter for webhooks
+2023-01-11 18:13:06,562 INFO     errbot.plugin_manager     Activate plugin: Health.
+2023-01-11 18:13:06,562 INFO     errbot.core_plugins.wsview Checking Health for webhooks
+2023-01-11 18:13:06,563 INFO     errbot.plugin_manager     Activate plugin: Backup.
+2023-01-11 18:13:06,564 INFO     errbot.core_plugins.wsview Checking Backup for webhooks
+2023-01-11 18:13:06,564 INFO     errbot.plugin_manager     Activate plugin: Webserver.
+2023-01-11 18:13:06,565 INFO     errbot.plugins.Webserver  Webserver is not configured. Forbid activation
+2023-01-11 18:13:06,565 INFO     errbot.core_plugins.wsview Checking Webserver for webhooks
+2023-01-11 18:13:06,575 INFO     errbot.core_plugins.wsview Webhook routing echo
+2023-01-11 18:13:06,675 INFO     errbot.plugin_manager     Activate plugin: TextCmds.
+2023-01-11 18:13:06,676 INFO     errbot.core_plugins.wsview Checking TextModeCmds for webhooks
+2023-01-11 18:13:06,677 INFO     errbot.plugin_manager     Activate plugin: VersionChecker.
+2023-01-11 18:13:06,678 INFO     errbot.plugins.VersionChecker Skip version checking under text mode.
+2023-01-11 18:13:06,678 INFO     errbot.core_plugins.wsview Checking VersionChecker for webhooks
+2023-01-11 18:13:06,679 INFO     errbot.plugin_manager     Activate plugin: Plugins.
+2023-01-11 18:13:06,680 INFO     errbot.core_plugins.wsview Checking Plugins for webhooks
+2023-01-11 18:13:06,681 INFO     errbot.plugin_manager     Activate plugin: Help.
+2023-01-11 18:13:06,682 INFO     errbot.core_plugins.wsview Checking Help for webhooks
+2023-01-11 18:13:06,683 INFO     errbot.plugin_manager     Activate plugin: ChatRoom.
+2023-01-11 18:13:06,688 INFO     errbot.core_plugins.wsview Checking ChatRoom for webhooks
+2023-01-11 18:13:06,691 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:13:06,692 INFO     errbot.plugin_manager     Activate plugin: Utils.
+2023-01-11 18:13:06,696 INFO     errbot.core_plugins.wsview Checking Utils for webhooks
+2023-01-11 18:13:06,715 INFO     errbot.plugin_manager     Activate plugin: Example.
+2023-01-11 18:13:06,716 INFO     errbot.core_plugins.wsview Checking Example for webhooks
+2023-01-11 18:13:06,717 INFO     errbot.core               Notifying connection to all the plugins...
+2023-01-11 18:13:06,717 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:13:06,717 INFO     errbot.core               Plugin activation done.
+2023-01-11 18:13:22,959 INFO     errbot.plugins.ACLs       Matching ACL {} against username @CHANGE_ME for command TextCmds:inroom.
+2023-01-11 18:13:22,959 INFO     errbot.core               Processing command "inroom" with parameters "" from @CHANGE_ME
+2023-01-11 18:13:54,968 INFO     errbot.plugins.ACLs       Matching ACL {} against username #testroom/CHANGE_ME for command TextCmds:asuser.
+2023-01-11 18:13:54,968 INFO     errbot.core               Processing command "asuser" with parameters "" from #testroom/CHANGE_ME
+2023-01-11 18:13:58,085 INFO     errbot.plugins.ACLs       Matching ACL {} against username #testroom/luser for command TextCmds:asuser.
+2023-01-11 18:13:58,085 INFO     errbot.core               Processing command "asuser" with parameters "" from #testroom/luser
+2023-01-11 18:14:16,117 INFO     errbot.plugins.ACLs       Matching ACL {} against username #testroom/luser for command TextCmds:inperson.
+2023-01-11 18:14:16,118 INFO     errbot.core               Processing command "inperson" with parameters "" from #testroom/luser
+2023-01-11 18:14:50,046 INFO     errbot.plugins.ACLs       Matching ACL {} against username @luser for command Help:help.
+2023-01-11 18:14:50,046 INFO     errbot.core               Processing command "help" with parameters "" from @luser
+2023-01-11 18:15:08,914 INFO     errbot.plugins.ACLs       Matching ACL {} against username @luser for command Plugins:repos_search.
+2023-01-11 18:15:08,914 INFO     errbot.core               Processing command "repos_search" with parameters "jira" from @luser
+2023-01-11 18:15:08,928 INFO     errbot.repo_manager       No repo index, creating it.
+2023-01-11 18:15:09,111 ERROR    errbot.repo_manager       Could not update from source https://errbot.io/repos.json, keep the index as it is.
+Traceback (most recent call last):
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 1346, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/client.py", line 1253, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/client.py", line 1299, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/client.py", line 1248, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/client.py", line 1008, in _send_output
+    self.send(msg)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/client.py", line 948, in send
+    self.connect()
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/http/client.py", line 1422, in connect
+    self.sock = self._context.wrap_socket(self.sock,
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 500, in wrap_socket
+    return self.sslsocket_class._create(
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 1040, in _create
+    self.do_handshake()
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 1309, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1123)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/chenhaiou/Desktop/D/git/fund/venv/lib/python3.9/site-packages/errbot/repo_manager.py", line 175, in index_update
+    with urlopen(url=req, timeout=10) as request:  # nosec
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 214, in urlopen
+    return opener.open(url, data, timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 517, in open
+    response = self._open(req, data)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 534, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 494, in _call_chain
+    result = func(*args)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 1389, in https_open
+    return self.do_open(http.client.HTTPSConnection, req,
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/urllib/request.py", line 1349, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1123)>
+2023-01-11 18:15:09,118 ERROR    errbot.repo_manager       No index.
+2023-01-11 18:16:06,394 INFO     errbot.core               Disconnect callback, deactivating all the plugins.
+2023-01-11 18:16:06,403 INFO     errbot.plugin_manager     Shutdown.
+2023-01-11 18:16:06,404 INFO     errbot.plugin_manager     Bye.
+2023-01-11 18:16:06,404 INFO     errbot.cli                Process exiting
+2023-01-11 18:16:20,570 INFO     errbot.bootstrap          Found Storage plugin: Shelf.
+2023-01-11 18:16:20,581 INFO     errbot.bootstrap          Found Backend plugin: Text
+2023-01-11 18:16:21,124 INFO     errbot                    webhooks: Flag to bind /echo to echo
+2023-01-11 18:16:21,236 ERROR    errbot.bootstrap          Some plugins failed to load:
+Contains more than one plugin, only one will be loaded.
+2023-01-11 18:16:21,240 INFO     errbot.core               Activate internal commands
+2023-01-11 18:16:21,240 INFO     errbot.plugin_manager     Activate bot plugins...
+2023-01-11 18:16:21,240 INFO     errbot.plugin_manager     Activate plugin: ACLs.
+2023-01-11 18:16:21,241 INFO     errbot.core_plugins.wsview Checking ACLS for webhooks
+2023-01-11 18:16:21,241 INFO     errbot.plugin_manager     Activate plugin: Flows.
+2023-01-11 18:16:21,242 INFO     errbot.core_plugins.wsview Checking Flows for webhooks
+2023-01-11 18:16:21,243 INFO     errbot.plugin_manager     Activate plugin: CommandNotFoundFilter.
+2023-01-11 18:16:21,244 INFO     errbot.core_plugins.wsview Checking CommandNotFoundFilter for webhooks
+2023-01-11 18:16:21,244 INFO     errbot.plugin_manager     Activate plugin: Health.
+2023-01-11 18:16:21,246 INFO     errbot.core_plugins.wsview Checking Health for webhooks
+2023-01-11 18:16:21,246 INFO     errbot.plugin_manager     Activate plugin: Backup.
+2023-01-11 18:16:21,247 INFO     errbot.core_plugins.wsview Checking Backup for webhooks
+2023-01-11 18:16:21,247 INFO     errbot.plugin_manager     Activate plugin: Webserver.
+2023-01-11 18:16:21,247 INFO     errbot.plugins.Webserver  Webserver is not configured. Forbid activation
+2023-01-11 18:16:21,247 INFO     errbot.core_plugins.wsview Checking Webserver for webhooks
+2023-01-11 18:16:21,247 INFO     errbot.core_plugins.wsview Webhook routing echo
+2023-01-11 18:16:21,248 INFO     errbot.plugin_manager     Activate plugin: TextCmds.
+2023-01-11 18:16:21,249 INFO     errbot.core_plugins.wsview Checking TextModeCmds for webhooks
+2023-01-11 18:16:21,249 INFO     errbot.plugin_manager     Activate plugin: VersionChecker.
+2023-01-11 18:16:21,249 INFO     errbot.plugins.VersionChecker Skip version checking under text mode.
+2023-01-11 18:16:21,249 INFO     errbot.core_plugins.wsview Checking VersionChecker for webhooks
+2023-01-11 18:16:21,250 INFO     errbot.plugin_manager     Activate plugin: Plugins.
+2023-01-11 18:16:21,250 INFO     errbot.core_plugins.wsview Checking Plugins for webhooks
+2023-01-11 18:16:21,250 INFO     errbot.plugin_manager     Activate plugin: Help.
+2023-01-11 18:16:21,251 INFO     errbot.core_plugins.wsview Checking Help for webhooks
+2023-01-11 18:16:21,251 INFO     errbot.plugin_manager     Activate plugin: ChatRoom.
+2023-01-11 18:16:21,252 INFO     errbot.core_plugins.wsview Checking ChatRoom for webhooks
+2023-01-11 18:16:21,252 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:16:21,252 INFO     errbot.plugin_manager     Activate plugin: Utils.
+2023-01-11 18:16:21,252 INFO     errbot.core_plugins.wsview Checking Utils for webhooks
+2023-01-11 18:16:21,253 INFO     errbot.plugin_manager     Activate plugin: Example.
+2023-01-11 18:16:21,253 INFO     errbot.core_plugins.wsview Checking Example for webhooks
+2023-01-11 18:16:21,254 WARNING  errbot.core               Some plugins failed to start during bot startup:
+
+Contains more than one plugin, only one will be loaded.
+2023-01-11 18:16:21,254 INFO     errbot.core               Some plugins failed to start during bot startup:
+
+Contains more than one plugin, only one will be loaded.
+2023-01-11 18:16:21,254 INFO     errbot.core               Notifying connection to all the plugins...
+2023-01-11 18:16:21,254 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:16:21,254 INFO     errbot.core               Plugin activation done.
+2023-01-11 18:17:51,315 INFO     errbot.core               Disconnect callback, deactivating all the plugins.
+2023-01-11 18:17:51,334 INFO     errbot.plugin_manager     Shutdown.
+2023-01-11 18:17:51,334 INFO     errbot.plugin_manager     Bye.
+2023-01-11 18:17:51,335 INFO     errbot.cli                Process exiting
+2023-01-11 18:17:53,159 INFO     errbot.bootstrap          Found Storage plugin: Shelf.
+2023-01-11 18:17:53,166 INFO     errbot.bootstrap          Found Backend plugin: Text
+2023-01-11 18:17:53,523 INFO     errbot                    webhooks: Flag to bind /echo to echo
+2023-01-11 18:17:53,601 INFO     errbot.core               Activate internal commands
+2023-01-11 18:17:53,601 INFO     errbot.plugin_manager     Activate bot plugins...
+2023-01-11 18:17:53,601 INFO     errbot.plugin_manager     Activate plugin: ACLs.
+2023-01-11 18:17:53,602 INFO     errbot.core_plugins.wsview Checking ACLS for webhooks
+2023-01-11 18:17:53,602 INFO     errbot.plugin_manager     Activate plugin: Flows.
+2023-01-11 18:17:53,603 INFO     errbot.core_plugins.wsview Checking Flows for webhooks
+2023-01-11 18:17:53,603 INFO     errbot.plugin_manager     Activate plugin: CommandNotFoundFilter.
+2023-01-11 18:17:53,603 INFO     errbot.core_plugins.wsview Checking CommandNotFoundFilter for webhooks
+2023-01-11 18:17:53,603 INFO     errbot.plugin_manager     Activate plugin: Health.
+2023-01-11 18:17:53,604 INFO     errbot.core_plugins.wsview Checking Health for webhooks
+2023-01-11 18:17:53,604 INFO     errbot.plugin_manager     Activate plugin: Backup.
+2023-01-11 18:17:53,604 INFO     errbot.core_plugins.wsview Checking Backup for webhooks
+2023-01-11 18:17:53,605 INFO     errbot.plugin_manager     Activate plugin: Webserver.
+2023-01-11 18:17:53,605 INFO     errbot.plugins.Webserver  Webserver is not configured. Forbid activation
+2023-01-11 18:17:53,605 INFO     errbot.core_plugins.wsview Checking Webserver for webhooks
+2023-01-11 18:17:53,605 INFO     errbot.core_plugins.wsview Webhook routing echo
+2023-01-11 18:17:53,606 INFO     errbot.plugin_manager     Activate plugin: TextCmds.
+2023-01-11 18:17:53,606 INFO     errbot.core_plugins.wsview Checking TextModeCmds for webhooks
+2023-01-11 18:17:53,607 INFO     errbot.plugin_manager     Activate plugin: VersionChecker.
+2023-01-11 18:17:53,607 INFO     errbot.plugins.VersionChecker Skip version checking under text mode.
+2023-01-11 18:17:53,607 INFO     errbot.core_plugins.wsview Checking VersionChecker for webhooks
+2023-01-11 18:17:53,607 INFO     errbot.plugin_manager     Activate plugin: Plugins.
+2023-01-11 18:17:53,608 INFO     errbot.core_plugins.wsview Checking Plugins for webhooks
+2023-01-11 18:17:53,609 INFO     errbot.plugin_manager     Activate plugin: Help.
+2023-01-11 18:17:53,609 INFO     errbot.core_plugins.wsview Checking Help for webhooks
+2023-01-11 18:17:53,609 INFO     errbot.plugin_manager     Activate plugin: ChatRoom.
+2023-01-11 18:17:53,610 INFO     errbot.core_plugins.wsview Checking ChatRoom for webhooks
+2023-01-11 18:17:53,610 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:17:53,610 INFO     errbot.plugin_manager     Activate plugin: Utils.
+2023-01-11 18:17:53,611 INFO     errbot.core_plugins.wsview Checking Utils for webhooks
+2023-01-11 18:17:53,611 INFO     errbot.plugin_manager     Activate plugin: Example.
+2023-01-11 18:17:53,611 INFO     errbot.core_plugins.wsview Checking Example for webhooks
+2023-01-11 18:17:53,612 INFO     errbot.core               Notifying connection to all the plugins...
+2023-01-11 18:17:53,612 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:17:53,612 INFO     errbot.core               Plugin activation done.
+2023-01-11 18:17:55,783 INFO     errbot.plugins.ACLs       Matching ACL {} against username @luser for command Example:hello.
+2023-01-11 18:17:55,784 INFO     errbot.core               Processing command "hello" with parameters "" from @luser
+2023-01-11 18:19:04,577 INFO     errbot.core               Disconnect callback, deactivating all the plugins.
+2023-01-11 18:19:04,582 INFO     errbot.plugin_manager     Shutdown.
+2023-01-11 18:19:04,582 INFO     errbot.plugin_manager     Bye.
+2023-01-11 18:19:04,583 INFO     errbot.cli                Process exiting
+2023-01-11 18:19:16,870 INFO     errbot.bootstrap          Found Storage plugin: Shelf.
+2023-01-11 18:19:16,879 INFO     errbot.bootstrap          Found Backend plugin: Text
+2023-01-11 18:19:17,415 INFO     errbot                    webhooks: Flag to bind /echo to echo
+2023-01-11 18:19:17,533 INFO     errbot.core               Activate internal commands
+2023-01-11 18:19:17,533 INFO     errbot.plugin_manager     Activate bot plugins...
+2023-01-11 18:19:17,534 INFO     errbot.plugin_manager     Activate plugin: ACLs.
+2023-01-11 18:19:17,536 INFO     errbot.core_plugins.wsview Checking ACLS for webhooks
+2023-01-11 18:19:17,536 INFO     errbot.plugin_manager     Activate plugin: Flows.
+2023-01-11 18:19:17,538 INFO     errbot.core_plugins.wsview Checking Flows for webhooks
+2023-01-11 18:19:17,539 INFO     errbot.plugin_manager     Activate plugin: CommandNotFoundFilter.
+2023-01-11 18:19:17,541 INFO     errbot.core_plugins.wsview Checking CommandNotFoundFilter for webhooks
+2023-01-11 18:19:17,541 INFO     errbot.plugin_manager     Activate plugin: Health.
+2023-01-11 18:19:17,543 INFO     errbot.core_plugins.wsview Checking Health for webhooks
+2023-01-11 18:19:17,543 INFO     errbot.plugin_manager     Activate plugin: Backup.
+2023-01-11 18:19:17,544 INFO     errbot.core_plugins.wsview Checking Backup for webhooks
+2023-01-11 18:19:17,545 INFO     errbot.plugin_manager     Activate plugin: Webserver.
+2023-01-11 18:19:17,545 INFO     errbot.plugins.Webserver  Webserver is not configured. Forbid activation
+2023-01-11 18:19:17,545 INFO     errbot.core_plugins.wsview Checking Webserver for webhooks
+2023-01-11 18:19:17,546 INFO     errbot.core_plugins.wsview Webhook routing echo
+2023-01-11 18:19:17,547 INFO     errbot.plugin_manager     Activate plugin: TextCmds.
+2023-01-11 18:19:17,548 INFO     errbot.core_plugins.wsview Checking TextModeCmds for webhooks
+2023-01-11 18:19:17,548 INFO     errbot.plugin_manager     Activate plugin: VersionChecker.
+2023-01-11 18:19:17,548 INFO     errbot.plugins.VersionChecker Skip version checking under text mode.
+2023-01-11 18:19:17,548 INFO     errbot.core_plugins.wsview Checking VersionChecker for webhooks
+2023-01-11 18:19:17,549 INFO     errbot.plugin_manager     Activate plugin: Plugins.
+2023-01-11 18:19:17,550 INFO     errbot.core_plugins.wsview Checking Plugins for webhooks
+2023-01-11 18:19:17,550 INFO     errbot.plugin_manager     Activate plugin: Help.
+2023-01-11 18:19:17,552 INFO     errbot.core_plugins.wsview Checking Help for webhooks
+2023-01-11 18:19:17,552 INFO     errbot.plugin_manager     Activate plugin: ChatRoom.
+2023-01-11 18:19:17,553 INFO     errbot.core_plugins.wsview Checking ChatRoom for webhooks
+2023-01-11 18:19:17,553 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:19:17,553 INFO     errbot.plugin_manager     Activate plugin: Utils.
+2023-01-11 18:19:17,555 INFO     errbot.core_plugins.wsview Checking Utils for webhooks
+2023-01-11 18:19:17,555 INFO     errbot.plugin_manager     Activate plugin: Example.
+2023-01-11 18:19:17,557 INFO     errbot.core_plugins.wsview Checking Example for webhooks
+2023-01-11 18:19:17,557 INFO     errbot.core               Notifying connection to all the plugins...
+2023-01-11 18:19:17,557 INFO     errbot.plugins.ChatRoom   Connecting bot chatrooms
+2023-01-11 18:19:17,558 INFO     errbot.core               Plugin activation done.
+2023-01-11 18:19:21,144 INFO     errbot.plugins.ACLs       Matching ACL {} against username @luser for command Example:hello.
+2023-01-11 18:19:21,144 INFO     errbot.core               Processing command "hello" with parameters "" from @luser
+2023-01-11 18:19:33,377 INFO     errbot.plugins.ACLs       Matching ACL {} against username @luser for command Example:hello.
+2023-01-11 18:19:33,378 INFO     errbot.core               Processing command "hello" with parameters "a" from @luser
+2023-01-11 18:19:39,395 INFO     errbot.plugins.ACLs       Matching ACL {} against username @luser for command Example:hello.
+2023-01-11 18:19:39,395 INFO     errbot.core               Processing command "hello" with parameters "bbb fdf ff" from @luser
+2023-01-12 10:20:36,868 INFO     errbot.core               Disconnect callback, deactivating all the plugins.
+2023-01-12 10:20:36,954 INFO     errbot.plugin_manager     Shutdown.
+2023-01-12 10:20:36,955 INFO     errbot.plugin_manager     Bye.
+2023-01-12 10:20:36,958 INFO     errbot.cli                Process exiting
