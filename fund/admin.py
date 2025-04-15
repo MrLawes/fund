@@ -3,6 +3,7 @@ import datetime
 from django import forms
 from django.contrib import admin
 from django.db import transaction
+from django.utils import timezone
 from django.utils.html import format_html
 
 from fund.models import Fund, FundValue, FundExpense, FundHoldings
@@ -117,7 +118,7 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'annual_interest_rate',
+        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'annual_interest_rate', 'expectation',
         'buttons',
     )
     search_fields = ['fund__name', 'id', ]
@@ -206,6 +207,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return f"{(((value - obj.expense) / obj.expense) * 100):0.02f}%"
 
     hold_rate_persent.short_description = '持有收益率'
+
+    def expectation(self, obj: FundExpense):
+
+        localdate = timezone.localdate()
+        days = (localdate - obj.deal_at).days
+        expect_expense = obj.expense * ((1 + 0.1 / 365) ** days)
+        return f"{expect_expense:0.02f}"
+
+    expectation.short_description = '期望金额(10%)'
 
     def get_changelist_instance(self, request):
         result = super().get_changelist_instance(request=request)
