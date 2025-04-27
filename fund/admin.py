@@ -215,7 +215,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         expect_expense = obj.expense * ((1 + 0.1 / 365) ** days)
         return f"{expect_expense:0.02f}"
 
-    expectation.short_description = '期望金额(10%)'
+    expectation.short_description = '期望金额年化(10%)'
 
     def get_changelist_instance(self, request):
         result = super().get_changelist_instance(request=request)

@@ -1,7 +1,7 @@
 import datetime
 import os
 
-for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/09/"):
+for root, dirs, files in os.walk("/Users/chenhaiou/Documents/视频/2025-03/"):
     for file in files:
         file_path = os.path.join(root, file)
         # print(f"{file_path=}")
@@ -31,3 +31,5 @@ for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/09/"):
         to_file_path = '/'.join(file_path_split)
         print(f'{file_path=}; {to_file_path}')
         # os.rename(file_path, to_file_path)
+
+print("完成")
