@@ -20,7 +20,7 @@ class FundAdmin(admin.ModelAdmin):
 
     def expense(self, obj):
         expense = FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('expense', flat=True, )  # noqa
-        remark = '(弃投)' if obj.id in [1, 3, 6, 7, 8, 9, 10, 11, 16, ] else ''
+        remark = '(份额正确)' if obj.id in [1, 6, 8, 11, 14, 15] else ""
         return f"{sum(expense):,.2f}{remark}"
 
     expense.short_description = '已投入资金'
