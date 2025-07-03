@@ -1,0 +1,16 @@
+{
+  "name": "taobao",
+  "manifest_version": 3,
+  "version": "1.250703",
+  "description": "taobao",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://cart.taobao.com/cart.htm*"
+      ],
+      "js": [
+        "login.js"
+      ]
+    }
+  ]
+}

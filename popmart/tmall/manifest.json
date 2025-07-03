@@ -1,0 +1,16 @@
+{
+  "name": "tmall",
+  "manifest_version": 3,
+  "version": "1.250703",
+  "description": "tmall",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://buy.tmall.com/order/*"
+      ],
+      "js": [
+        "login.js"
+      ]
+    }
+  ]
+}
