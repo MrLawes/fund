@@ -97,19 +97,12 @@ class Command(BaseCommand):
                 hold = FundExpense.get_hold(fund_value=fund_value.value, expense=expense, fee=fee)
                 fe.hold = hold
 
-            # todo delete 白酒
-            if fe.id == 3605:
-                fe.hold = 347.31
-            if fe.id == 3606:
-                fe.hold = 22.28
             if fe.id == 3894:
                 fe.hold = 410.21
             if fe.id == 3912:
                 fe.hold = 1296.57
             if fe.id == 3956:
                 fe.hold = 978.37
-            if fe.id == 3963:
-                fe.hold = 521.75
             if fe.id == 3989:
                 fe.hold = 1044.05
 
