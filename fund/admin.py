@@ -48,7 +48,7 @@ class FundAdmin(admin.ModelAdmin):
     def month_min(self, obj):
         min_value, min_deal_at = 999999, ''
         for fund_value in FundValue.objects.filter(  # noqa
-                fund=obj, deal_at__gte=datetime.datetime.now() - datetime.timedelta(days=31)
+            fund=obj, deal_at__gte=datetime.datetime.now() - datetime.timedelta(days=31)
         ):
             if fund_value.value < min_value:
                 min_value = fund_value.value
@@ -125,7 +125,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
     )
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__category', 'fund__high_sale_low_buy', 'fund__is_advance', 'fund__name',)
-    actions = ['sum_hold', 'sale', ]
+    actions = ['sum_expectation', 'sum_hold', 'sale', ]
     form = FundExpenseForm
     list_per_page = 500
 
@@ -168,6 +168,32 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     sum_hold.short_description = "计算份数"
 
+    def sum_expectation(self, request, queryset):
+        # total_expense = sum(queryset.values_list('expense', flat=True))
+
+        total_hold_value = total_expectation = 0
+        for obj in queryset:
+            total_hold_value += self.hold_value(obj)
+            total_expectation += float(self.expectation(obj))
+
+        # expense
+        # hold_buy = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
+        # hold_sale = sum(queryset.filter(expense_type='sale').values_list('hold', flat=True))
+        self.message_user(request, f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f};")
+
+    #
+    # def expectation(self, obj: FundExpense):
+    #
+    #     localdate = timezone.localdate()
+    #     days = (localdate - obj.deal_at).days
+    #     expect_expense = obj.expense * ((1 + 0.1 / 365) ** days)
+    #     return f"{expect_expense:0.02f}"
+    #
+    # expectation.short_description = '期望金额年化(10%)'
+    #
+
+    sum_expectation.short_description = "计算确认金额|期望金额"
+
     def sale(self, request, queryset):
 
         with transaction.atomic():
@@ -194,8 +220,9 @@ class FundExpenseAdmin(admin.ModelAdmin):
             return ""
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
         value = round(obj.hold * last_fundvalue.value, 2)  # noqa
-        color = 'green'
-        return format_html(f'<span style="color: {color};">{value}</span>')
+        # color = 'green'
+        # return format_html(f'<span style="color: {color};">{value}</span>')
+        return value
 
     hold_value.short_description = '持有市值'
 
