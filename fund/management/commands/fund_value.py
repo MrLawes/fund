@@ -87,9 +87,9 @@ class Command(BaseCommand):
             fe.set_annual_interest_rate()
 
             if fe.fund.name in (
-                    '[军工]易方达国防军工混合A',
-                    '[半导体]银河创新成长混合C',
-                    '[白酒]招商中证白酒指数C',
+                '[军工]易方达国防军工混合A',
+                '[半导体]银河创新成长混合C',
+                '[白酒]招商中证白酒指数C',
             ):
                 fund_value = FundValue.objects.get(fund=fe.fund, deal_at=fe.deal_at)
                 fee = fe.fund.fee
@@ -105,10 +105,6 @@ class Command(BaseCommand):
                 fe.hold = 978.37
             if fe.id == 3989:
                 fe.hold = 1044.05
-
-            # todo 半导体
-            if fe.id == 3920:
-                fe.hold = 348.03
 
             # todo 军工
             if fe.id == 3892:
