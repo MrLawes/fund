@@ -97,48 +97,48 @@ class Command(BaseCommand):
                 hold = FundExpense.get_hold(fund_value=fund_value.value, expense=expense, fee=fee)
                 fe.hold = hold
 
-            if fe.id == 3894:
-                fe.hold = 410.21
-            if fe.id == 3912:
-                fe.hold = 1296.57
-            if fe.id == 3956:
-                fe.hold = 978.37
-            if fe.id == 3989:
-                fe.hold = 1044.05
+            # if fe.id == 3894:
+            #     fe.hold = 410.21
+            # if fe.id == 3912:
+            #     fe.hold = 1296.57
+            # if fe.id == 3956:
+            #     fe.hold = 978.37
+            # if fe.id == 3989:
+            #     fe.hold = 1044.05
 
-            # todo 军工
-            if fe.id == 3892:
-                fe.hold = 593.12
-            if fe.id == 3950:
-                fe.hold = 654.45
-            if fe.id == 3954:
-                fe.hold = 704.32
-            if fe.id == 3957:
-                fe.hold = 753.58
-            elif fe.id == 3966:
-                fe.hold = 401.61
+            # # todo 军工
+            # if fe.id == 3892:
+            #     fe.hold = 593.12
+            # if fe.id == 3950:
+            #     fe.hold = 654.45
+            # if fe.id == 3954:
+            #     fe.hold = 704.32
+            # if fe.id == 3957:
+            #     fe.hold = 753.58
+            # elif fe.id == 3966:
+            #     fe.hold = 401.61
 
-            # todo 新能源汽车
-            if fe.id == 3943:
-                fe.hold = 183.18
-            if fe.id == 3955:
-                fe.hold = 414.13
-            elif fe.id == 3990:
-                fe.hold = 451.47
+            # # todo 新能源汽车
+            # if fe.id == 3943:
+            #     fe.hold = 183.18
+            # if fe.id == 3955:
+            #     fe.hold = 414.13
+            # elif fe.id == 3990:
+            #     fe.hold = 451.47
 
-            # todo 医疗
-            if fe.id == 3932:
-                fe.hold = 143.72
-            if fe.id == 3931:
-                fe.hold = 143.72
-            if fe.id == 3931:
-                fe.hold = 143.72
-            if fe.id == 3947:
-                fe.hold = 153.28
-            if fe.id == 3615:
-                fe.hold = 234.74
-            elif fe.id == 3970:
-                fe.hold = 175.01
+            # # todo 医疗
+            # if fe.id == 3932:
+            #     fe.hold = 143.72
+            # if fe.id == 3931:
+            #     fe.hold = 143.72
+            # if fe.id == 3931:
+            #     fe.hold = 143.72
+            # if fe.id == 3947:
+            #     fe.hold = 153.28
+            # if fe.id == 3615:
+            #     fe.hold = 234.74
+            # elif fe.id == 3970:
+            #     fe.hold = 175.01
 
             fe.save(update_fields=['hold_rate', 'hold', ])
 
