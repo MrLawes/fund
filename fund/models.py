@@ -9,7 +9,7 @@ class Fund(models.Model):
         (3, '半导体'),
         (4, '军工'),
         (5, '新能源'),
-        (6, '黄金'),
+        # (6, '黄金'),
         (7, '债券'),
     )
     category = models.IntegerField(choices=FUND_CATEGORY, default=0)
