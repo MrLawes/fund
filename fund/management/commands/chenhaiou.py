@@ -46,6 +46,7 @@ class Command(BaseCommand):
             """
             consecutive_up = {}  # 连续上涨次数统计
             consecutive_down = {}  # 连续下跌次数统计
+            consecutive_last = {}  # noqa
 
             i = 0
             while i < len(prices):
@@ -57,6 +58,7 @@ class Command(BaseCommand):
                         i += 1
                     if count > 0:
                         consecutive_up[count] = consecutive_up.get(count, 0) + 1
+                        consecutive_last = {"涨": count}  # noqa
                 elif prices[i] == '跌':
                     # 计算连续下跌次数
                     count = 0  # noqa
@@ -65,15 +67,16 @@ class Command(BaseCommand):
                         i += 1
                     if count > 0:
                         consecutive_down[count] = consecutive_down.get(count, 0) + 1
+                        consecutive_last = {"跌": count}  # noqa
                 else:
                     i += 1
 
-            return consecutive_up, consecutive_down
+            return consecutive_up, consecutive_down, consecutive_last
 
         # print(f"{results=}")
 
         # 统计连续涨跌次数
-        up_counts, down_counts = count_consecutive_trends(results)
+        up_counts, down_counts, consecutive_last = count_consecutive_trends(results)
 
         # 准备饼图数据
         up_labels = [f'u {times}' for times in sorted(up_counts.keys())]
@@ -105,4 +108,7 @@ class Command(BaseCommand):
         for times, count in sorted(down_counts.items()):
             print(f"  连续跌 {times} 次: {count} 次")
         print(f"  跌共计 {results.count('跌')} ({int(results.count('跌') * 100 / len(results))}%)次")
+        print(f"{consecutive_last=}")
+        # 0.43 *
+
         plt.show()
