@@ -99,9 +99,10 @@ class Command(BaseCommand):
         print(f"{fund.name}, 连续上涨次数统计:")
         for times, count in sorted(up_counts.items()):
             print(f"  连续涨 {times} 次: {count} 次")
+        print(f"  涨共计 {results.count('涨')} ({int(results.count('涨') * 100 / len(results))}%)次")
 
         print("\n连续下跌次数统计:")
         for times, count in sorted(down_counts.items()):
             print(f"  连续跌 {times} 次: {count} 次")
-
+        print(f"  跌共计 {results.count('跌')} ({int(results.count('跌') * 100 / len(results))}%)次")
         plt.show()
