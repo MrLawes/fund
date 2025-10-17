@@ -170,15 +170,16 @@ class FundExpenseAdmin(admin.ModelAdmin):
     def sum_expectation(self, request, queryset):
         # total_expense = sum(queryset.values_list('expense', flat=True))
 
-        total_hold_value = total_expectation = 0
+        total_hold_value = total_expectation = total_hold = 0
         for obj in queryset:
             total_hold_value += self.hold_value(obj)
             total_expectation += float(self.expectation(obj))
+            total_hold += obj.hold
 
         # expense
         # hold_buy = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
         # hold_sale = sum(queryset.filter(expense_type='sale').values_list('hold', flat=True))
-        self.message_user(request, f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f};")
+        self.message_user(request, f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f}; 共计份额:{total_hold}")
 
     #
     # def expectation(self, obj: FundExpense):

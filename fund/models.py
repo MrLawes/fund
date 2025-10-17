@@ -38,7 +38,7 @@ class FundValue(models.Model):
         verbose_name_plural = '基金净值'
 
     def __str__(self):
-        return f"{self.fund.name} {self.deal_at}"
+        return f"{self.fund.name} {self.deal_at} {self.value=}"
 
 
 class FundExpense(models.Model):
