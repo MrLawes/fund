@@ -19,9 +19,7 @@ class FundAdmin(admin.ModelAdmin):
 
     def expense(self, obj):
         expense = FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('expense', flat=True, )  # noqa
-        remark = '(份额正确)' if obj.id in [1, 6, 8, 11, 14, 15] else ""
-        remark = '(2027年7月再关注)' if obj.id in [6, ] else remark
-        remark = '(2027年2月再关注)' if obj.id in [14, ] else remark
+        remark = '(份额正确, 2027年7月再关注)' if obj.id in [1, ] else ""
         return f"{sum(expense):,.2f}{remark}"
 
     expense.short_description = '已投入资金'
@@ -124,7 +122,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
     )
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__category', 'fund__high_sale_low_buy', 'fund__is_advance', 'fund__name',)
-    actions = ['sum_expectation', 'sum_hold', ]
+    actions = ['sum_expectation', ]
     form = FundExpenseForm
     list_per_page = 500
 
@@ -159,13 +157,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
         return format_html(result)
 
     buttons.short_description = "操作"
-
-    def sum_hold(self, request, queryset):
-        hold_buy = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
-        hold_sale = sum(queryset.filter(expense_type='sale').values_list('hold', flat=True))
-        self.message_user(request, f"共计 {(hold_buy - hold_sale):0.02f} 份")
-
-    sum_hold.short_description = "计算份数"
 
     def sum_expectation(self, request, queryset):
         # total_expense = sum(queryset.values_list('expense', flat=True))

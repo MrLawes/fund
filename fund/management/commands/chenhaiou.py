@@ -7,7 +7,7 @@ from fund.models import Fund, FundValue
 class Command(BaseCommand):
     def handle(self, *_, **options):
 
-        fund = Fund.objects.get(name="[白酒]招商中证白酒指数C")
+        fund = Fund.objects.get(name="[新能源]工银瑞信新能源汽车主题混合C")
         before = FundValue.objects.filter(fund=fund).first()
         values = []
         results = []
