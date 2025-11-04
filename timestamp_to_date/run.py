@@ -1,13 +1,16 @@
 import datetime
 import os
 
-for root, dirs, files in os.walk("/Users/chenhaiou/Documents/视频/2025-03/"):
+for root, dirs, files in os.walk("/Users/chenhaiou/Documents/mv/202510/"):
     for file in files:
         file_path = os.path.join(root, file)
         # print(f"{file_path=}")
         if 'DS_Store' in file_path:
             continue
         elif "IMG_" in file_path or "VID_" in file_path or "Screenshot_" in file_path:
+            date = file_path.split('_')[1]
+            date = f"{date[:4]}-{date[4:6]}-{date[6:8]}"
+        elif "Videoframe_" in file_path:
             date = file_path.split('_')[1]
             date = f"{date[:4]}-{date[4:6]}-{date[6:8]}"
         elif file_path.split('/')[-1].startswith("202"):

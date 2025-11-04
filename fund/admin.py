@@ -159,7 +159,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
     buttons.short_description = "操作"
 
     def sum_expectation(self, request, queryset):
-        # total_expense = sum(queryset.values_list('expense', flat=True))
 
         total_hold_value = total_expectation = total_hold = 0
         for obj in queryset:
@@ -167,21 +166,13 @@ class FundExpenseAdmin(admin.ModelAdmin):
             total_expectation += float(self.expectation(obj))
             total_hold += obj.hold
 
-        # expense
-        # hold_buy = sum(queryset.filter(expense_type='buy').values_list('hold', flat=True))
-        # hold_sale = sum(queryset.filter(expense_type='sale').values_list('hold', flat=True))
-        self.message_user(request, f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f}; 共计份额:{total_hold}")
-
-    #
-    # def expectation(self, obj: FundExpense):
-    #
-    #     localdate = timezone.localdate()
-    #     days = (localdate - obj.deal_at).days
-    #     expect_expense = obj.expense * ((1 + 0.1 / 365) ** days)
-    #     return f"{expect_expense:0.02f}"
-    #
-    # expectation.short_description = '期望金额年化(10%)'
-    #
+        last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
+        # 盈亏差额
+        profit_loss_diff = total_hold_value - total_expectation
+        # 盈亏差额转化为持仓
+        profit_loss_hold = profit_loss_diff / last_fundvalue.value
+        self.message_user(request,
+                          f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f}({profit_loss_hold:0.02f}份);共计份额:{total_hold}")
 
     sum_expectation.short_description = "计算确认金额|期望金额"
 
@@ -190,8 +181,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
             return ""
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
         value = round(obj.hold * last_fundvalue.value, 2)  # noqa
-        # color = 'green'
-        # return format_html(f'<span style="color: {color};">{value}</span>')
         return value
 
     hold_value.short_description = '持有市值'
