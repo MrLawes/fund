@@ -24,8 +24,14 @@ class Command(BaseCommand):
                     transactions = [
                         {"value": first_fund_value.value, "hold": round(10000 / first_fund_value.value, 2)},
                     ]
-                    print(f"交易记录: {transactions=}")
+                    print(f"交易记录: {fund.name} {transactions=}")
+                    buy_lost = False
                     for fund_value in FundValue.objects.filter(fund=fund, deal_at__gt=start):
+
+                        if len(transactions) > 100:
+                            buy_lost = True
+                            break
+
                         transaction = transactions[-1]
 
                         if fund_value.value > transaction["value"] * up_percentage:
@@ -36,23 +42,25 @@ class Command(BaseCommand):
                                 transactions.append(
                                     {"value": fund_value.value, "hold": round(10000 / fund_value.value, 2)})
                             print(f"盈利: {profit=}")
-                            print(f"交易记录: {transactions=}")
+                            print(f"交易记录: {fund.name} {transactions=}")
 
                         elif fund_value.value < transaction["value"] * down_percentage:
                             print(f"买 净值:{fund_value.value}")
                             transactions.append({"value": fund_value.value, "hold": round(10000 / fund_value.value, 2)})
-                            print(f"交易记录: {transactions=}")
+                            print(f"交易记录: {fund.name} {transactions=}")
+
+                    if buy_lost:
+                        break
 
                     print(f"{fund.name=};{profit=}")
                     results.setdefault(fund.name, [])
                     results[fund.name].append(
                         {
                             "profit": profit, "up_percentage": up_percentage, "down_percentage": down_percentage,
-                            "name": fund.name
+                            "name": fund.name, "fund_id": fund.id,
                         }
                     )
 
-        # print(f"模拟结果: {json.dumps(results, ensure_ascii=False, indent=4)})")
         for fund_name, result in results.items():
 
             best_profit = 0
@@ -62,4 +70,9 @@ class Command(BaseCommand):
                     best_profit = item['profit']
                     best_data = item
 
-            print(f"模拟最好结果: {best_data=})")
+            if best_data:
+                print(f"{best_data=}")
+                fund = Fund.objects.get(id=best_data['fund_id'])
+                fund.sell_percentage = best_data['up_percentage']
+                fund.buy_percentage = best_data["down_percentage"]
+                fund.save(update_fields=['sell_percentage', 'buy_percentage'])
