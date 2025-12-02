@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -9,6 +10,8 @@ from fund.models import FundValue
 
 class Command(BaseCommand):
     def handle(self, *_, **options):
+
+        results = {}
 
         # 一年前的 1 月份开始模拟
         start = timezone.localdate() - datetime.timedelta(days=365)
@@ -43,4 +46,8 @@ class Command(BaseCommand):
                     print(f"交易记录: {transactions=}")
 
             print(f"{fund.name=};{profit=}")
-            input()
+            results.setdefault(fund.name, [])
+            results[fund.name].append(
+                {"profit": profit, "up_percentage": up_percentage, "down_percentage": down_percentage})
+
+        print(f"模拟结果: {json.dumps(results, ensure_ascii=False, indent=4)})")
