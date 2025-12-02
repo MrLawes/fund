@@ -24,33 +24,23 @@ class Command(BaseCommand):
             transactions = [
                 {"value": first_fund_value.value, "hold": round(10000 / first_fund_value.value, 2)},
             ]
-            print(f"{transactions=}")
+            print(f"交易记录: {transactions=}")
             for fund_value in FundValue.objects.filter(fund=fund, deal_at__gt=start):
                 transaction = transactions[-1]
 
-                if fund_value.value > transaction["value"] * up_percentage:  # todo chenhaiou 卖
-
-                    print(f"{fund_value.fund.name=};{fund_value}")
-                    print(f"卖 {transactions=}")
-
+                if fund_value.value > transaction["value"] * up_percentage:
+                    print(f"卖 净值:{fund_value.value}")
                     sell = transactions.pop()
                     profit += fund_value.value * sell["hold"] - 10000
                     if not transactions:
                         transactions.append({"value": fund_value.value, "hold": round(10000 / fund_value.value, 2)})
+                    print(f"盈利: {profit=}")
+                    print(f"交易记录: {transactions=}")
 
-                    # transaction = transactions[0]
-                    print(f"{profit=}")
-                    print(f"卖 {transactions=}")
-                    # input()
-
-                elif fund_value.value < transaction["value"] * down_percentage:  # todo chenhaiou 买
-
-                    print(f"{fund_value.fund.name=};{fund_value}")
+                elif fund_value.value < transaction["value"] * down_percentage:
+                    print(f"买 净值:{fund_value.value}")
                     transactions.append({"value": fund_value.value, "hold": round(10000 / fund_value.value, 2)})
-
-                    # transaction = transactions[0]
-                    print(f"买 {transactions=}")
-                    # input()
+                    print(f"交易记录: {transactions=}")
 
             print(f"{fund.name=};{profit=}")
             input()
