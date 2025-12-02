@@ -8,11 +8,16 @@ from rich.console import Console
 from rich.table import Table
 from tabulate import tabulate
 
-from fund.models import Fund, FundValue, FundExpense, FundHoldings
+from fund.management.commands.simulate_trades import Command as SimulateTradesCommand
+from fund.models import Fund
+from fund.models import FundExpense
+from fund.models import FundHoldings
+from fund.models import FundValue
 
 
 class Command(BaseCommand):
     def handle(self, *_, **options):
+        SimulateTradesCommand().handle()
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
         }
@@ -113,7 +118,7 @@ class Command(BaseCommand):
         table = Table(title="")
         headers = ['ID', '交易日期', '基金名称', '确认份额', '确认金额', '持有市值', ]
         for header in headers:
-            table.add_column(header, justify="left", no_wrap=True)
+            table.add_column(header, no_wrap=True)
 
         tabulate_table = []
         for fund_category in dict(Fund.FUND_CATEGORY).keys():
@@ -183,4 +188,5 @@ class Command(BaseCommand):
                 ],
             }
         }
-        requests.post('https://open.feishu.cn/open-apis/bot/v2/hook/f815d87c-433d-47dc-8377-d61c18f3e231', json=payload, timeout=5, )
+        requests.post('https://open.feishu.cn/open-apis/bot/v2/hook/f815d87c-433d-47dc-8377-d61c18f3e231', json=payload,
+                      timeout=5, )
