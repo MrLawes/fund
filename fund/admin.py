@@ -5,7 +5,10 @@ from django.contrib import admin
 from django.utils import timezone
 from django.utils.html import format_html
 
-from fund.models import Fund, FundValue, FundExpense, FundHoldings
+from fund.models import Fund
+from fund.models import FundExpense
+from fund.models import FundHoldings
+from fund.models import FundValue
 
 
 @admin.register(Fund)
@@ -117,8 +120,8 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'annual_interest_rate', 'expectation',
-        'buttons',
+        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'annual_interest_rate',
+        'expectation', 'buttons',
     )
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__category', 'fund__high_sale_low_buy', 'fund__is_advance', 'fund__name',)
@@ -218,11 +221,15 @@ class FundExpenseAdmin(admin.ModelAdmin):
                 if r.expense_type == 'buy':
                     expense += r.expense
                     hold += r.hold
-                    fund_value += FundValue.objects.filter(fund=r.fund).order_by("deal_at").last().value * r.hold  # noqa
+                    fund_value += FundValue.objects.filter(
+                        fund=r.fund
+                    ).order_by("deal_at").last().value * r.hold  # noqa
                 elif r.expense_type == 'sale':
                     expense -= r.expense
                     hold -= r.hold
-                    fund_value -= FundValue.objects.filter(fund=r.fund).order_by("deal_at").last().value * r.hold  # noqa
+                    fund_value -= FundValue.objects.filter(
+                        fund=r.fund
+                    ).order_by("deal_at").last().value * r.hold  # noqa
             expense = int(expense)
             hold = round(hold, 2)  # noqa
             lose = (expense - int(fund_value)) * 100 / expense

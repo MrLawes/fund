@@ -52,7 +52,9 @@ class FundExpense(models.Model):
     sale_at = models.DateField(verbose_name='出售日期', default=None, null=True, blank=True, )
     need_buy_again = models.BooleanField(verbose_name='卖出去过的', default=False)  # todo 改名 is_sale
     newest_value = models.FloatField(verbose_name='最新单位净值', default=0)
-    annual_interest_rate = models.DecimalField(verbose_name='投资回报年化率%', default=0, decimal_places=2, max_digits=10)
+    annual_interest_rate = models.DecimalField(
+        verbose_name='投资回报年化率%', default=0, decimal_places=2, max_digits=10
+    )
 
     class Meta:
         verbose_name_plural = '基金购买记录'
