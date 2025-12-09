@@ -16,17 +16,22 @@ class Command(BaseCommand):
         start = timezone.localdate() - datetime.timedelta(days=365)
         for fund in Fund.objects.all():
             for up_extent in (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10):
-                for down_extent in (0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10):
+                for down_extent in (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10):
+                    too_lot = False
                     up_percentage = 1 + up_extent  # 涨幅
                     down_percentage = 1 - down_extent  # 跌幅
                     profit = 0
                     first_fund_value = FundValue.objects.filter(fund=fund, deal_at__gt=start).first()
-                    transactions = [
+                    transactions: list[dict] = [
                         {"value": first_fund_value.value, "hold": round(10000 / first_fund_value.value, 2)},
                     ]
                     print(f"交易记录: {fund.name} {transactions=}")
                     for fund_value in FundValue.objects.filter(fund=fund, deal_at__gt=start):
                         transaction = transactions[-1]
+                        # if len(transactions) > 5:
+                        #     too_lot = True
+                        #     break
+
                         if fund_value.value > transaction["value"] * up_percentage:
                             print(f"卖 净值:{fund_value.value}")
                             sell = transactions.pop()
@@ -42,6 +47,9 @@ class Command(BaseCommand):
                             transactions.append({"value": fund_value.value, "hold": round(10000 / fund_value.value, 2)})
                             print(f"交易记录: {fund.name} {transactions=}")
 
+                    if too_lot:
+                        continue
+
                     print(f"{fund.name=};{profit=}")
                     results.setdefault(fund.name, [])
                     results[fund.name].append(
@@ -50,6 +58,8 @@ class Command(BaseCommand):
                             "name": fund.name, "fund_id": fund.id,
                         }
                     )
+
+        best_results = []
 
         for fund_name, result in results.items():
 
@@ -61,8 +71,12 @@ class Command(BaseCommand):
                     best_data = item
 
             if best_data:
-                print(f"{best_data=}")
+                best_results.append(best_data)
                 fund = Fund.objects.get(id=best_data['fund_id'])
                 fund.sell_percentage = best_data['up_percentage']
                 fund.buy_percentage = best_data["down_percentage"]
                 fund.save(update_fields=['sell_percentage', 'buy_percentage'])
+
+        best_results = sorted(best_results, key=lambda x: x['profit'], reverse=True)
+        for best_data in best_results:
+            print(f"{best_data=}")

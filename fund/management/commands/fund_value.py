@@ -128,6 +128,10 @@ class Command(BaseCommand):
                 last_fundvalue = FundValue.objects.filter(fund=fund_expense.fund).order_by('deal_at').last()
                 value = round(fund_expense.hold * last_fundvalue.value, 2)
                 hold_rate_persent = f"{(((value - fund_expense.expense) / fund_expense.expense) * 100):0.02f}%"
+                if "-" in hold_rate_persent:
+                    hold_rate_persent = f"{hold_rate_persent}({(fund_expense.fund.buy_percentage - 1) * 100:0.02f}%)"
+                else:
+                    hold_rate_persent = f"{hold_rate_persent}({(fund_expense.fund.sell_percentage - 1) * 100:0.02f}%)"
                 table.add_row(
                     f'{fund_expense.id}',
                     f'{fund_expense.deal_at}',
