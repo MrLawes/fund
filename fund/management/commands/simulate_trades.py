@@ -13,7 +13,7 @@ class Command(BaseCommand):
         results = {}
 
         # 一年前的 1 月份开始模拟
-        start = timezone.localdate() - datetime.timedelta(days=365)
+        start = timezone.localdate() - datetime.timedelta(days=32)
         for fund in Fund.objects.all():
             for up_extent in (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10):
                 for down_extent in (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.10):
@@ -28,11 +28,16 @@ class Command(BaseCommand):
                     print(f"交易记录: {fund.name} {transactions=}")
                     for fund_value in FundValue.objects.filter(fund=fund, deal_at__gt=start):
                         transaction = transactions[-1]
+
                         # if len(transactions) > 5:
                         #     too_lot = True
                         #     break
 
                         if fund_value.value > transaction["value"] * up_percentage:
+
+                            # if len(transactions) <= 1:
+                            #     continue
+
                             print(f"卖 净值:{fund_value.value}")
                             sell = transactions.pop()
                             profit += fund_value.value * sell["hold"] - 10000

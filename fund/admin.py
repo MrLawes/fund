@@ -172,10 +172,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
         # 盈亏差额
         profit_loss_diff = total_hold_value - total_expectation
-        # 盈亏差额转化为持仓
-        profit_loss_hold = profit_loss_diff / last_fundvalue.value
         self.message_user(request,
-                          f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f}({profit_loss_hold:0.02f}份);共计份额:{total_hold}")
+                          f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f};共计份额:{total_hold}")
 
     sum_expectation.short_description = "计算确认金额|期望金额"
 
