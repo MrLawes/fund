@@ -22,6 +22,8 @@ class Command(BaseCommand):
                     down_percentage = 1 - down_extent  # 跌幅
                     profit = 0
                     first_fund_value = FundValue.objects.filter(fund=fund, deal_at__gt=start).first()
+                    if not first_fund_value:
+                        continue
                     transactions: list[dict] = [
                         {"value": first_fund_value.value, "hold": round(10000 / first_fund_value.value, 2)},
                     ]
