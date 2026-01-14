@@ -215,7 +215,7 @@ class Game:
         surface.blit(ui_surface, (10, 10))
 
         # 绘制分数
-        score_text = self.font.render(f"得分: {self.score}", True, (255, 255, 255))
+        score_text = self.font.render(f"score: {self.score}", True, (255, 255, 255))
         surface.blit(score_text, (30, 20))
 
         # 绘制生命值条
@@ -232,7 +232,8 @@ class Game:
                                   bar_y + bar_height // 2 - lives_text.get_height() // 2))
 
         # 绘制说明文字
-        instruction = self.small_font.render("输入键盘上的字母来消除掉落的字母", True, (200, 220, 255))
+        instruction = self.small_font.render("Type letters on the keyboard to eliminate falling letters", True,
+                                             (200, 220, 255))
         surface.blit(instruction, (SCREEN_WIDTH // 2 - instruction.get_width() // 2, SCREEN_HEIGHT - 40))
 
     def draw_game_over(self, surface):
