@@ -12,7 +12,7 @@ pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("键盘字母游戏 - 美化版")
+pygame.display.set_caption("键盘字母游戏")
 
 # 定义颜色
 BACKGROUND_COLOR = (10, 10, 30)
@@ -250,12 +250,12 @@ class Game:
                                       SCREEN_HEIGHT // 2 - 80))
 
         # 最终得分
-        final_score = self.font.render(f"最终得分: {self.score}", True, (255, 255, 255))
+        final_score = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
         surface.blit(final_score, (SCREEN_WIDTH // 2 - final_score.get_width() // 2,
                                    SCREEN_HEIGHT // 2 + 20))
 
         # 重新开始提示
-        restart_text = self.small_font.render("按 R 键重新开始", True, (200, 220, 255))
+        restart_text = self.small_font.render("Press R to restart", True, (200, 220, 255))
         surface.blit(restart_text, (SCREEN_WIDTH // 2 - restart_text.get_width() // 2,
                                     SCREEN_HEIGHT // 2 + 80))
 

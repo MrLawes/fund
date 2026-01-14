@@ -34,6 +34,7 @@ class FundValue(models.Model):
     deal_at = models.DateField(verbose_name='发布日期', db_index=True, )
     value = models.FloatField(verbose_name='单位净值', )
     rate = models.FloatField(verbose_name='日增长率', default=0)
+    gold_price = models.FloatField(verbose_name='成交金价', default=0)
 
     class Meta:
         unique_together = ('fund', 'deal_at',)

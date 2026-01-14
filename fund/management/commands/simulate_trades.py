@@ -32,7 +32,7 @@ class Command(BaseCommand):
                     transactions: list[dict] = [
                         {"value": first_fund_value.value, "hold": round(10000 / first_fund_value.value, 2)},
                     ]
-                    print(f"交易记录: {fund.name} {transactions=}")
+                    # print(f"交易记录: {fund.name} {transactions=}")
                     for fund_value in FundValue.objects.filter(fund=fund, deal_at__gt=start):
                         transaction = transactions[-1]
 
@@ -45,24 +45,24 @@ class Command(BaseCommand):
                             # if len(transactions) <= 1:
                             #     continue
 
-                            print(f"卖 净值:{fund_value.value}")
+                            # print(f"卖 净值:{fund_value.value}")
                             sell = transactions.pop()
                             profit += fund_value.value * sell["hold"] - 10000
                             if not transactions:
                                 transactions.append(
                                     {"value": fund_value.value, "hold": round(10000 / fund_value.value, 2)})
-                            print(f"盈利: {profit=}")
-                            print(f"交易记录: {fund.name} {transactions=}")
+                            # print(f"盈利: {profit=}")
+                            # print(f"交易记录: {fund.name} {transactions=}")
 
                         elif fund_value.value < transaction["value"] * down_percentage:
-                            print(f"买 净值:{fund_value.value}")
+                            # print(f"买 净值:{fund_value.value}")
                             transactions.append({"value": fund_value.value, "hold": round(10000 / fund_value.value, 2)})
-                            print(f"交易记录: {fund.name} {transactions=}")
+                            # print(f"交易记录: {fund.name} {transactions=}")
 
                     if too_lot:
                         continue
 
-                    print(f"{fund.name=};{profit=}")
+                    # print(f"{fund.name=};{profit=}")
                     results.setdefault(fund.name, [])
                     results[fund.name].append(
                         {

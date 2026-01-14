@@ -170,18 +170,23 @@ class FundExpenseAdmin(admin.ModelAdmin):
             total_hold += obj.hold
 
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
-        # 盈亏差额
-        profit_loss_diff = total_hold_value - total_expectation
         self.message_user(request,
                           f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f};共计份额:{total_hold}")
 
     sum_expectation.short_description = "计算确认金额|期望金额"
 
-    def hold_value(self, obj):
+    def hold_value(self, obj: FundExpense):
         if obj.expense_type == 'sale':
             return ""
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
-        value = round(obj.hold * last_fundvalue.value, 2)  # noqa
+        value = f"{round(obj.hold * last_fundvalue.value, 2)}"  # noqa
+        if "黄金" in obj.fund.name:
+            fundvalue = FundValue.objects.get(fund=obj.fund_value.fund, deal_at=obj.deal_at)
+            gold_price = fundvalue.gold_price
+            gold_gram = 0
+            if gold_price:
+                gold_gram = f"{obj.expense / fundvalue.gold_price:.4f}"
+            value += f"(克数:{gold_gram})"
         return value
 
     hold_value.short_description = '持有市值'
