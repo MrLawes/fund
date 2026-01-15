@@ -28,7 +28,8 @@ class FundAdmin(admin.ModelAdmin):
     expense.short_description = '已投入资金'
 
     def name_html(self, obj):
-        return format_html(f'<a href="/admin/fund/fundexpense/?fund__name={obj.name}" target="_blank">{obj.name}</a>')
+        return format_html(
+            f'<a href="/admin/fund/fundexpense/?fund__name={obj.name}" target="_blank">{obj.name}</a>')  # noqa
 
     name_html.short_description = '基金名称'
 
@@ -41,7 +42,7 @@ class FundAdmin(admin.ModelAdmin):
             rate = f"""<span style="color: red;">{rate}</span>"""
         else:
             rate = f"""<span style="color: green;">{rate}</span>"""
-        return format_html(f"({str(fund_value.deal_at)[5:]}) {rate}　　　")
+        return format_html(f"({str(fund_value.deal_at)[5:]}) {rate}　　　")  # noqa
 
     rate.short_description = '估算涨幅'
 
@@ -68,7 +69,7 @@ class FundAdmin(admin.ModelAdmin):
         now_value = last_fund_value.value if last_fund_value else 0
         rate = f"{((now_value - min_value) / min_value) * 100:.2f}"
         if str(min_deal_at) == str(datetime.datetime.now().date()):
-            return format_html(f"""<span style="color: red;">{min_deal_at} (↑{rate}) {this_month_buy}</span>""")
+            return format_html(f"""<span style="color: red;">{min_deal_at} (↑{rate}) {this_month_buy}</span>""")  # noqa
         return f'{min_deal_at} (↑{rate}) {this_month_buy}'
 
     month_min.short_description = '30天内最低'
@@ -144,7 +145,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
         elif obj.expense_type == 'sale':
             result = f"""<span style="text-decoration: line-through">{obj.fund.name}</span>"""
 
-        return format_html(result)
+        return format_html(result)  # noqa
 
     fund_name.short_description = "基金名称"
 
@@ -158,7 +159,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             else:
                 result = f"""<a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
 
-        return format_html(result)
+        return format_html(result)  # noqa
 
     buttons.short_description = "操作"
 
@@ -176,7 +177,8 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     sum_expectation.short_description = "计算确认金额|期望金额"
 
-    def hold_value(self, obj):
+    @staticmethod
+    def hold_value(obj):
         if obj.expense_type == 'sale':
             return ""
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
@@ -263,7 +265,7 @@ class FundHoldingsAdmin(admin.ModelAdmin):
     list_display = ('id', 'catetory_name', 'expense', 'hold', 'persent')
 
     def persent(self, obj):
-        result = obj.expense * 100 / max(list(FundHoldings.objects.values_list('expense', flat=True)))  # noqa
+        result = obj.expense * 100 / sum(list(FundHoldings.objects.values_list('expense', flat=True)))  # noqa
         return f"{result:0.02f}%"
 
     persent.short_description = '仓位占比'

@@ -92,9 +92,8 @@ class Command(BaseCommand):
             fe.set_annual_interest_rate()
 
             if fe.fund.name in (
-                '[军工]易方达国防军工混合A',
-                '[半导体]银河创新成长混合C',
                 '[白酒]招商中证白酒指数C',
+                "[军工]鹏华空天军工指数(LOF)C",
             ):
                 fund_value = FundValue.objects.get(fund=fe.fund, deal_at=fe.deal_at)
                 fee = fe.fund.fee
@@ -102,7 +101,7 @@ class Command(BaseCommand):
                 hold = FundExpense.get_hold(fund_value=fund_value.value, expense=expense, fee=fee)
                 fe.hold = hold
 
-            fe.save(update_fields=['hold_rate', 'hold', ])
+            fe.save(update_fields=['hold', ])
 
             # 计算持有仓位占比
             catetory_name = fe.fund.name.split(']')[0].split('[')[-1]
