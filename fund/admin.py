@@ -120,7 +120,8 @@ class FundExpenseForm(forms.ModelForm):
 @admin.register(FundExpense)
 class FundExpenseAdmin(admin.ModelAdmin):
     list_display = (
-        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value', 'hold_rate_persent', 'annual_interest_rate',
+        'id', 'deal_at', 'fund_name', 'hold', 'expense', 'hold_value_display', 'hold_rate_persent',
+        'annual_interest_rate',
         'expectation', 'buttons',
     )
     search_fields = ['fund__name', 'id', ]
@@ -175,7 +176,14 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
     sum_expectation.short_description = "计算确认金额|期望金额"
 
-    def hold_value(self, obj: FundExpense):
+    def hold_value(self, obj):
+        if obj.expense_type == 'sale':
+            return ""
+        last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
+        value = round(obj.hold * last_fundvalue.value, 2)  # noqa
+        return value
+
+    def hold_value_display(self, obj: FundExpense):
         if obj.expense_type == 'sale':
             return ""
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
@@ -189,7 +197,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             value += f"(克数:{gold_gram})"
         return value
 
-    hold_value.short_description = '持有市值'
+    hold_value_display.short_description = '持有市值'
 
     def hold_rate_persent(self, obj):
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa

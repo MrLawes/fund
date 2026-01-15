@@ -17,7 +17,6 @@ from fund.models import FundValue
 
 class Command(BaseCommand):
     def handle(self, *_, **options):
-        SimulateTradesCommand().handle()
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
         }
@@ -75,6 +74,7 @@ class Command(BaseCommand):
             # 将最新的净值数据，更新到所有的交易记录，方便计算
             FundExpense.objects.filter(fund=fund).update(newest_value=last_fundvalue.value)
 
+        SimulateTradesCommand().handle()
         # 计算持有仓位占比
         FundHoldings.objects.all().delete()
         for fe in FundExpense.objects.all():
