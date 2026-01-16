@@ -28,7 +28,7 @@ class FundAdmin(admin.ModelAdmin):
     expense.short_description = '已投入资金'
 
     def name_html(self, obj):
-        return format_html(
+        return format_html(  # noqa
             f'<a href="/admin/fund/fundexpense/?fund__name={obj.name}" target="_blank">{obj.name}</a>')  # noqa
 
     name_html.short_description = '基金名称'
@@ -167,11 +167,13 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
         total_hold_value = total_expectation = total_hold = 0
         for obj in queryset:
-            total_hold_value += self.hold_value(obj)
+            if obj.fund_value.fund.name == "[医疗]中欧医疗A":
+                total_hold_value += round(self.hold_value(obj) * 0.995, 2)
+            else:
+                total_hold_value += self.hold_value(obj)
             total_expectation += float(self.expectation(obj))
             total_hold += obj.hold
 
-        last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
         self.message_user(request,
                           f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f};共计份额:{total_hold}")
 

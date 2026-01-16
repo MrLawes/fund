@@ -94,14 +94,18 @@ class Command(BaseCommand):
             if fe.fund.name in (
                 '[白酒]招商中证白酒指数C',
                 "[军工]鹏华空天军工指数(LOF)C",
+                "[医疗]工银瑞信前沿医疗股票C",
             ):
+                if fe.fund.name == "[医疗]工银瑞信前沿医疗股票C":
+                    if fe.id < 4400:
+                        continue
+
                 fund_value = FundValue.objects.get(fund=fe.fund, deal_at=fe.deal_at)
                 fee = fe.fund.fee
                 expense = fe.expense
                 hold = FundExpense.get_hold(fund_value=fund_value.value, expense=expense, fee=fee)
                 fe.hold = hold
-
-            fe.save(update_fields=['hold', ])
+                fe.save(update_fields=['hold', ])
 
             # 计算持有仓位占比
             catetory_name = fe.fund.name.split(']')[0].split('[')[-1]
