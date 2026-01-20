@@ -40,7 +40,7 @@ agent = initialize_agent(
         Tool(
             name="Weather",
             func=get_weather,
-            description="查询城市天气",
+            description="查询城市天气(中文),例如:'上海'、'北京'、'长沙'",
         ),
         Tool(
             name="Wikipedia",
