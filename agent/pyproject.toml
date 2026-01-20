@@ -7,5 +7,9 @@ requires-python = ">=3.10.1"
 # uv pip list --outdated: 查看包是否存在更新; uv add Django==6.0;uv sync: 更新依赖
 # 根据 pyproject.toml 安装第三方库: uv sync --group linux --python 3.14
 dependencies = [
-    "langchain-deepseek==1.0.1",
+    # "langchain-deepseek==1.0.1",
+    "langchain==0.2.15",
+    "langchain-core==0.2.36",
+    "langchain-community==0.2.15",
+    "langchain-openai==0.1.24",
 ]
