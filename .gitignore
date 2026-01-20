@@ -5,3 +5,4 @@ mv/data
 celerybeat.pid
 celerybeat-schedule.db
 nohup.out
+/*/uv.lock
