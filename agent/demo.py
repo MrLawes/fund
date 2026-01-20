@@ -42,7 +42,7 @@ agent = initialize_agent(
         Tool(
             name="Weather",
             func=get_weather,
-            description="Useful for when you need to get the weather in a specific location",
+            description="查询城市天气",
         ),
         Tool(
             name="Wikipedia",
