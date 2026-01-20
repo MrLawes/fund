@@ -28,12 +28,10 @@ llm = ChatOpenAI(
 
 
 def get_weather(location):
-    print("111111111111111111111111")
     return f"{location}的天气是大暴雨"  # 返回字符串而不是字典
 
 
-def get_wikipedia(query):
-    print("111111111111111111111111")
+def get_wikipedia(query):  # noqa
     return f"北京是中华人民共和国的首都，位于华北平原北部，是中国的政治、文化、国际交往和科技创新中心。  "  # 返回字符串而不是字典
 
 
@@ -47,7 +45,7 @@ agent = initialize_agent(
         Tool(
             name="Wikipedia",
             func=get_wikipedia,
-            description="Useful for when you need to get information from Wikipedia",
+            description="查询百科的介绍",
         ),
     ],
     llm,
@@ -56,6 +54,5 @@ agent = initialize_agent(
     handle_parsing_errors=True
 )
 
-result = agent.invoke({"input": "给我一些北京信息"})
-# result = agent.invoke({"input": "今天北京天气如何"})
-print(result)
+print(agent.invoke({"input": "给我一些北京信息"}))
+print(agent.invoke({"input": "给我一今天北京天气如何些北京信息"}))
