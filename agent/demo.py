@@ -20,7 +20,7 @@ os.environ["OPENAI_BASE_URL"] = "https://api.deepseek.com"
 # 创建 DeepSeek 模型实例
 llm = ChatOpenAI(
     model="deepseek-chat",
-    temperature=0.7,
+    temperature=0,
     max_tokens=None,
     timeout=None,
     max_retries=2,
@@ -36,7 +36,7 @@ def get_wikipedia(query):  # noqa
 
 
 agent = initialize_agent(
-    [
+    tools=[
         Tool(
             name="Weather",
             func=get_weather,
@@ -48,11 +48,11 @@ agent = initialize_agent(
             description="查询百科的介绍",
         ),
     ],
-    llm,
+    llm=llm,
     agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,  # 反应式推送
     verbose=True,
     handle_parsing_errors=True
 )
 
-print(agent.invoke({"input": "给我一些北京信息"}))
+# print(agent.invoke({"input": "给我一些北京信息"}))
 print(agent.invoke({"input": "今天北京天气如何"}))
