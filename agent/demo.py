@@ -55,4 +55,4 @@ agent = initialize_agent(
 )
 
 print(agent.invoke({"input": "给我一些北京信息"}))
-print(agent.invoke({"input": "给我一今天北京天气如何些北京信息"}))
+print(agent.invoke({"input": "今天北京天气如何"}))
