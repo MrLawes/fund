@@ -1,4 +1,5 @@
 import datetime
+import re
 
 from django import forms
 from django.contrib import admin
@@ -134,6 +135,28 @@ class FundExpenseAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         results = super().get_queryset(request=request).order_by('-hold_rate')
         return results
+
+    def get_search_results(self, request, queryset, search_term):
+        if search_term:
+            # 分割搜索词，支持空格和逗号分隔
+            # 使用正则表达式分割，同时支持空格和逗号
+            search_terms = re.split(r'[,\s]+', search_term.strip())
+            search_terms = [term.strip() for term in search_terms if term.strip()]
+
+            if len(search_terms) > 1:
+                # 如果有多个搜索词，对每个搜索词进行OR查询
+                from django.db.models import Q
+                q_objects = Q()
+
+                for term in search_terms:
+                    # 对fund__name和id都进行搜索
+                    q_objects |= Q(fund__name__icontains=term)
+                    q_objects |= Q(id__icontains=term)
+
+                queryset = queryset.filter(q_objects)
+                search_term = ''  # 清空search_term，因为我们已经手动处理了过滤
+
+        return super().get_search_results(request, queryset, search_term)
 
     def fund_name(self, obj):
         result = ''
