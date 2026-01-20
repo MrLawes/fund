@@ -8,7 +8,6 @@ pip install langchain-openai==0.1.24
 
 import os
 
-import wikipedia
 from langchain.agents import AgentType
 from langchain.agents import Tool
 from langchain.agents import initialize_agent
@@ -29,7 +28,13 @@ llm = ChatOpenAI(
 
 
 def get_weather(location):
+    print("111111111111111111111111")
     return f"{location}的天气是大暴雨"  # 返回字符串而不是字典
+
+
+def get_wikipedia(query):
+    print("111111111111111111111111")
+    return f"北京是中华人民共和国的首都，位于华北平原北部，是中国的政治、文化、国际交往和科技创新中心。  "  # 返回字符串而不是字典
 
 
 agent = initialize_agent(
@@ -41,14 +46,16 @@ agent = initialize_agent(
         ),
         Tool(
             name="Wikipedia",
-            func=lambda query: wikipedia.summary(query, sentences=2),
+            func=get_wikipedia,
             description="Useful for when you need to get information from Wikipedia",
         ),
     ],
     llm,
     agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,  # 注意参数名变更
     verbose=True,
+    handle_parsing_errors=True
 )
 
-result = agent.invoke({"input": "今天北京天气如何"})
+result = agent.invoke({"input": "给我一些北京信息"})
+# result = agent.invoke({"input": "今天北京天气如何"})
 print(result)
