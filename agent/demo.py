@@ -49,7 +49,7 @@ agent = initialize_agent(
         ),
     ],
     llm,
-    agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,  # 注意参数名变更
+    agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION,  # 反应式推送
     verbose=True,
     handle_parsing_errors=True
 )
