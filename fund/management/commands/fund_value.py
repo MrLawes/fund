@@ -95,6 +95,7 @@ class Command(BaseCommand):
                 '[白酒]招商中证白酒指数C',
                 "[军工]鹏华空天军工指数(LOF)C",
                 "[医疗]工银瑞信前沿医疗股票C",
+                "[黄金]华安黄金ETF联接I",
             ):
                 if fe.fund.name == "[医疗]工银瑞信前沿医疗股票C":
                     if fe.id < 4400:
