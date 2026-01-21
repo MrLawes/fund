@@ -68,7 +68,10 @@ print(agent.invoke({"input": "今天北京天气如何"}))
 # Observation: the result of the action
 # (this Thought/Action/Action Input/Observation can repeat N times)
 # Thought: I now know the final answer
-# Final Answer: the final answer to the original input question\n\nBegin!\n\nQuestion: 今天北京天气如何\nThought:"
+# Final Answer: the final answer to the original input question
+# Begin!
+# Question: 今天北京天气如何
+# Thought:"
 
 # 2. Answer the following questions as best you can. You have access to the following tools:
 # Weather(location) - 查询城市天气(中文),例如:'上海'、'北京'、'长沙'
