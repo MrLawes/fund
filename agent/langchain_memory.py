@@ -4,6 +4,7 @@ from langchain.agents import AgentType
 from langchain.agents import initialize_agent
 from langchain.memory import ConversationBufferMemory
 from langchain.tools import Tool
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 
 # 设置 API 密钥
@@ -24,6 +25,17 @@ def get_weather(location):
 def get_wikipedia(query):  # noqa
     return f"北京是中华人民共和国的首都，位于华北平原北部，是中国的政治、文化、国际交往和科技创新中心。"
 
+
+# 定义一个简单Prompt模板
+prompt = ChatPromptTemplate.from_template("""
+你是一位贴心的AI助手,现在和用户聊天。
+请根据对话历史和最新提问,给出自然、有帮助的回答。
+对话历史:
+{history}
+用户提问:
+{input}
+请回答:
+""")
 
 # 创建工具列表
 tools = [
@@ -56,6 +68,7 @@ agent_chain = initialize_agent(
     agent=AgentType.CONVERSATIONAL_REACT_DESCRIPTION,
     # verbose=True,
     memory=memory,
+    prompt=prompt,
 )
 
 # 使用示例
