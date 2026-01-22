@@ -1,0 +1,14 @@
+[project]
+name = "agent"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.10.1"
+# uv pip list --outdated: 查看包是否存在更新; uv add Django==6.0;uv sync: 更新依赖
+# 根据 pyproject.toml 安装第三方库: uv sync --group linux --python 3.14
+dependencies = [
+    "langchain==0.3.25",
+    "langchain-community==0.3.23",
+    "langchain-core==0.3.58",
+    "langchain-openai==0.3.16",
+]

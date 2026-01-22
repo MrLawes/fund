@@ -241,10 +241,13 @@ class FundExpenseAdmin(admin.ModelAdmin):
 
         localdate = timezone.localdate()
         days = (localdate - obj.deal_at).days
-        expect_expense = obj.expense * ((1 + 0.1 / 365) ** days)
+        if "债券" in obj.fund.name:
+            expect_expense = obj.expense * ((1 + 0.04 / 365) ** days)
+        else:
+            expect_expense = obj.expense * ((1 + 0.1 / 365) ** days)
         return f"{expect_expense:0.02f}"
 
-    expectation.short_description = '期望金额年化(10%)'
+    expectation.short_description = '期望金额年化(10%/4%)'
 
     def get_changelist_instance(self, request):
         result = super().get_changelist_instance(request=request)
