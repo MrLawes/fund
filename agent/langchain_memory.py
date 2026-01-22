@@ -72,5 +72,9 @@ agent_chain = initialize_agent(
 )
 
 # 使用示例
-print(agent_chain.run("北京的天气如何"))
-print(agent_chain.run("上海的呢"))
+# print(agent_chain.run("北京的天气如何"))
+# print(agent_chain.run("上海的呢"))
+
+print(agent_chain.run("今天北京的天气如何?"))
+print(agent_chain.run("今天去旅游适合穿什么衣服?"))
+print(agent_chain.run("请告诉我：去这个地方有哪些景点推荐？"))
