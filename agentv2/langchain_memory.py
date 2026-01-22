@@ -1,4 +1,4 @@
-import os
+import os  # noqa
 
 from langchain.agents import AgentType
 from langchain.agents import initialize_agent
@@ -10,14 +10,6 @@ from langchain_openai import ChatOpenAI
 # 设置 API 密钥
 os.environ["OPENAI_API_KEY"] = "sk-7250f888346341c19a5f73f7a4e16a10"
 os.environ["OPENAI_BASE_URL"] = "https://api.deepseek.com"
-
-llm = ChatOpenAI(
-    model="deepseek-chat",
-    temperature=0,  # 最稳定
-    max_tokens=None,
-    timeout=None,
-    max_retries=2,
-)
 
 
 def get_weather(location):
@@ -59,6 +51,15 @@ tools = [
     )
 ]
 
+# 创建模型实例
+llm = ChatOpenAI(
+    model="deepseek-chat",
+    temperature=0,
+    max_tokens=None,
+    timeout=None,
+    max_retries=10,
+)
+
 # 初始化带记忆功能的代理
 memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True)
 agent_chain = initialize_agent(
@@ -73,6 +74,7 @@ agent_chain = initialize_agent(
 # 使用示例
 # print(agent_chain.run("北京的天气如何"))
 # print(agent_chain.run("上海的呢"))
+
 print(agent_chain.run("今天北京的天气如何?"))
 print(agent_chain.run("今天去旅游适合穿什么衣服?"))
 print(agent_chain.run("请告诉我：去这个地方有哪些景点推荐？"))

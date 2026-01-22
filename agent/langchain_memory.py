@@ -57,7 +57,7 @@ llm = ChatOpenAI(
     temperature=0,
     max_tokens=None,
     timeout=None,
-    max_retries=2,
+    max_retries=10,
 )
 
 # 初始化带记忆功能的代理
