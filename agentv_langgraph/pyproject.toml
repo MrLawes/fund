@@ -8,8 +8,8 @@ requires-python = ">=3.10.1"
 # 根据 pyproject.toml 安装第三方库: uv sync --group linux --python 3.14
 dependencies = [
     "langgraph==1.0.7",
-    "langchain==0.3.25",
+    "langchain==1.2.6",
     "langchain-deepseek==1.0.1",
     "langchain-mcp-adapters==0.2.1",
-    # langgraph-checkpoint-postgres or langgraph-checkpoint-redis
+    "langgraph-checkpoint-redis==0.3.2"
 ]
