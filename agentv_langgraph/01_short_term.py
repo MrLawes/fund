@@ -67,6 +67,7 @@ def run_ageny():
         save_graph_visualization(agent)
         config = {"configuration": {"thread_id": 1, }}
         user_input = "我叫什么"
+        agent.run(user_input, config=config)
 
 
 if __name__ == "__main__":
