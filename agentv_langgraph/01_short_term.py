@@ -66,7 +66,11 @@ def run_ageny():
         )
         save_graph_visualization(agent)
         config = {"configuration": {"thread_id": 1, }}
-        user_input = "我叫什么"
+        # User_input="我叫什么"
+        # User_input="我是kevin"
+        # User_input="我叫什么"
+        # UseP_input="预定一个汉庭酒店"
+        user_input = f"我叫什么"
         agent.run(user_input, config=config)
 
 
