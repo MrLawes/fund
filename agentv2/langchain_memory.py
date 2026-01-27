@@ -53,7 +53,8 @@ tools = [
 
 # 创建模型实例
 llm = ChatOpenAI(
-    model="deepseek-chat",
+    model="deepseek-chat",  # 文本生成模型
+    # model="deepseek-reson", # 推理模型
     temperature=0,
     max_tokens=None,
     timeout=None,
