@@ -98,6 +98,7 @@ class Command(BaseCommand):
                 "[黄金]华安黄金ETF联接I",
                 "[新能源]工银瑞信新能源汽车主题混合C",
                 "[债券]博时裕新纯债债券C",
+                "[半导体]华夏国证半导体芯片ETF联接C",
             ):
                 if fe.fund.name == "[医疗]工银瑞信前沿医疗股票C":
                     if fe.id < 4400:

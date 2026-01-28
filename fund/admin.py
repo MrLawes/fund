@@ -22,7 +22,8 @@ class FundAdmin(admin.ModelAdmin):
         return super().get_queryset(request=request).order_by('-newest_rate')
 
     def expense(self, obj):
-        expense = FundExpense.objects.filter(fund=obj, expense_type='buy').values_list('expense', flat=True, )  # noqa
+        expense = FundExpense.objects.filter(fund=obj, expense_type='buy', need_buy_again=False).values_list('expense',
+                                                                                                             flat=True, )  # noqa
         remark = '(份额正确, 2027年7月再关注)' if obj.id in [1, ] else ""
         return f"{sum(expense):,.2f}{remark}"
 
