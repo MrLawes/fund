@@ -112,7 +112,8 @@ class Command(BaseCommand):
                 fee = fe.fund.fee
                 expense = fe.expense
                 hold = FundExpense.get_hold(fund_value=fund_value.value, expense=expense, fee=fee)
-                fe.hold = hold
+                if fe.expense_type == 'buy':
+                    fe.hold = hold
                 fe.save(update_fields=['hold', ])
 
             # 计算持有仓位占比
