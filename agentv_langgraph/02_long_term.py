@@ -9,7 +9,7 @@ from langchain_core.messages import SystemMessage
 from langchain_core.messages import trim_messages
 from langchain_core.tools import tool
 from langgraph.checkpoint.postgres import PostgresSaver
-from langgraph.prebuilt import create_react_agent
+from langgraph.prebuilt import create_react_agent  # noqa
 from langgraph.store.postgres import PostgresStore
 
 llm = init_chat_model(
@@ -60,9 +60,16 @@ def run_ageny():
                 checkpointer=checkpointer,  # 短期记忆
                 store=store,  # 长期记忆
             )
+
             config = {"configurable": {"thread_id": 1, "user_id": "陈海鸥"}}
             user_id = config["configurable"]["user_id"]
-            namespace = {"memories": user_id}
+            namespace = ("memories", user_id)
+
+            memory1 = "我的名字叫kevin"
+            store.put(namespace, "36b0976bcc4f4f40abdd6a09d99394ef", {"data": memory1})
+            memory2 = "我的住宿偏好是: 有窗户,有 Wi-Fi"
+            store.put(namespace, "1ad7c846c4d84848bb9f79567f3a8512", {"data": memory2})
+
             memories = store.search(namespace, query="")
             info = " ".join([d.value["data"] for d in memories]) if memories else "无长期记忆信息"
             user_input = f"预定一个汉庭酒店,我的附加信息有:{info}"
@@ -73,8 +80,10 @@ def run_ageny():
             # user_input="我叫什么"
             # user_input="预定一个汉庭酒店"
             # user_input = f"我叫什么"
-            agent_response = agent.invoke({"messages": [HumanMessage(content=user_input)]},
-                                          config=config)  # noqa
+            agent_response = agent.invoke(
+                {"messages": [HumanMessage(content=user_input)]},
+                config=config
+            )
             agent_response_content = agent_response["messages"][-1].content
             print(f"{agent_response_content=}")
 
