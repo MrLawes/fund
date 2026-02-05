@@ -13,4 +13,5 @@ dependencies = [
     "langchain_mcp_adapters==0.2.1",
     "langgraph-checkpoint-postgres==3.0.3",
     "langchain-deepseek==1.0.1",
+    "tavily-python==0.7.19",
 ]

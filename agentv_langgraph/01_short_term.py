@@ -12,6 +12,7 @@ from langchain_core.messages import trim_messages
 from langchain_core.tools import tool
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from langgraph.prebuilt import create_react_agent
+from tavily import TavilyClient
 
 llm = init_chat_model(
     model="deepseek-chat",
@@ -24,6 +25,39 @@ llm = init_chat_model(
 @tool("book_hotel", description="预定酒店的工具")
 def book_hotel(hotal_name: str) -> str:
     return f"成功预定了在{hotal_name}的住宿"
+
+
+@tool("tavily", description="联网搜索的工具")
+def tavily(query: str) -> str:
+    """
+    联网搜索工具，接收用户查询内容并返回搜索结果。
+
+    Args:
+        query (str): 用户输入的搜索关键词。
+
+    Returns:
+        str: 搜索结果的摘要信息。
+    """
+    # 初始化 TavilyClient 实例
+    tavily_client = TavilyClient(api_key="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")
+
+    try:
+        # 调用搜索接口
+        response = tavily_client.search(query)
+
+        # 提取搜索结果中的关键信息
+        results = response.get("results", [])
+        if not results:
+            return "未找到相关搜索结果。"
+
+        # 构造返回内容（示例：取前3条结果）
+        formatted_results = "\n".join(
+            [f"{i + 1}. {item['title']}: {item['content'][:100]}..." for i, item in enumerate(results[:3])]
+        )
+        return f"搜索结果：\n{formatted_results}"
+
+    except:  # noqa
+        return "搜索失败"
 
 
 def pre_model_hook(state):
@@ -40,7 +74,7 @@ def pre_model_hook(state):
 
 
 async def run_ageny():
-    tools = [book_hotel]
+    tools = [book_hotel, tavily]
     system_message = SystemMessage(
         content="你是一个AI助手",
     )
@@ -59,11 +93,12 @@ async def run_ageny():
             checkpointer=checkpointer,
         )
         config = {"configurable": {"thread_id": 1, }}
-        user_input = "我叫什么"
+        # user_input = "我叫什么"
         # user_input="我是kevin"
         # user_input="我叫什么"
         # user_input="预定一个汉庭酒店"
         # user_input = f"我叫什么"
+        user_input = "最近今晨怎么了"
         agent_response = await agent.ainvoke({"messages": [HumanMessage(content=user_input)]}, config=config)  # noqa
         agent_response_content = agent_response["messages"][-1].content
         print(f"{agent_response_content=}")
