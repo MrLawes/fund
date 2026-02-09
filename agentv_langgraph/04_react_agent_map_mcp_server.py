@@ -5,6 +5,7 @@ from typing import List
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import HumanMessage
 from langchain_core.messages import SystemMessage
+from langchain_core.tools import tool
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.checkpoint.memory import InMemorySaver
 from langgraph.prebuilt import create_react_agent  # noqa
@@ -21,6 +22,11 @@ llm = init_chat_model(
     base_url="https://api.deepseek.com/v1",
     api_key="sk-7250f888346341c19a5f73f7a4e16a10",
 )
+
+
+@tool("book_hotel", description="预定酒店的工具")
+def book_hotel(hotal_name: str) -> str:
+    return f"成功预定了在{hotal_name}的住宿"
 
 
 # 解析消息列表
@@ -43,7 +49,7 @@ async def run_agent():
     })
 
     # 从MCP Server中获取可提供使用的全部工具
-    tools = await client.get_tools()
+    tools = await client.get_tools() + [book_hotel, ]
     # print(f"tools:{tools}\n")
 
     # 基于内存存储的short-term
@@ -69,6 +75,7 @@ async def run_agent():
     # 1、非流式处理查询
     # 高德地图接口测试
     agent_response = await agent.ainvoke(
+        # {"messages": [HumanMessage(content="预定一个汉庭酒店")]},
         {"messages": [HumanMessage(content="上海天气如何")]},
         # {"messages": [HumanMessage(content="这个114.05571,22.52245经纬度对应的地方是哪里")]},
         config=config,
