@@ -9,7 +9,7 @@ from pygame.locals import *
 pygame.init()
 pygame.mixer.init()
 # 加载音效
-DROP_SOUND = pygame.mixer.Sound("drop_sound.MP3")
+SOUND_A = pygame.mixer.Sound("sounds/A.MP3")
 
 # 设置屏幕大小
 SCREEN_WIDTH = 800
@@ -79,7 +79,7 @@ class FallingLetter:
         self.glow_radius = 0
         self.glow_direction = 1
         # 播放音效
-        DROP_SOUND.play()
+        SOUND_A.play()
 
     def update(self):
         if self.active:
