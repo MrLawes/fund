@@ -8,8 +8,6 @@ from pygame.locals import *
 # 初始化pygame
 pygame.init()
 pygame.mixer.init()
-# 加载音效
-SOUND_A = pygame.mixer.Sound("sounds/A.MP3")
 
 # 设置屏幕大小
 SCREEN_WIDTH = 800
@@ -78,8 +76,6 @@ class FallingLetter:
         self.rotation = 0
         self.glow_radius = 0
         self.glow_direction = 1
-        # 播放音效
-        SOUND_A.play()
 
     def update(self):
         if self.active:
@@ -150,6 +146,7 @@ class Game:
         for falling_letter in self.falling_letters:
             if falling_letter.letter == letter and falling_letter.active:
                 falling_letter.active = False
+                pygame.mixer.Sound(f"sounds/{letter}.MP3").play()
                 self.score += 10
                 return
 
