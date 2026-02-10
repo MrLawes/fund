@@ -46,8 +46,6 @@ async def run():
             # 请求服务器列出所有支持的t00LS
             tools = await session.list_tools()
             print(f"Supported tools:{tools}/n/n")
-            with open("output.txt", 'w', encoding='utf-8') as file:
-                file.write(str(tools))
             # 文件相关功能测试
             add_result = await session.call_tool("add", arguments={"a": 6, "b": 3})
             subtract_result = await session.call_tool("subtract", arguments={"a": 6, "b": 3})

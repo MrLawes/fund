@@ -1,7 +1,6 @@
 import datetime
 import json
 
-import httpx
 import requests
 from django.core.management.base import BaseCommand
 from rich.console import Console
@@ -26,7 +25,7 @@ class Command(BaseCommand):
 
         for fund in Fund.objects.all().order_by('name'):
             newest_url = f'http://fundgz.1234567.com.cn/js/{fund.code}.js?rt=1637210892780'
-            r = httpx.get(url=newest_url, headers=headers, timeout=40)
+            r = requests.get(url=newest_url, headers=headers, timeout=40)
             content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
             # 更新昨天的数据
             defaults = {'value': content['dwjz'], 'rate': 0}
@@ -50,7 +49,7 @@ class Command(BaseCommand):
             url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
             print(f'{fund.name}: {url=}')
             try:
-                r = httpx.get(url=url, headers=headers, timeout=10)
+                r = requests.get(url=url, headers=headers, timeout=10)
             except:  # noqa
                 continue
             content = str(r.content)
@@ -92,13 +91,13 @@ class Command(BaseCommand):
             fe.set_annual_interest_rate()
 
             if fe.fund.name in (
-                '[白酒]招商中证白酒指数C',
-                "[军工]鹏华空天军工指数(LOF)C",
-                "[医疗]工银瑞信前沿医疗股票C",
-                "[黄金]华安黄金ETF联接I",
-                "[新能源]工银瑞信新能源汽车主题混合C",
-                "[债券]博时裕新纯债债券C",
-                "[半导体]华夏国证半导体芯片ETF联接C",
+                    '[白酒]招商中证白酒指数C',
+                    "[军工]鹏华空天军工指数(LOF)C",
+                    "[医疗]工银瑞信前沿医疗股票C",
+                    "[黄金]华安黄金ETF联接I",
+                    "[新能源]工银瑞信新能源汽车主题混合C",
+                    "[债券]博时裕新纯债债券C",
+                    "[半导体]华夏国证半导体芯片ETF联接C",
             ):
                 if fe.fund.name == "[医疗]工银瑞信前沿医疗股票C":
                     if fe.id < 4400:
@@ -204,5 +203,9 @@ class Command(BaseCommand):
                 ],
             }
         }
-        requests.post('https://open.feishu.cn/open-apis/bot/v2/hook/f815d87c-433d-47dc-8377-d61c18f3e231', json=payload,
-                      timeout=5, )
+        requests.post(
+            'https://open.feishu.cn/open-apis/bot/v2/hook/f815d87c-433d-47dc-8377-d61c18f3e231',
+            json=payload,
+            timeout=5,
+            verify=False,  # 禁用 SSL 验证
+        )
