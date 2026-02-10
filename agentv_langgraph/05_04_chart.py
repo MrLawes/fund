@@ -81,7 +81,7 @@ async def run_agent():
     # 1、非流式处理查询
     # 高德地图接口测试
     for message in [
-        HumanMessage(content="现在要购买一批货,单价是1034.32423,数量是235326。总价是多少?"),
+        HumanMessage(content="现在要购买一批货,单价是1034.32423,数量是 235326。总价是多少?"),
         HumanMessage(content="商家后来又说,可以在这个基础上,打95折,折后总价是多少?"),
         HumanMessage(content="我和商家关系比较好,商家说,可以在上面的基础上,再返回两个点,最后总价是多少?"),
     ]:
@@ -93,17 +93,6 @@ async def run_agent():
         parse_messages(agent_response['messages'])
         agent_response_content = agent_response["messages"][-1].content
         print(f"agent_response:{agent_response_content}")
-
-    # agent_response = await agent.ainvoke(
-    #     # {"messages": [HumanMessage(content="预定一个汉庭酒店")]},
-    #     {"messages": [HumanMessage(content="现在要购买一批货,单价是1034.32423,数量是235326。商家后来又说,可以在这个基础上,打95折,折后总价是多少?我和商家关系比较好,商家说,可以在上面的基础上,再返回两个点,最后总价是多少?")]},
-    #     # {"messages": [HumanMessage(content="这个114.05571,22.52245经纬度对应的地方是哪里")]},
-    #     config=config,
-    # )
-    # print(f"agent_response:{agent_response=}")
-    # parse_messages(agent_response['messages'])
-    # agent_response_content = agent_response["messages"][-1].content
-    # print(f"agent_response:{agent_response_content}")
 
 
 if __name__ == "__main__":

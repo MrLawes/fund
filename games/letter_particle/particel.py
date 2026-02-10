@@ -1,12 +1,15 @@
-import math
 import random
 import sys
 
+import math
 import pygame
 from pygame.locals import *
 
 # 初始化pygame
 pygame.init()
+pygame.mixer.init()
+# 加载音效
+DROP_SOUND = pygame.mixer.Sound("drop_sound.MP3")
 
 # 设置屏幕大小
 SCREEN_WIDTH = 800
@@ -35,7 +38,7 @@ UI_BORDER_COLOR = (100, 200, 255)
 HIGHLIGHT_COLOR = (255, 255, 255, 100)
 
 # 游戏参数
-FALL_SPEED = 2
+FALL_SPEED = 1
 LETTER_SIZE = 40
 SPAWN_RATE = 30  # 每多少帧生成一个新字母
 MAX_LETTERS = 10  # 屏幕上最大字母数
@@ -64,16 +67,19 @@ class Particle:
 
 class FallingLetter:
     def __init__(self):
-        self.letter = chr(random.randint(65, 90))  # A-Z
+        self.letter = chr(random.randint(65, 68))  # A-Z
+        # self.letter = chr(random.randint(65, 90))  # A-Z
         self.x = random.randint(LETTER_SIZE, SCREEN_WIDTH - LETTER_SIZE)
         self.y = -LETTER_SIZE
-        self.speed = random.uniform(FALL_SPEED, FALL_SPEED + 1.5)
+        self.speed = random.uniform(FALL_SPEED, FALL_SPEED + 0.1)
         self.color = random.choice(LETTER_COLORS)
         self.size = LETTER_SIZE
         self.active = True
         self.rotation = 0
         self.glow_radius = 0
         self.glow_direction = 1
+        # 播放音效
+        DROP_SOUND.play()
 
     def update(self):
         if self.active:

@@ -3,7 +3,7 @@ name = "fund"
 version = "0.0.1"
 description = ""
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13"
 # uv pip list --outdated: 查看包是否存在更新; uv add Django==6.0;uv sync: 更新依赖
 # 根据 pyproject.toml 安装第三方库: uv sync --group linux --python 3.14
 dependencies = [
@@ -23,4 +23,12 @@ dependencies = [
     "langgraph-checkpoint-postgres==3.0.3",
     "langchain-deepseek==1.0.1",
     "tavily-python==0.7.19",
+    "langsmith>=0.7.1",
+    "openai>=2.18.0",
+]
+
+# uv sync --python=3.13 --group python313
+[dependency-groups]
+python313 = [
+    "pygame==2.6.1",
 ]
