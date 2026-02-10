@@ -40,11 +40,8 @@ class FundAdmin(admin.ModelAdmin):
         if not fund_value:
             return 0
         rate = fund_value.rate
-        if rate > 0:
-            rate = f"""<span style="color: red;">{rate}</span>"""
-        else:
-            rate = f"""<span style="color: green;">{rate}</span>"""
-        return format_html(f"({str(fund_value.deal_at)[5:]}) {{}}　　　", rate)
+        color = 'red' if rate > 0 else 'green'
+        return format_html("""<span style="color: {};">{}</span>""", color, rate)
 
     rate.short_description = '估算涨幅'
 
