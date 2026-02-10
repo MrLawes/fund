@@ -30,8 +30,8 @@ class FundAdmin(admin.ModelAdmin):
     expense.short_description = '已投入资金'
 
     def name_html(self, obj):
-        return format_html(  # noqa
-            f'<a href="/admin/fund/fundexpense/?fund__name={obj.name}" target="_blank">{obj.name}</a>')  # noqa
+        return format_html('<a href="/admin/fund/fundexpense/?fund__name={}" target="_blank">{}</a>', obj.name,
+                           obj.name)
 
     name_html.short_description = '基金名称'
 
@@ -44,7 +44,7 @@ class FundAdmin(admin.ModelAdmin):
             rate = f"""<span style="color: red;">{rate}</span>"""
         else:
             rate = f"""<span style="color: green;">{rate}</span>"""
-        return format_html(f"({str(fund_value.deal_at)[5:]}) {rate}　　　")  # noqa
+        return format_html(f"({str(fund_value.deal_at)[5:]}) {{}}　　　", rate)
 
     rate.short_description = '估算涨幅'
 
@@ -71,7 +71,8 @@ class FundAdmin(admin.ModelAdmin):
         now_value = last_fund_value.value if last_fund_value else 0
         rate = f"{((now_value - min_value) / min_value) * 100:.2f}"
         if str(min_deal_at) == str(datetime.datetime.now().date()):
-            return format_html(f"""<span style="color: red;">{min_deal_at} (↑{rate}) {this_month_buy}</span>""")  # noqa
+            return format_html(f"""<span style="color: red;">{min_deal_at} (↑{rate}) {{}}</span>""",
+                               this_month_buy)  # noqa
         return f'{min_deal_at} (↑{rate}) {this_month_buy}'
 
     month_min.short_description = '30天内最低'
@@ -163,13 +164,13 @@ class FundExpenseAdmin(admin.ModelAdmin):
         result = ''
         if obj.expense_type == 'buy':
             if obj.need_buy_again:
-                result = f'<a style="text-decoration: line-through" href="/admin/fund/fundexpense/?fund__name={obj.fund.name}" target="_blank">{obj.fund.name}</a>'
+                result = f'<a style="text-decoration: line-through" href="/admin/fund/fundexpense/?fund__name={{}}" target="_blank">{obj.fund.name}</a>'
             else:
-                result = f'<a href="/admin/fund/fundexpense/?fund__name={obj.fund.name}" target="_blank">{obj.fund.name}</a>'
+                result = f'<a href="/admin/fund/fundexpense/?fund__name={{}}" target="_blank">{obj.fund.name}</a>'
         elif obj.expense_type == 'sale':
-            result = f"""<span style="text-decoration: line-through">{obj.fund.name}</span>"""
+            result = f"""<span style="text-decoration: line-through">{{}}</span>"""
 
-        return format_html(result)  # noqa
+        return format_html(result, obj.fund.name)
 
     fund_name.short_description = "基金名称"
 
@@ -183,7 +184,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             else:
                 result = f"""<a href="/v4/fund_expense/{obj.id}/sale/">出售</a>"""
 
-        return format_html(result)  # noqa
+        return format_html(result, '')
 
     buttons.short_description = "操作"
 

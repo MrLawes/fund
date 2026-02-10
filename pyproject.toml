@@ -3,25 +3,17 @@ name = "fund"
 version = "0.0.1"
 description = ""
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 # uv pip list --outdated: 查看包是否存在更新; uv add Django==6.0;uv sync: 更新依赖
 # 根据 pyproject.toml 安装第三方库: uv sync --group linux --python 3.14
 dependencies = [
-    "rich==13.9.4",
-    "Django==3.2.9",
-    "httpx==0.23.0",
-    "ipython==8.10.0",
-    "djangorestframework==3.12.4",
-    "six==1.16.0",
-    "markdown==3.3.4",
-    "django-cors-headers==3.10.0",
-    "supervisor==4.2.0",
-    "moviepy==1.0.3",
-    "django-utils-six==2.0",
-    "redis==3.2.0",
-    "django-redis==4.10.0",
+    "rich==14.3.1",
+    "django==6.0.1",
+    "ipython==9.9.0",
+    "djangorestframework==3.16.1",
+    "django-cors-headers==4.9.0",
+    "django-redis==6.0.0",
     "tabulate==0.9.0",
-    "pillow==11.1.0",
-    "reportlab==4.4.3",
-    "matplotlib==3.10.7",
+    "pillow==12.1.0",
+    "requests==2.32.5",
 ]

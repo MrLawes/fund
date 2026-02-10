@@ -1,6 +1,7 @@
-from django.conf.urls import url, include
+from django.conf.urls import include
 from django.contrib import admin
 from django.urls import path
+from django.urls import re_path
 from rest_framework import routers
 
 from douyin.views import DouYinUserViewSet
@@ -14,5 +15,5 @@ router.register(r'(?P<version>(v4))/fund_expense', FundExpenseViewSet, )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^', include(router.urls)),
+    re_path(r'^', include(router.urls)),
 ]

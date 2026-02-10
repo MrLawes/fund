@@ -13,7 +13,7 @@ class CademyAdmin(admin.ModelAdmin):
     list_filter = ('category', 'process', 'every_day',)
 
     def host_with_link(self, obj):
-        return format_html(f'<a href="{obj.host}" target="_blank">{obj.host}</a>')
+        return format_html(f'<a href="{obj.host}" target="_blank">{obj.host}</a>', )
 
     host_with_link.short_description = "网站地址"
 
