@@ -6,3 +6,4 @@ celerybeat.pid
 celerybeat-schedule.db
 nohup.out
 /*/uv.lock
+/uv.lock
