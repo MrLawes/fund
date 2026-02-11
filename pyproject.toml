@@ -27,4 +27,5 @@ dependencies = [
     "openai>=2.18.0",
     "gtts>=2.5.4",
     "pygame==2.6.1",
+    "jupyterlab>=4.5.4",  # 启动: jupyter-lab
 ]
