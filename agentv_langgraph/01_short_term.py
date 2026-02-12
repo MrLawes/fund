@@ -19,7 +19,7 @@ from tavily import TavilyClient
 
 os.environ["LANGSMITH_TRACING"] = "true"
 os.environ["LANGSMITH_API_KEY"] = "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"
-os.environ["OPENAI_API_KEY"] = "sk-7250f888346341c19a5f73f7a4e16a10"
+os.environ["OPENAI_API_KEY"] = "sk-e570189331c04b299f1821ac97f08542"
 
 # LangSmith : 它能让您密切监控和评估您的应用程序，从而帮助您快速、自信地交付产品。
 openai_client = wrap_openai(OpenAI())
@@ -28,7 +28,7 @@ llm = init_chat_model(
     model="deepseek-chat",
     temperature=0,
     base_url="https://api.deepseek.com/v1",
-    api_key="sk-7250f888346341c19a5f73f7a4e16a10",
+    api_key="sk-e570189331c04b299f1821ac97f08542",
 )
 
 
@@ -102,7 +102,7 @@ async def run_ageny():
             pre_model_hook=pre_model_hook,
             checkpointer=checkpointer,
         )
-        config = {"configurable": {"thread_id": "2026-02-11", }}
+        config = {"configurable": {"thread_id": "2026-02-12", }}
         # user_input = "我叫什么"
         # user_input="我叫海鸥"
         user_input = "我叫什么"
@@ -110,6 +110,16 @@ async def run_ageny():
         # user_input = f"我叫什么"
         # user_input = "最近今晨怎么了"
         agent_response = await agent.ainvoke({"messages": [HumanMessage(content=user_input)]}, config=config)  # noqa
+        # agent_response = await agent.ainvoke(
+        #     {"messages": [  # noqa
+        #         HumanMessage(content=user_input),
+        #         AIMessage(content="我还不知道你叫什么"),
+        #         HumanMessage(content="我叫 Chloe"),
+        #         AIMessage(content="Chloe, 很高兴认识你"),
+        #         HumanMessage(content=user_input),
+        #     ]},
+        #     config=config,  # noqa
+        # )
         agent_response_content = agent_response["messages"][-1].content
         print(f"{agent_response_content=}")
 
