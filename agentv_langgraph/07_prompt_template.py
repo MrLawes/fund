@@ -16,8 +16,9 @@ os.environ["OPENAI_API_KEY"] = "sk-e570189331c04b299f1821ac97f08542"
 openai_client = wrap_openai(OpenAI())
 
 
-def hello_world():
+def hello_world(abc):
     print("hello world")
+    return abc
 
 
 PROMPT = """你是一个非常有经验和天赋的程序员,现在给你如下函数名称,你会按照如下格式,输出这段代码的名称、源代码、中文解释。
@@ -61,6 +62,6 @@ agent = create_react_agent(  # noqa
 )
 #
 if __name__ == "__main__":
-    agent_response = agent.invoke({"messages": [HumanMessage(content="")]})
+    agent_response = agent.invoke({"messages": [HumanMessage(content="")]})  # noqa
     agent_response_content = agent_response["messages"][-1].content
     print(f"{agent_response_content}")
