@@ -31,4 +31,5 @@ dependencies = [
     "pydantic>=2.12.5",
     "langchain-community>=0.4.1",
     "jq>=1.11.0",
+    "pypdf>=6.7.0",
 ]

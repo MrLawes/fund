@@ -3,6 +3,7 @@ import os
 from langchain.chat_models import init_chat_model
 from langchain_community.document_loaders import CSVLoader
 from langchain_community.document_loaders import JSONLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import TextLoader
 from langsmith.wrappers import wrap_openai
 from openai import OpenAI
@@ -22,6 +23,7 @@ llm = init_chat_model(
     api_key="sk-e570189331c04b299f1821ac97f08542",
 )
 
+# 数据加载
 loader = TextLoader("12_loader.md")
 print(loader.load())
 
@@ -33,6 +35,9 @@ print(loader.load())
 
 loader = JSONLoader("09_load_prompt.json", jq_schema=".template", text_content=False)
 print(loader.load())
+
+loader = PyPDFLoader("12_loader.pdf")
+print(loader.load_and_split())
 
 # if __name__ == "__main__":
 #     agent = create_react_agent(  # noqa
