@@ -39,7 +39,7 @@ HIGHLIGHT_COLOR = (255, 255, 255, 100)
 FALL_SPEED = 1
 LETTER_SIZE = 40
 SPAWN_RATE = 30  # 每多少帧生成一个新字母
-MAX_LETTERS = 10  # 屏幕上最大字母数
+MAX_LETTERS = 1  # 屏幕上最大字母数
 
 
 class Particle:
@@ -65,11 +65,11 @@ class Particle:
 
 class FallingLetter:
     def __init__(self):
-        self.letter = chr(random.randint(65, 68))  # A-Z
+        self.letter = chr(random.randint(65, 69))  # A-Z
         # self.letter = chr(random.randint(65, 90))  # A-Z
         self.x = random.randint(LETTER_SIZE, SCREEN_WIDTH - LETTER_SIZE)
         self.y = -LETTER_SIZE
-        self.speed = random.uniform(FALL_SPEED, FALL_SPEED + 0.1)
+        self.speed = random.uniform(FALL_SPEED - 0.5, FALL_SPEED - 0.5 + 0.1)
         self.color = random.choice(LETTER_COLORS)
         self.size = LETTER_SIZE
         self.active = True
@@ -129,7 +129,8 @@ class Game:
                                   random.uniform(0.5, 2)) for _ in range(100)]
 
     def spawn_letter(self):
-        if len(self.falling_letters) < MAX_LETTERS and self.spawn_counter >= SPAWN_RATE:
+        # 只有当没有活动字母时才生成新字母
+        if len(self.falling_letters) == 0 and self.spawn_counter >= SPAWN_RATE:
             self.falling_letters.append(FallingLetter())
             self.spawn_counter = 0
         else:
@@ -148,18 +149,19 @@ class Game:
                 falling_letter.active = False
                 pygame.mixer.Sound(f"sounds/{letter}.MP3").play()
                 self.score += 10
+                # 移除已击中的字母
+                self.falling_letters.remove(falling_letter)
                 return
 
-        # 如果没有匹配，扣生命值
-        if not any(f.lower() == letter.lower() for f in [l.letter for l in self.falling_letters if l.active]):
-            # 检查是否有其他未被击中的字母到达底部
-            for falling_letter in self.falling_letters:
-                if falling_letter.active and falling_letter.y > SCREEN_HEIGHT - 50:
-                    self.lives -= 1
-                    falling_letter.active = False
-                    if self.lives <= 0:
-                        self.game_over = True
-                    break
+        # 如果没有匹配，检查是否有字母到达底部
+        for falling_letter in self.falling_letters:
+            if falling_letter.active and falling_letter.y > SCREEN_HEIGHT - 50:
+                self.lives -= 1
+                falling_letter.active = False
+                self.falling_letters.remove(falling_letter)
+                if self.lives <= 0:
+                    self.game_over = True
+                break
 
     def update(self):
         if self.game_over:
@@ -179,9 +181,6 @@ class Game:
                 self.falling_letters.remove(falling_letter)
                 if self.lives <= 0:
                     self.game_over = True
-
-        # 移除不活跃的字母
-        self.falling_letters = [f for f in self.falling_letters if f.active or not f.is_off_screen()]
 
         # 生成新字母
         self.spawn_letter()
@@ -208,6 +207,8 @@ class Game:
         self.draw_ui(surface)
 
         # 游戏结束画面
+        if self.score >= 100:
+            self.game_over = True
         if self.game_over:
             self.draw_game_over(surface)
 
