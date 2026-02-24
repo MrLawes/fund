@@ -32,4 +32,6 @@ dependencies = [
     "langchain-community>=0.4.1",
     "jq>=1.11.0",
     "pypdf>=6.7.0",
+    "sentence-transformers>=5.2.3",
+    "chromadb>=1.5.1",
 ]
