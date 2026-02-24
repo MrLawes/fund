@@ -65,7 +65,7 @@ class Particle:
 
 class FallingLetter:
     def __init__(self):
-        self.letter = chr(random.randint(65, 73))  # A-Z
+        self.letter = chr(random.randint(65, 84))  # A-Z
         # self.letter = chr(random.randint(65, 90))  # A-Z
         self.x = random.randint(LETTER_SIZE, SCREEN_WIDTH - LETTER_SIZE)
         self.y = 100
@@ -207,7 +207,7 @@ class Game:
         self.draw_ui(surface)
 
         # 游戏结束画面
-        if self.score >= 19:
+        if self.score >= 20:
             self.game_over = True
         if self.game_over:
             self.draw_game_over(surface)
