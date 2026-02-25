@@ -214,13 +214,6 @@ class FundExpenseAdmin(admin.ModelAdmin):
             return ""
         last_fundvalue = FundValue.objects.filter(fund=obj.fund_value.fund).order_by('deal_at').last()  # noqa
         value = f"{round(obj.hold * last_fundvalue.value, 2)}"  # noqa
-        if "黄金" in obj.fund.name:
-            fundvalue = FundValue.objects.get(fund=obj.fund_value.fund, deal_at=obj.deal_at)
-            gold_price = fundvalue.gold_price
-            gold_gram = 0
-            if gold_price:
-                gold_gram = f"{obj.expense / fundvalue.gold_price:.4f}"
-            value += f"(克数:{gold_gram})"
         return value
 
     hold_value_display.short_description = '持有市值'
