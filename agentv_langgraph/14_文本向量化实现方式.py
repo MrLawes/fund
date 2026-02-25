@@ -51,3 +51,10 @@ raw_documents = TextLoader("letter.txt").load()  # noqa
 text_splitter = CharacterTextSplitter(chunk_size=100, chunk_overlap=0)
 documents = text_splitter.split_documents(raw_documents)  # noqa
 FAISS.from_documents(documents, cached_embeddings)  # noqa
+
+# 向量数据库排名:
+# 1. Milvus
+# 2. faiss
+# 3. Pinecone
+# 4. Chroma
+# 5. LanceDB
