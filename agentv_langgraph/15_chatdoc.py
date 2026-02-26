@@ -1,6 +1,7 @@
 import os
 
 from langchain.chat_models import init_chat_model
+from langchain_classic.retrievers import MultiQueryRetriever
 from langchain_community.document_loaders import Docx2txtLoader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import UnstructuredExcelLoader
@@ -61,9 +62,9 @@ class ChatDoc:
     # 提问并找到相关的文本块
     def askAndFindFiles(self, question):  # noqa
         db = self.embeddingAndVectorDB()
-        retriever = db.as_retriever()
-        results = retriever.invoke(question)
-        return results
+        retriever_from_llm = MultiQueryRetriever.from_llm(llm=llm, retriever=db.as_retriever())
+        print(f"{retriever_from_llm=}")
+        return retriever_from_llm._get_relevant_documents(question, run_manager=None)  # noqa
 
 
 chat_doc = ChatDoc()
@@ -82,5 +83,5 @@ chat_db = chat_doc.embeddingAndVectorDB()
 print(f"{chat_db=}")
 
 # 提问并找到相关的文本块
-answer = chat_doc.askAndFindFiles("请帮我总结一下")
+answer = chat_doc.askAndFindFiles("请帮我总结一下都有哪些食材?")
 print(f"{answer=}")
