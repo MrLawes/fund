@@ -4,6 +4,8 @@ from langchain.chat_models import init_chat_model
 from langchain_community.document_loaders import Docx2txtLoader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import UnstructuredExcelLoader
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
 from langchain_text_splitters import CharacterTextSplitter
 from langsmith.wrappers import wrap_openai
 from openai import OpenAI
@@ -27,44 +29,45 @@ llm = init_chat_model(
 class ChatDoc:
 
     def __init__(self):
-        self.documents = []
+        self.doc = None
+        self.splitText = None
 
-    def get_docx_file(self):
-        loader = Docx2txtLoader("15_房屋租赁合同.docx")  # noqa
+    def getFile(self):  # noqa
+        doc = self.doc
+        loaders = {
+            "docx": Docx2txtLoader,
+            "pdf": PyPDFLoader,
+            "xlsx": UnstructuredExcelLoader,
+        }
+        file_extension = doc.split(".")[-1]
+        loaders_class = loaders.get(file_extension)
+        loader = loaders_class(doc)
         text = loader.load()
-        self.documents.append(text)
         return text
 
-    def get_pdf_file(self):
-        loader = PyPDFLoader("12_loader.pdf")  # noqa
-        text = loader.load()
-        self.documents.append(text)
-        return text
+    def splitSentences(self):  # noqa
+        full_text = self.getFile()
+        if full_text != None:  # noqa
+            text_splitter = CharacterTextSplitter(chunk_size=150, chunk_overlap=20)
+            texts = text_splitter.split_documents(full_text)
+            self.splitText = texts
 
-    def get_xlsx_file(self):
-        loader = UnstructuredExcelLoader("12_loader.xlsx")  # noqa
-        text = loader.load()
-        self.documents.append(text)
-        return text
-
-    def split_sentences(self):
-        """ 处理文档的函数 """
-        for document in self.documents:
-            print(f"{document=}")
-            if document is not None:
-                text_splitter = CharacterTextSplitter(chunk_size=100, chunk_overlap=20)
-                print(f"{text_splitter.split_documents(document)=}")
+    # 向量化与向量存储
+    def embeddingAndVectorDB(self):  # noqa
+        emmbeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+        db = Chroma.from_documents(documents=self.splitText, embedding=emmbeddings)
+        return db
 
 
 chat_doc = ChatDoc()
-result = chat_doc.get_docx_file()
-print(f"{result=}")
-
-result = chat_doc.get_pdf_file()
-print(f"{result=}")
-
-result = chat_doc.get_xlsx_file()
-print(f"{result=}")
-
-# 处理文档的函数
-chat_doc.split_sentences()
+chat_doc.doc = "15_房屋租赁合同.docx"
+chat_doc.splitSentences()
+print(f"{chat_doc.splitText=}")
+chat_doc.doc = "12_loader.pdf"
+chat_doc.splitSentences()
+print(f"{chat_doc.splitText=}")
+chat_doc.doc = "12_loader.xlsx"
+chat_doc.splitSentences()
+print(f"{chat_doc.splitText=}")
+chat_db = chat_doc.embeddingAndVectorDB()
+print(f"{chat_db=}")
