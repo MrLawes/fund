@@ -58,16 +58,29 @@ class ChatDoc:
         db = Chroma.from_documents(documents=self.splitText, embedding=emmbeddings)
         return db
 
+    # 提问并找到相关的文本块
+    def askAndFindFiles(self, question):  # noqa
+        db = self.embeddingAndVectorDB()
+        retriever = db.as_retriever()
+        results = retriever.invoke(question)
+        return results
+
 
 chat_doc = ChatDoc()
 chat_doc.doc = "15_房屋租赁合同.docx"
 chat_doc.splitSentences()
 print(f"{chat_doc.splitText=}")
-chat_doc.doc = "12_loader.pdf"
-chat_doc.splitSentences()
-print(f"{chat_doc.splitText=}")
 chat_doc.doc = "12_loader.xlsx"
 chat_doc.splitSentences()
 print(f"{chat_doc.splitText=}")
+chat_doc.doc = "12_loader.pdf"
+chat_doc.splitSentences()
+print(f"{chat_doc.splitText=}")
+
+# 向量化与向量存储
 chat_db = chat_doc.embeddingAndVectorDB()
 print(f"{chat_db=}")
+
+# 提问并找到相关的文本块
+answer = chat_doc.askAndFindFiles("请帮我总结一下")
+print(f"{answer=}")
