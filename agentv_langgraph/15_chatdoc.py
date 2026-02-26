@@ -1,7 +1,9 @@
 import os
 
 from langchain.chat_models import init_chat_model
+from langchain_classic.retrievers import ContextualCompressionRetriever
 from langchain_classic.retrievers import MultiQueryRetriever
+from langchain_classic.retrievers.document_compressors import LLMChainExtractor
 from langchain_community.document_loaders import Docx2txtLoader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_community.document_loaders import UnstructuredExcelLoader
@@ -60,11 +62,22 @@ class ChatDoc:
         return db
 
     # 提问并找到相关的文本块
-    def askAndFindFiles(self, question):  # noqa
+    def askAndFindFiles_1(self, question):  # noqa
         db = self.embeddingAndVectorDB()
         retriever_from_llm = MultiQueryRetriever.from_llm(llm=llm, retriever=db.as_retriever())
         print(f"{retriever_from_llm=}")
         return retriever_from_llm._get_relevant_documents(question, run_manager=None)  # noqa
+
+    # 提问并找到相关的文本块 -> 压缩查询
+    def askAndFindFiles(self, question):  # noqa
+        db = self.embeddingAndVectorDB()
+        retriever = db.as_retriever()
+        compressor = LLMChainExtractor.from_llm(llm=llm)
+        compressor_retriever = ContextualCompressionRetriever(
+            base_retriever=retriever,
+            base_compressor=compressor,
+        )
+        return compressor_retriever._get_relevant_documents(query=question, run_manager=None)  # noqa
 
 
 chat_doc = ChatDoc()
