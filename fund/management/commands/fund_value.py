@@ -127,7 +127,7 @@ class Command(BaseCommand):
             fund_holdings.save()
 
         table = Table(title="")
-        headers = ['ID', '交易日期', '基金名称', '确认份额', '确认金额', '持有市值', ]
+        headers = ['ID', '交易日期', '基金名称', '确认份额', '确认金额', '持有市值', "估算涨幅", ]
         for header in headers:
             table.add_column(header, no_wrap=True)
 
@@ -156,6 +156,7 @@ class Command(BaseCommand):
                     f'{fund_expense.hold}',
                     f'{fund_expense.expense}',
                     f'{hold_rate_persent}',
+                    f"{last_fundvalue.rate}",
                 )
                 tabulate_table.append([
                     f'{fund_expense.id}',
@@ -164,6 +165,7 @@ class Command(BaseCommand):
                     f'{fund_expense.hold}',
                     f'{fund_expense.expense}',
                     f'{hold_rate_persent}',
+                    f"{last_fundvalue.rate}",
                 ])
             table.add_row(
                 f'---',
@@ -172,8 +174,10 @@ class Command(BaseCommand):
                 f'---',
                 f'---',
                 f'---',
+                f'---',
             )
             tabulate_table.append([
+                f'---',
                 f'---',
                 f'---',
                 f'---',
