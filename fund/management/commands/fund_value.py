@@ -161,7 +161,7 @@ class Command(BaseCommand):
                 tabulate_table.append([
                     f'{fund_expense.id}',
                     f'{fund_expense.deal_at}',
-                    f'{fund_expense.fund.name}',
+                    f'{fund_expense.fund.get_category_display()}',
                     f'{fund_expense.hold}',
                     f'{fund_expense.expense}',
                     f'{hold_rate_persent}',
