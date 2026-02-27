@@ -73,7 +73,7 @@ class Command(BaseCommand):
             # 将最新的净值数据，更新到所有的交易记录，方便计算
             FundExpense.objects.filter(fund=fund).update(newest_value=last_fundvalue.value)
 
-        SimulateTradesCommand().handle()
+        fund_categories: list = SimulateTradesCommand().handle()["fund_categories"]
         # 计算持有仓位占比
         FundHoldings.objects.all().delete()
         for fe in FundExpense.objects.all():
@@ -132,8 +132,14 @@ class Command(BaseCommand):
             table.add_column(header, no_wrap=True)
 
         tabulate_table = []
-        for fund_category in dict(Fund.FUND_CATEGORY).keys():
-            for fund_expense in FundExpense.objects.filter(fund__category=fund_category, expense_type='buy',
+
+        for fund_category in dict(Fund.FUND_CATEGORY).values():
+            if fund_category not in fund_categories:
+                fund_categories.append(fund_category)
+
+        for fund_category in fund_categories:
+            for fund_expense in FundExpense.objects.filter(fund__name__contains=f"[{fund_category}]",
+                                                           expense_type='buy',
                                                            need_buy_again=False).exclude(
                 expense=0).order_by('-hold_rate')[:9]:
                 last_fundvalue = FundValue.objects.filter(fund=fund_expense.fund).order_by('deal_at').last()

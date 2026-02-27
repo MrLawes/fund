@@ -8,7 +8,7 @@ from fund.models import FundValue
 
 
 class Command(BaseCommand):
-    def handle(self, *_, **options):
+    def handle(self, *_, **options) -> dict:
 
         results = {}
 
@@ -90,5 +90,14 @@ class Command(BaseCommand):
                 fund.save(update_fields=['sell_percentage', 'buy_percentage'])
 
         best_results = sorted(best_results, key=lambda x: x['profit'], reverse=True)
+        fund_categories = []
         for best_data in best_results:
+            fund_category = best_data["name"]
+            fund_category = fund_category.split("]")[0].split("[")[1]
+            if fund_category not in fund_categories:
+                fund_categories.append(fund_category)
             print(f"{best_data=}")
+
+        return {
+            "fund_categories": fund_categories,
+        }
