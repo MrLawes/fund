@@ -138,13 +138,17 @@ class Command(BaseCommand):
                 fund_categories.append(fund_category)
 
         for fund_category in fund_categories:
-            for fund_expense in FundExpense.objects.filter(fund__name__contains=f"[{fund_category}]",
-                                                           expense_type='buy',
-                                                           need_buy_again=False).exclude(
-                expense=0).order_by('-hold_rate')[:9]:
+            for fund_expense in FundExpense.objects.filter(
+                fund__name__contains=f"[{fund_category}]",
+                expense_type='buy',
+                need_buy_again=False).order_by('-hold_rate')[:9]:
                 last_fundvalue = FundValue.objects.filter(fund=fund_expense.fund).order_by('deal_at').last()
                 value = round(fund_expense.hold * last_fundvalue.value, 2)
-                hold_rate_persent = f"{(((value - fund_expense.expense) / fund_expense.expense) * 100):0.02f}%"
+                if fund_expense.expense == 0:
+                    fund_value = fund_expense.fund_value
+                    hold_rate_persent = f"{(((last_fundvalue.value - fund_value.value) / fund_value.value) * 100):0.02f}%"
+                else:
+                    hold_rate_persent = f"{(((value - fund_expense.expense) / fund_expense.expense) * 100):0.02f}%"
                 if "-" in hold_rate_persent:
                     hold_rate_persent = f"{hold_rate_persent}({(fund_expense.fund.buy_percentage - 1) * 100:0.02f}%)"
                 else:

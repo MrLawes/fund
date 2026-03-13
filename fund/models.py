@@ -67,7 +67,7 @@ class FundExpense(models.Model):
         # 增值部分
         appreciation = self.newest_value * self.hold - self.expense
         days = (timezone.localtime().date() - self.deal_at).days
-        if days > 0:
+        if days > 0 and self.expense > 0:
             self.annual_interest_rate = (appreciation / days / self.expense) * 356 * 100
             self.save(update_fields=['annual_interest_rate', ])
 
