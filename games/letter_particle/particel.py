@@ -65,8 +65,8 @@ class Particle:
 
 class FallingLetter:
     def __init__(self):
-        self.letter = chr(random.randint(65, 84))  # A-Z
-        # self.letter = chr(random.randint(65, 90))  # A-Z
+        # self.letter = chr(random.randint(65, 84))  # A-Z
+        self.letter = chr(random.randint(65, 90))  # A-Z
         self.x = random.randint(LETTER_SIZE, SCREEN_WIDTH - LETTER_SIZE)
         self.y = 100
         self.speed = random.uniform(FALL_SPEED - 0.5, FALL_SPEED - 0.5 + 0.1)
@@ -148,7 +148,7 @@ class Game:
             if falling_letter.letter == letter and falling_letter.active:
                 falling_letter.active = False
                 pygame.mixer.Sound(f"sounds/{letter}.MP3").play()
-                self.score += 1
+                self.score += 5
                 # 移除已击中的字母
                 self.falling_letters.remove(falling_letter)
                 return
@@ -207,7 +207,7 @@ class Game:
         self.draw_ui(surface)
 
         # 游戏结束画面
-        if self.score >= 20:
+        if self.score >= 100:
             self.game_over = True
         if self.game_over:
             self.draw_game_over(surface)
