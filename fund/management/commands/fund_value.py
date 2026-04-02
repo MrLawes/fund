@@ -218,7 +218,7 @@ class Command(BaseCommand):
             }
         }
         requests.post(
-            'https://open.feishu.cn/open-apis/bot/v2/hook/f815d87c-433d-47dc-8377-d61c18f3e231',
+            'https://open.feishu.cn/open-apis/bot/v2/hook/ad6706f4-2667-4786-8ba1-fcf483101b38',
             json=payload,
             timeout=5,
             verify=False,  # 禁用 SSL 验证
