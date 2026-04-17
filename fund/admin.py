@@ -3,6 +3,7 @@ import re
 
 from django import forms
 from django.contrib import admin
+from django.db import transaction
 from django.utils import timezone
 from django.utils.html import format_html
 
@@ -127,7 +128,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
     )
     search_fields = ['fund__name', 'id', ]
     list_filter = ('fund__category', 'fund__high_sale_low_buy', 'fund__is_advance', 'fund__name',)
-    actions = ['sum_expectation', ]
+    actions = ['sum_expectation', 'merge_expectation']
     form = FundExpenseForm
     list_per_page = 500
 
@@ -200,6 +201,35 @@ class FundExpenseAdmin(admin.ModelAdmin):
                           f"持有市值: {total_hold_value:0.02f}; 期望金额:{total_expectation:0.02f}; 赚取金额: {total_hold_value - total_expectation:0.02f}; 共计份额:{total_hold}")
 
     sum_expectation.short_description = "计算确认金额|期望金额"
+
+    def merge_expectation(self, request, queryset):
+
+        first: FundExpense = queryset.first()
+        deal_at = first.deal_at
+        fund = first.fund
+        total_expense = 0
+
+        for obj in queryset:
+            if deal_at != obj.deal_at:
+                self.message_user(request, "交易时间不同")
+                return
+            total_expense += obj.expense
+
+        fund_value = FundValue.objects.get(fund=fund, deal_at=deal_at)
+        total_hold = FundExpense.get_hold(fund_value=fund_value.value, expense=total_expense, fee=fund.fee)
+
+        with transaction.atomic():
+            hold_rate = ((((total_hold * first.newest_value) - total_expense) / total_expense) * 100)
+            FundExpense.objects.create(
+                hold=total_hold,
+                fund=fund,
+                deal_at=deal_at,
+                expense=total_expense,
+                hold_rate=hold_rate,
+            )
+            queryset.delete()
+
+    merge_expectation.short_description = "合并金额"
 
     @staticmethod
     def hold_value(obj):
