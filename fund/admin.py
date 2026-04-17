@@ -275,7 +275,7 @@ class FundExpenseAdmin(admin.ModelAdmin):
             fund = instance.fund
             buy_percentage = round((1 - fund.buy_percentage) * 100)
             sell_percentage = round((fund.sell_percentage - 1) * 100)
-            result.title += f'，跌幅{buy_percentage}%买; 涨幅{sell_percentage}%卖; 投入：{expense} 元；持有份额：{hold}；市值：{int(fund_value)}({int(fund_value) - expense}); {lose}'
+            result.title += f'，跌幅{buy_percentage}%买; 涨幅{sell_percentage}%卖; 投入：{expense} 元；持有份额：{hold:,}；市值：{int(fund_value)}({int(fund_value) - expense}); {lose}'
 
         return result
 
