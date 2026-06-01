@@ -208,7 +208,7 @@ class Game:
         self.draw_ui(surface)
 
         # 游戏结束画面
-        if self.score >= 100:
+        if self.score >= 300:
             self.game_over = True
         if self.game_over:
             self.draw_game_over(surface)
