@@ -1,5 +1,4 @@
 import datetime
-import json
 
 import requests
 from django.core.management.base import BaseCommand
@@ -19,54 +18,77 @@ class Command(BaseCommand):
         headers = {
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
         }
-        end_date = datetime.datetime.now()
-        start_date = (end_date - datetime.timedelta(days=15)).strftime('%Y-%m-%d')
-        end_date = end_date.strftime('%Y-%m-%d')
+        now = datetime.datetime.now()
+        # end_date = datetime.datetime.now()
+        # start_date = (end_date - datetime.timedelta(days=15)).strftime('%Y-%m-%d')
+        # end_date = end_date.strftime('%Y-%m-%d')
 
+        # 首页: https://fund.10jqka.com.cn/
         for fund in Fund.objects.all().order_by('name'):
-            newest_url = f'http://fundgz.1234567.com.cn/js/{fund.code}.js?rt=1637210892780'
-            r = requests.get(url=newest_url, headers=headers, timeout=40)
-            content = json.loads(str(r.content).replace('jsonpgz(', '').replace('\\', '')[2:-3])
-            # 更新昨天的数据
-            defaults = {'value': content['dwjz'], 'rate': 0}
 
-            # jzrq 有两种格式： 1：2021-12-03；2：21-12-03
-            deal_at = content['jzrq']
-            if len(deal_at.split('-')[0]) == 2:
-                deal_at = '20' + deal_at
-            if len(deal_at) == 8:
-                deal_at = deal_at[:4] + '-' + deal_at[4:6] + '-' + deal_at[6:]
+            url = f"https://fund.10jqka.com.cn/data/client/myfund/{fund.code}"
+            r = requests.get(url=url, headers=headers, timeout=40)
+            result = r.json()['data'][0]
+            # 更新昨天的数据
+            defaults = {'value': result['net'], 'rate': result['rate']}
+            deal_at = result['enddate']
             FundValue.objects.update_or_create(fund=fund, deal_at=deal_at, defaults=defaults)
-            # 更新今天的数据
-            defaults = {'value': content['gsz'], 'rate': content['gszzl']}
-            FundValue.objects.update_or_create(fund=fund, deal_at=content['gztime'][:10], defaults=defaults)
+
+            # 查看最新估值: https://finance.sina.com.cn/fund/quotes/008888/bc.shtml
+            today_data = {
+                "2026-07-22": {
+                    '008888': {'value': 2.3214, },  # 半导体
+                    '010364': {'value': 0.9029, },  # 军工
+                    # '022653': {'value': 0.9029, },  # 黄金
+                    '010685': {'value': 3.3591, },  # 医疗
+                    '003095': {'value': 2.0307, },  # 医疗A
+                    '012414': {'value': 0.5444, },  # 白酒
+                }
+            }
+            if now.strftime('%Y-%m-%d') in today_data:
+                t_data = today_data[now.strftime('%Y-%m-%d')]
+
+                # 更新今天的数据
+                if fund.code in t_data:
+                    today_value = t_data[fund.code]['value']
+                    rate = (today_value - float(result['net'])) / float(result['net']) * 100
+                    defaults = {'value': today_value, 'rate': f"{rate:0.02f}"}
+                    FundValue.objects.update_or_create(
+                        fund=fund,
+                        deal_at=datetime.datetime.now().strftime('%Y-%m-%d'),
+                        defaults=defaults
+                    )
 
             newest_fund_value = FundValue.objects.filter(fund=fund).order_by('deal_at').last()
             if newest_fund_value:
                 fund.newest_rate = newest_fund_value.rate
                 fund.save()
 
-            url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
-            print(f'{fund.name}: {url=}')
-            try:
-                r = requests.get(url=url, headers=headers, timeout=10)
-            except:  # noqa
-                continue
-            content = str(r.content)
-            content_split_list = content.split('<tr>')
-
-            for content_split in content_split_list:
-                if not ('class="f_green"' in content_split or 'class="f_red"' in content_split):
-                    continue
-                td_split = content_split.split('</td>')
-                date = td_split[0].split('>')[-1]
-                if not date:
-                    continue
-                value = td_split[1].split('>')[-1]
-                rate = float(td_split[3].split('>')[-1].replace('%', ''))
-
-                defaults = {'value': value, 'rate': rate}
-                FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
+            # url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
+            # print(f'{fund.name}: {url=}')
+            # try:
+            #     r = requests.get(url=url, headers=headers, timeout=10)
+            # except:  # noqa
+            #     continue
+            # content = str(r.content)
+            # print(f"{content=}")
+            # content_split_list = content.split('<tr>')
+            #
+            # for content_split in content_split_list:
+            #     print(111111111111111)
+            #     if not ('class="f_green"' in content_split or 'class="f_red"' in content_split):
+            #         continue
+            #     print(22222222222222222222)
+            #     td_split = content_split.split('</td>')
+            #     date = td_split[0].split('>')[-1]
+            #     if not date:
+            #         continue
+            #     print(333333333333333333333333333)
+            #     value = td_split[1].split('>')[-1]
+            #     rate = float(td_split[3].split('>')[-1].replace('%', ''))
+            #
+            #     defaults = {'value': value, 'rate': rate}
+            #     FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
 
             # 获得最新的净值数据
             last_fundvalue = FundValue.objects.filter(fund=fund).order_by('deal_at').last()
@@ -151,7 +173,7 @@ class Command(BaseCommand):
                 table.add_row(
                     f'{fund_expense.id}',
                     f'{fund_expense.deal_at}',
-                    f'{fund_expense.fund.name}',
+                    f'{fund_expense.fund.name}({fund_expense.fund.code})',
                     f'{fund_expense.hold}',
                     f'{fund_expense.expense}',
                     f'{hold_rate_persent}',
