@@ -24,7 +24,7 @@ class FundExpenseViewSet(ModelViewSet):
             fund = fund_expense.fund
             now_date = datetime.datetime.now().date()
             hold = fund_expense.hold
-            expense = hold * FundValue.objects.get(fund=fund, deal_at=now_date).value
+            expense = hold * FundValue.objects.filter(fund=fund, deal_at__lte=now_date).last().value
             FundExpense.objects.create(
                 fund=fund, deal_at=now_date, expense=expense, hold=hold, expense_type='sale', sale_at=now_date,
             )

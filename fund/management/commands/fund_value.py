@@ -36,14 +36,14 @@ class Command(BaseCommand):
 
             # 查看最新估值: https://finance.sina.com.cn/fund/quotes/008888/bc.shtml
             today_data = {
-                "2026-07-23": {
-                    '008888': {'value': 2.1258, },  # 半导体
-                    '010364': {'value': 0.8958, },  # 军工
+                "2026-07-27": {
+                    '008888': {'value': 2.1266, },  # 半导体 https://finance.sina.com.cn/fund/quotes/008888/bc.shtml
+                    '010364': {'value': 0.8970, },  # 军工 https://finance.sina.com.cn/fund/quotes/010364/bc.shtml
                     '022653': {'value': FundValue.objects.filter(fund__code='022653', deal_at__lte=deal_at).order_by(
-                        'deal_at').last().value * (0.68 / 100) + 1, },  # 黄金
-                    '010685': {'value': 3.2950, },  # 医疗
-                    '003095': {'value': 2.0019, },  # 医疗A
-                    '012414': {'value': 0.5470, },  # 白酒
+                        'deal_at').last().value * (-2.24 / 100 + 1), },  # 黄金
+                    '010685': {'value': 3.2275, },  # 医疗 https://finance.sina.com.cn/fund/quotes/010685/bc.shtml
+                    '003095': {'value': 1.9730, },  # 医疗A https://finance.sina.com.cn/fund/quotes/003095/bc.shtml
+                    '012414': {'value': 0.5413, },  # 白酒 https://finance.sina.com.cn/fund/quotes/012414/bc.shtml
                 }
             }
             if now.strftime('%Y-%m-%d') in today_data:
