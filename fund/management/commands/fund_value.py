@@ -36,14 +36,16 @@ class Command(BaseCommand):
 
             # 查看最新估值: https://finance.sina.com.cn/fund/quotes/008888/bc.shtml
             today_data = {
-                "2026-07-27": {
-                    '008888': {'value': 2.1266, },  # 半导体 https://finance.sina.com.cn/fund/quotes/008888/bc.shtml
-                    '010364': {'value': 0.8970, },  # 军工 https://finance.sina.com.cn/fund/quotes/010364/bc.shtml
+                "2026-08-10": {
                     '022653': {'value': FundValue.objects.filter(fund__code='022653', deal_at__lte=deal_at).order_by(
-                        'deal_at').last().value * (-2.24 / 100 + 1), },  # 黄金
-                    '010685': {'value': 3.2275, },  # 医疗 https://finance.sina.com.cn/fund/quotes/010685/bc.shtml
-                    '003095': {'value': 1.9730, },  # 医疗A https://finance.sina.com.cn/fund/quotes/003095/bc.shtml
-                    '012414': {'value': 0.5413, },  # 白酒 https://finance.sina.com.cn/fund/quotes/012414/bc.shtml
+                        'deal_at').last().value * (-0.87 / 100 + 1), },  # 黄金
+                    '023346': {'value': FundValue.objects.filter(fund__code='023346', deal_at__lte=deal_at).order_by(
+                        'deal_at').last().value, },  # [债券]博时裕新纯债债券C
+                    '008888': {'value': 2.0342, },  # 半导体 https://finance.sina.com.cn/fund/quotes/008888/bc.shtml
+                    '010364': {'value': 0.9504, },  # 军工 https://finance.sina.com.cn/fund/quotes/010364/bc.shtml
+                    '010685': {'value': 3.4468, },  # 医疗 https://finance.sina.com.cn/fund/quotes/010685/bc.shtml
+                    '003095': {'value': 2.1501, },  # 医疗A https://finance.sina.com.cn/fund/quotes/003095/bc.shtml
+                    '012414': {'value': 0.5746, },  # 白酒 https://finance.sina.com.cn/fund/quotes/012414/bc.shtml
                 }
             }
             if now.strftime('%Y-%m-%d') in today_data:
@@ -64,32 +66,6 @@ class Command(BaseCommand):
             if newest_fund_value:
                 fund.newest_rate = newest_fund_value.rate
                 fund.save()
-
-            # url = f'http://jingzhi.funds.hexun.com/DataBase/jzzs.aspx?fundcode={fund.code}&startdate={start_date}&enddate={end_date}'
-            # print(f'{fund.name}: {url=}')
-            # try:
-            #     r = requests.get(url=url, headers=headers, timeout=10)
-            # except:  # noqa
-            #     continue
-            # content = str(r.content)
-            # print(f"{content=}")
-            # content_split_list = content.split('<tr>')
-            #
-            # for content_split in content_split_list:
-            #     print(111111111111111)
-            #     if not ('class="f_green"' in content_split or 'class="f_red"' in content_split):
-            #         continue
-            #     print(22222222222222222222)
-            #     td_split = content_split.split('</td>')
-            #     date = td_split[0].split('>')[-1]
-            #     if not date:
-            #         continue
-            #     print(333333333333333333333333333)
-            #     value = td_split[1].split('>')[-1]
-            #     rate = float(td_split[3].split('>')[-1].replace('%', ''))
-            #
-            #     defaults = {'value': value, 'rate': rate}
-            #     FundValue.objects.update_or_create(fund=fund, deal_at=date, defaults=defaults)
 
             # 获得最新的净值数据
             last_fundvalue = FundValue.objects.filter(fund=fund).order_by('deal_at').last()
@@ -159,7 +135,7 @@ class Command(BaseCommand):
             for fund_expense in FundExpense.objects.filter(
                 fund__name__contains=f"[{fund_category}]",
                 expense_type='buy',
-                need_buy_again=False).order_by('-hold_rate')[:9]:
+                    need_buy_again=False).order_by('-hold_rate'):
                 last_fundvalue = FundValue.objects.filter(fund=fund_expense.fund).order_by('deal_at').last()
                 value = round(fund_expense.hold * last_fundvalue.value, 2)
                 if fund_expense.expense == 0:
