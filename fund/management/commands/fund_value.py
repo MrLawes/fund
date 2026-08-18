@@ -22,10 +22,10 @@ class Command(BaseCommand):
 
         with sync_playwright() as playwright:
             os.environ['DJANGO_ALLOW_ASYNC_UNSAFE'] = 'true'
-            self.playwright = playwright
-            self.browser = playwright.chromium.launch(headless=True)
-            self.context = self.browser.new_context()
-            self.page = self.context.new_page()
+            self.playwright = playwright  # noqa
+            self.browser = playwright.chromium.launch(headless=True)  # noqa
+            self.context = self.browser.new_context()  # noqa
+            self.page = self.context.new_page()  # noqa
 
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
@@ -34,8 +34,10 @@ class Command(BaseCommand):
             # end_date = datetime.datetime.now()
             # start_date = (end_date - datetime.timedelta(days=15)).strftime('%Y-%m-%d')
             # end_date = end_date.strftime('%Y-%m-%d')
+            is_get_today_data = input("是否获得最新估值(y/n): ")
 
             # 首页: https://fund.10jqka.com.cn/
+
             for fund in Fund.objects.all().order_by('name'):
 
                 url = f"https://fund.10jqka.com.cn/data/client/myfund/{fund.code}"
@@ -47,16 +49,20 @@ class Command(BaseCommand):
                 FundValue.objects.update_or_create(fund=fund, deal_at=deal_at, defaults=defaults)
 
                 # 最新估值
-
-                if fund.code in ('008888', '010364', '010685', '003095', '012414',):
-                    today_value = self.get_latest_valuation(fund_code=fund.code)
-                    rate = (today_value - float(result['net'])) / float(result['net']) * 100
-                    defaults = {'value': today_value, 'rate': f"{rate:0.02f}"}
-                    FundValue.objects.update_or_create(
-                        fund=fund,
-                        deal_at=datetime.datetime.now().strftime('%Y-%m-%d'),
-                        defaults=defaults
-                    )
+                if is_get_today_data == 'y':
+                    if fund.code in ('008888', '010364', '010685', '003095', '012414', '023346'):
+                        if fund.code in ('023346',):  # [债券]博时裕新纯债债券C
+                            today_value = FundValue.objects.filter(fund__code=fund.code, deal_at__lte=deal_at).order_by(
+                                'deal_at').last().value
+                        else:
+                            today_value = self.get_latest_valuation(fund_code=fund.code)
+                        rate = (today_value - float(result['net'])) / float(result['net']) * 100
+                        defaults = {'value': today_value, 'rate': f"{rate:0.02f}"}
+                        FundValue.objects.update_or_create(
+                            fund=fund,
+                            deal_at=datetime.datetime.now().strftime('%Y-%m-%d'),
+                            defaults=defaults
+                        )
 
                 # 查看最新估值: https://finance.sina.com.cn/fund/quotes/008888/bc.shtml
                 today_data = {
@@ -124,8 +130,10 @@ class Command(BaseCommand):
                     if fe.fund.name == "[医疗]工银瑞信前沿医疗股票C":
                         if fe.id < 4400:
                             continue
-
-                    fund_value = FundValue.objects.get(fund=fe.fund, deal_at=fe.deal_at)
+                    try:
+                        fund_value = FundValue.objects.get(fund=fe.fund, deal_at=fe.deal_at)
+                    except:  # noqa
+                        continue
                     fee = fe.fund.fee
                     expense = fe.expense
                     hold = FundExpense.get_hold(fund_value=fund_value.value, expense=expense, fee=fee)
