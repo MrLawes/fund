@@ -55,7 +55,7 @@ class Command(BaseCommand):
                             today_value = FundValue.objects.filter(fund__code=fund.code, deal_at__lte=deal_at).order_by(
                                 'deal_at').last().value
                         else:
-                            today_value = self.get_latest_valuation(fund_code=fund.code)
+                            today_value = self.get_latest_valuation(fund.code, fund.name, )
                         rate = (today_value - float(result['net'])) / float(result['net']) * 100
                         defaults = {'value': today_value, 'rate': f"{rate:0.02f}"}
                         FundValue.objects.update_or_create(
@@ -250,7 +250,7 @@ class Command(BaseCommand):
                 verify=False,  # 禁用 SSL 验证
             )
 
-    def get_latest_valuation(self, fund_code):
+    def get_latest_valuation(self, fund_code, fund_name):
         """ 获得最新估值 """
 
         self.page.goto(f"https://finance.sina.com.cn/fund/quotes/{fund_code}/bc.shtml")
@@ -266,5 +266,5 @@ class Command(BaseCommand):
 
         # 获取最新估值文本
         latest_valuation = zxgz_element.inner_text()
-        print(f"最新估值: {fund_code=};{latest_valuation}")
+        print(f"最新估值: {fund_name=};{fund_code=};{latest_valuation}")
         return round(float(latest_valuation), 4)
