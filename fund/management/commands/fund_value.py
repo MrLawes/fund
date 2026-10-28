@@ -227,7 +227,7 @@ class Command(BaseCommand):
                 "card": {
                     "header": {
                         "title": {
-                            "content": f"❗️待审核通知",
+                            "content": "❗️待审核通知",
                             "tag": "plain_text"
                         },
                         "template": "red",
